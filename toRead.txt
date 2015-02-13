@@ -1,0 +1,2 @@
+Tutoriel pour détection de cercle avec opencv :
+http://www.pyimagesearch.com/2014/07/21/detecting-circles-images-using-opencv-hough-circles/
