@@ -1,0 +1,8 @@
+def recup_Plateau(self) :
+	return Interface_entree()
+
+class Interface_entree :
+
+	def __init__(self) :
+
+			
