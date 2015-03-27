@@ -2,12 +2,14 @@ import cv2
 import numpy as np
 import time
 
-lowH = 0;
-lowS = 0;
-lowV = 0;
+lowH = 154;
+lowS = 153;
+lowV = 145;
 highH = 180;
 highS = 255;
 highV = 255;
+
+
 
 def nothing(x):
     pass
@@ -20,26 +22,27 @@ def detectColor(img):
     return binary;
 
 # Needs a binary image
-def distance(img):
-    dist = cv2.distanceTransform(img,CV_DIST_C,CV_DIST_MASK_PRECISE)
+def distance(binary):
+    dist = cv2.distanceTransform(binary, cv2.cv.CV_DIST_L2, cv2.cv.CV_DIST_MASK_PRECISE)
     # dist = cv2.distanceTransform(img,CV_DIST_L2)
+    dist = cv2.normalize(dist, 0, 1., cv2.NORM_MINMAX);
     return dist
 
 cv2.namedWindow('binary')
-cv2.createTrackbar('lowH','binary',0,180,nothing)
+cv2.createTrackbar('lowH','binary',0,359,nothing)
 cv2.createTrackbar('lowS','binary',0,255,nothing)
 cv2.createTrackbar('lowV','binary',0,255,nothing)
-cv2.createTrackbar('highH','binary',0,180,nothing)
+cv2.createTrackbar('highH','binary',0,359,nothing)
 cv2.createTrackbar('highS','binary',0,255,nothing)
 cv2.createTrackbar('highV','binary',0,255,nothing)
 
 key = 'a'
 
-cap = cv2.VideoCapture(0)
-#img = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1);
+# cap = cv2.VideoCapture(0)
+img = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1);
 
 while(key != 'q'):
-    ret, img = cap.read()
+    # ret, img = cap.read()
     lowH = cv2.getTrackbarPos('lowH','binary')
     lowS = cv2.getTrackbarPos('lowS','binary')
     lowV = cv2.getTrackbarPos('lowV','binary')
