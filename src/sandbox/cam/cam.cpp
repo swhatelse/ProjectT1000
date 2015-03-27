@@ -103,6 +103,8 @@ int main (int argc, char** argv){
     Mat picBin;
 
     bool pressed = false;
+
+    image = imread("", CV_LOAD_IMAGE_COLOR);
     
     while(key != 'q' && key != 'Q') {
     	Mat frame;
@@ -112,22 +114,22 @@ int main (int argc, char** argv){
     	edges = detectEdge(frame);
 
     	imshow("binary", binary);
-    	// imshow("original", frame);
-    	// imshow("edges", edges);
+    	imshow("original", frame);
+    	imshow("edges", edges);
     	// On attend 10ms
     	key = cvWaitKey(30);
-	if(key == 's'|| key == 'S'){
-	    if(!pressed){
-		pressed = true;
-		pic = shot(capture);
-		picBin = detectColor(pic);
-		detectCircle(picBin, pic);
-		cout << "S pressed" << endl;
-	    }
-	}
-	else{
-	    pressed = false;
-	}
+	// if(key == 's'|| key == 'S'){
+	//     if(!pressed){
+	// 	pressed = true;
+	// 	pic = shot(capture);
+	// 	picBin = detectColor(pic);
+	// 	detectCircle(picBin, pic);
+	// 	cout << "S pressed" << endl;
+	//     }
+	// }
+	// else{
+	//     pressed = false;
+	// }
 
     }
     
