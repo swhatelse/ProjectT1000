@@ -16,7 +16,7 @@ using namespace cv;
 int lowH = 215;
 int lowS = 0;
 int lowV = 0;
-int highH = 359;
+int highH = 179;
 int highS = 175;
 int highV = 163;
 
@@ -85,8 +85,8 @@ int main (int argc, char** argv){
 
     namedWindow("Tuner", CV_WINDOW_AUTOSIZE);
 
-    createTrackbar("LowH", "Tuner", &lowH, 359);
-    createTrackbar("HighH", "Tuner", &highH, 359);
+    createTrackbar("LowH", "Tuner", &lowH, 179);
+    createTrackbar("HighH", "Tuner", &highH, 179);
     createTrackbar("LowS", "Tuner", &lowS, 255);
     createTrackbar("HighS", "Tuner", &highS, 255);
     createTrackbar("LowV", "Tuner", &lowV, 255);
@@ -104,7 +104,7 @@ int main (int argc, char** argv){
 
     bool pressed = false;
 
-    image = imread("", CV_LOAD_IMAGE_COLOR);
+    // Mat image = imread("", CV_LOAD_IMAGE_COLOR);
     
     while(key != 'q' && key != 'Q') {
     	Mat frame;
