@@ -38,11 +38,11 @@ cv2.createTrackbar('highV','binary',0,255,nothing)
 
 key = 'a'
 
-# cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
 img = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1);
 
-while(key != 'q'):
-    # ret, img = cap.read()
+while(key != ord('q')):
+	#ret, img = cap.read()
     lowH = cv2.getTrackbarPos('lowH','binary')
     lowS = cv2.getTrackbarPos('lowS','binary')
     lowV = cv2.getTrackbarPos('lowV','binary')
@@ -50,8 +50,11 @@ while(key != 'q'):
     highS = cv2.getTrackbarPos('highS','binary')
     highV = cv2.getTrackbarPos('highV','binary')
 
+    if(key == ord('s')):
+	    cv2.imwrite("capt.png", binary);
+	
     cv2.imshow('image',img)
-
+ 
     binary = detectColor(img)
     dist = distance(binary)
     cv2.imshow('binary',binary)
