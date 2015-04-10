@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import cv2
 import numpy as np
 import time
@@ -14,6 +16,7 @@ d = 0
 rangeL = 0
 rangeH = 0
 k = 3
+trackInited = False
 
 class Color:
     def __init__(self, low, high):
@@ -59,8 +62,30 @@ def getValues():
         d = d + 1
     
 
-def track():
-    
+def trackInit(img, mask):
+    hist = cv2.calcHist([img],[0],mask,[180],[0,180])
+    cv2.normalize(hist,hist,0,255,cv2.NORM_MINMAX)
+    return hist
+
+def track(img,mask):
+    if(not trackInited):
+        trackInit(img,mask)
+
+def selectROI(event, x, y, flags, param):
+    # grab the reference to the current frame, list of ROI
+    # points and whether or not it is ROI selection mode
+    # global frame, roiPts, inputMode
+ 
+    # if we are in ROI selection mode, the mouse was clicked,
+    # and we do not already have four points, then update the
+    # list of ROI points with the (x, y) location of the click
+    # and draw the circle
+    if event == cv2.EVENT_LBUTTONDOWN:
+        # roiPts.append((x, y))
+        cv2.circle(img, (x, y), 4, (0, 255, 0), 2)
+        # cv2.imshow("image", img)
+        print(x)
+
 
 cv2.namedWindow('track')
 cv2.createTrackbar('lowH','track',0,179,nothing)
@@ -83,27 +108,36 @@ cap = cv2.VideoCapture(0)
 # cv2.randn(noise, 1,(256,256,256));
 # noise = img + noise
 
+ret, img = cap.read()
+cv2.namedWindow('image')
+cv2.setMouseCallback("image", selectROI,img)
+
 jaune = Color(16, 168, 165, 30, 255, 255)
 rouge = Color(0, 230, 218, 17, 255, 255)
 blue = Color(111, 124, 145, 118, 255, 255)
 
 r,h,c,w = 250,90,400,125
 track_window = (c,r,w,h)
+finish = False
 
-while True:
+while (finish != True):
     ret, img = cap.read()
     getValues()
     col = Color(lowH, lowS, lowV, highH, highS, highV)
     
     binary = detectColor(img, col)
+    track(img,binary)
     # dist = distance(binary)
     # ret, plateau = cv2.threshold(dist, .5, 1., cv2.cv.CV_THRESH_BINARY);
     cv2.imshow('image',img)
     cv2.imshow('binary',binary)
     # cv2.imshow('distance',dist)
     # cv2.imshow('form',plateau)
-    
-    if ( cv2.waitKey(30) == ord('q') ):
-        break
+
+    key = cv2.waitKey(30);
+    if (key == ord('q')):
+        finish = True
         # cv2.imwrite('nao_bin.png', binary)
+    elif(key == ord('b')):
+        trackInit(img,binary)
 cv2.destroyAllWindows()

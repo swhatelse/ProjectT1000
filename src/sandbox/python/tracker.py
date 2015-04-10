@@ -23,12 +23,13 @@ class Tracker(object):
         self.cam = cv2.VideoCapture(0)
         self.drag = False
         self.lowH = 0
-        self.lowS = 40
-        self.lowV = 83
-        self.highH = 18
+        self.lowS = 177
+        self.lowV = 255
+        self.highH = 91
         self.highS = 255
         self.highV = 255
         self.hist = None
+        self.tracking_state = False
         
         cv2.namedWindow('image')
         cv2.setMouseCallback('image', self.onmouse)
@@ -48,6 +49,7 @@ class Tracker(object):
         elif event == cv2.EVENT_LBUTTONUP:
             self.pressed = False
             self.drag = False
+            self.tracking_state = True
             self.x1,self.y1 = x,y
             self.selection = (self.x0, self.y0, x, y)
             cv2.rectangle(self.frame,(self.x0,self.y0),(x,y),(0,255,0),2)
@@ -87,7 +89,8 @@ class Tracker(object):
             color = Color.Color(self.lowH,self.lowS,self.lowV,self.highH,self.highS,self.highV)
             
             ret, self.frame = self.cam.read()
-
+            # self.frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
+            
             if self.selection:
                 self.trackWin = (self.x0, self.y0, self.x1-self.x0, self.y1-self.y0)
                 roi = self.frame[self.y0:self.y1, self.x0:self.x1]
@@ -96,20 +99,28 @@ class Tracker(object):
                 hist = cv2.calcHist([roi], [0], mask, [16], [0,180])
                 cv2.normalize(hist, hist, 0, 255, cv2.NORM_MINMAX)
                 self.hist = hist.reshape(-1)
-                prob = cv2.calcBackProject([roi], [0], self.hist, [0,180],1)
-                prob &= mask
-                self.show_hist()
-                term_crit = ( cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1 )
-                track_box, self.trackWin = cv2.CamShift(prob, self.trackWin, term_crit)
+                if self.tracking_state:
+                    prob = cv2.calcBackProject([roi], [0], self.hist, [0,180],1)
+                    prob &= mask
+                    term_crit = ( cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1 )
+                    track_box, self.trackWin = cv2.CamShift(prob, self.trackWin, term_crit)
+                    try: cv2.ellipse(self.frame, track_box, (0, 0, 255), 2)
+                    # try: cv2.rectangle(self.frame,track_box,(0,255,0),2)
+                    except: print track_box
+                # isolated = self.frame[self.trackWin]
                 cv2.imshow('selection', mask)
                 cv2.imshow('backproj', prob)
-                print(self.trackWin)
+                print track_box
+                # cv2.imshow('isolated', isolated)
+                self.show_hist()
+                # print(self.trackWin)
 
             cv2.imshow('image', self.frame)
 
             if cv2.waitKey(30) ==  ord('q'):
                 break
         cv2.destroyAllWindows()
+        self.cam.release()
 
     def __del__(self):
         print('properly stop')
