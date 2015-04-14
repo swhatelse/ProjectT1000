@@ -48,7 +48,7 @@ class P4_nao :
                 r = [0 for x in range(0,7)]
                 c = -1       #  nbJetonsByColonne qu'on va jouer
 
-                for j in range (0, 7) : # on regarde d'abord si l'ordi peut gagner en un endroit
+                for j in range (0, 6) : # on regarde d'abord si l'ordi peut gagner en un endroit
                     if (self.nbJetonsByColonne[c3[j]] == 6) :
                         r[c3[j]]=-1;
                     else :

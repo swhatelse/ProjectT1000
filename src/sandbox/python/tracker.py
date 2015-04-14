@@ -88,12 +88,14 @@ class Tracker(object):
             self.highV = cv2.getTrackbarPos('highV','track')
             color = Color.Color(self.lowH,self.lowS,self.lowV,self.highH,self.highS,self.highV)
             
-            # ret, self.frame = self.cam.read()
-            self.frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
+            ret, self.frame = self.cam.read()
+            # self.frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
             
             if self.selection:
                 self.trackWin = (self.x0, self.y0, self.x1-self.x0, self.y1-self.y0)
-                roi = self.frame[self.y0:self.y1, self.x0:self.x1]
+                # roi = self.frame[self.y0:self.y1, self.x0:self.x1]
+                height, width, depth = self.frame.shape
+                roi = self.frame[0:height, 0:width]
                 roi = cv2.cvtColor(roi,cv2.COLOR_BGR2HSV)
                 mask = cv2.inRange(roi,color.lowHSV,color.highHSV)
                 hist = cv2.calcHist([roi], [0], mask, [16], [0,180])
@@ -104,16 +106,17 @@ class Tracker(object):
                     prob &= mask
                     term_crit = ( cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1 )
                     track_box, self.trackWin = cv2.CamShift(prob, self.trackWin, term_crit)
-                    try: cv2.ellipse(self.frame, track_box, (0, 0, 255), 2)
-                    # try: cv2.rectangle(self.frame,track_box,(0,255,0),2)
-                    except: print track_box
-                # isolated = self.frame[self.trackWin]
+                    # try: cv2.ellipse(self.frame, track_box, (0, 0, 255), 2)
+                    x,y,w,h = self.trackWin
+                    try: cv2.rectangle(self.frame, (x,y),(x+w, y+h),(0,255,0),2)
+                    except: print self.trackWin
+                isolated = self.frame[y:y+h, x:x+w]
                 cv2.imshow('selection', mask)
                 cv2.imshow('backproj', prob)
-                print track_box
-                # cv2.imshow('isolated', isolated)
+                # print track_box
+                try: cv2.imshow('isolated', isolated)
+                except: print self.frame[y:y+h, x:x+w]
                 self.show_hist()
-                # print(self.trackWin)
 
             cv2.imshow('image', self.frame)
 
