@@ -88,8 +88,8 @@ class Tracker(object):
             self.highV = cv2.getTrackbarPos('highV','track')
             color = Color.Color(self.lowH,self.lowS,self.lowV,self.highH,self.highS,self.highV)
             
-            ret, self.frame = self.cam.read()
-            # self.frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
+            # ret, self.frame = self.cam.read()
+            self.frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
             
             if self.selection:
                 self.trackWin = (self.x0, self.y0, self.x1-self.x0, self.y1-self.y0)

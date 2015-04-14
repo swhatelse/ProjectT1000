@@ -32,8 +32,10 @@ def nothing(x):
 def detectColor(img, color):
     hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
     hsv = cv2.GaussianBlur(hsv,(k,k),blur);
-    hsv = cv2.medianBlur(hsv,k);
+    hsv = cv2.medianBlur(hsv,k); 
     binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
+    kernel = np.ones((5,5),np.uint8)
+    binary = cv2.dilate(binary,kernel,iterations = 1)
     return binary
 
 # Needs a binary image
