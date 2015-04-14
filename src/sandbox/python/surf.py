@@ -2,6 +2,10 @@
 
 import cv2
 import numpy as np
+import Color
+
+def nothing(x):
+    pass
 
 class Detector(object):
     def __init__(self):
