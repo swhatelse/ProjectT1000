@@ -22,25 +22,16 @@ class Blob(object):
         binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
         return binary
 
-    def run(self, img, color):
+    def run(self, img, color, invert = False):
         binary = self.detectColor(img, color)
             
         # Detect blobs.
-        keypoints = self.detector.detect(~binary)
-
-        print(len(keypoints))
-        
-        # Draw detected blobs as red circles.
-        # cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures the size of the circle corresponds to the size of blob
-        im_with_keypoints = cv2.drawKeypoints(img, keypoints, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        
-        # Show keypoints
-        # cv2.imshow("image", im_with_keypoints)
-        # cv2.imshow("binary", binary)
-        for kp in keypoints:
-            print(kp.pt)
+        if not invert:
+            keypoints = self.detector.detect(~binary)
+        else:
+            keypoints = self.detector.detect(binary)
             
-        return im_with_keypoints
+        return keypoints
     
 if __name__ == '__main__':
     blob = Blob()

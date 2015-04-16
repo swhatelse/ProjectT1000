@@ -4,6 +4,7 @@ import cv2
 import Color
 import tracker2 as tr
 import blob2 as bl
+import numpy as np
 
 def nothing(x):
     pass
@@ -27,10 +28,10 @@ class UI(object):
         
         cv2.namedWindow('track')
         # cv2.setMouseCallback('image', self.onmouse)
-        cv2.createTrackbar('lowH','track',self.lowH,179,nothing)
+        cv2.createTrackbar('lowH','track',self.lowH,359,nothing)
         cv2.createTrackbar('lowS','track',self.lowS,255,nothing)
         cv2.createTrackbar('lowV','track',self.lowV,255,nothing)
-        cv2.createTrackbar('highH','track',self.highH,179,nothing)
+        cv2.createTrackbar('highH','track',self.highH,359,nothing)
         cv2.createTrackbar('highS','track',self.highS,255,nothing)
         cv2.createTrackbar('highV','track',self.highV,255,nothing)
 
@@ -66,8 +67,8 @@ class UI(object):
 
     def detectColor(self, img, color):
         hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
-        hsv = cv2.GaussianBlur(hsv,(5,5),3);
-        hsv = cv2.medianBlur(hsv,5);
+        # hsv = cv2.GaussianBlur(hsv,(5,5),3);
+        # hsv = cv2.medianBlur(hsv,5);
         binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
         return binary
 
@@ -82,17 +83,20 @@ class UI(object):
         while True:
             frame = cv2.imread('../../Images/P4_Lointain.jpg',1)
 
-            # color = self.calibrate()
-            # bin = self.detectColor(frame, color)
-            # cv2.imshow('bin', bin)
+            color = self.calibrate()
+            bin = self.detectColor(frame, color)
+            cv2.imshow('bin', ~bin)
             
             img, binary = tracker.detect(frame,blue)
             cv2.imshow('image', img)
-            cv2.imshow('binary', binary)
-            yl = detector.run(img, yellow)
-            rd = detector.run(img, red)
-            cv2.imshow('yellow', yl)
-            cv2.imshow('red', rd)
+            # cv2.imshow('binary', ~binary)
+            ylKp = detector.run(img, yellow)
+            rdKp = detector.run(img, red)
+            emptKp = detector.run(img, color, True)
+            imKp = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            imKp = cv2.drawKeypoints(imKp, rdKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            imKp = cv2.drawKeypoints(imKp, emptKp, np.array([]), (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            cv2.imshow('yellow', imKp)
             
             if cv2.waitKey(30) ==  ord('q'):
                 break

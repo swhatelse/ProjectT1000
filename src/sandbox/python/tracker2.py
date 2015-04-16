@@ -24,15 +24,6 @@ class Tracker(object):
         self.hist = None
         self.tracking_state = True
         
-        cv2.namedWindow('image')
-        cv2.namedWindow('track')
-        cv2.createTrackbar('lowH','track',self.lowH,179,nothing)
-        cv2.createTrackbar('lowS','track',self.lowS,255,nothing)
-        cv2.createTrackbar('lowV','track',self.lowV,255,nothing)
-        cv2.createTrackbar('highH','track',self.highH,179,nothing)
-        cv2.createTrackbar('highS','track',self.highS,255,nothing)
-        cv2.createTrackbar('highV','track',self.highV,255,nothing)
-
     def detectColor(self, img, color):
         hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
         hsv = cv2.GaussianBlur(hsv,(5,5),3);
@@ -68,8 +59,7 @@ class Tracker(object):
             term_crit = ( cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1 )
             track_box, self.trackWin = cv2.CamShift(prob, self.trackWin, term_crit)
             x,y,w,h = self.trackWin
-            try: cv2.rectangle(img, (x,y),(x+w, y+h),(0,255,0),2)
-            except: print self.trackWin
+            cv2.rectangle(img, (x,y),(x+w, y+h),(0,255,0),2)
         isolated = img[y:y+h, x:x+w]
         # self.show_hist()
 
