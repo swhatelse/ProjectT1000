@@ -15,10 +15,10 @@ def createPython(reds, yellows, emptys):
 	y = 0;
 	
 	for e in pions:
-		if (e.x==reds[0].x &&  e.y==reds[0].y):
+		if (e[0]==reds[0][0] &&  e[1]==reds[0][1]):
 			plateau.plateau[x][y] = Plateau.J[1];
 			reds.remove(0);
-		else if (e.x==yellows[0].x &&  e.y==yellows[0].y):
+		else if (e[0]==yellows[0][0] &&  e[1]==yellows[0][1]):
 			plateau.plateau[x][y] = Plateau.J[2];
 			yellows.remove(0);
 		x += 1;
