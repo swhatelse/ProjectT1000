@@ -63,8 +63,8 @@ class Plateau:
                     print "X"
                 if (self.plateau_jeu[j][i]== 2) :
                     print "O"
-            print " "
-        print "\n"
+                print " "
+            print "\n"
         #fin for
     #fin methode d'affichage du plateau pour le debug
 
