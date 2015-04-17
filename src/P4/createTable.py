@@ -9,7 +9,7 @@ def createPython(reds, yellows, emptys):
     plateau = Plateau.Plateau();
     
     if len(pions)+len(emptys) != plateau.NB_LIGNE*plateau.NB_COLONNE :
-		raise None;
+		raise "Not 42 cells";
 	
 	x = 0;
 	y = 0;

@@ -5,6 +5,7 @@ import Color
 import tracker2 as tr
 import blob2 as bl
 import numpy as np
+import createTable as ct
 
 def nothing(x):
     pass
@@ -72,7 +73,7 @@ class UI(object):
         binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
         return binary
 
-    def run(self):
+    def getTable(self):
         tracker = tr.Tracker()
         detector = bl.Blob()
 
@@ -82,41 +83,23 @@ class UI(object):
         # red = Color.Color(132,169,96,179,255,255)
         red = Color.Color(0,100,100,15,255,255)
         
-        while True:
-            # frame = cv2.imread('../../Images/P4_Lointain.jpg',1)
-            frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
+		# frame = cv2.imread('../../Images/P4_Lointain.jpg',1)
+		frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
 
-            # color = self.calibrate()
-            # binary = self.detectColor(frame, color)
-            # cv2.imshow('bin', binary)
-            # cv2.imshow('image', frame)
-                        
-            img, binary = tracker.detect(frame,blue)
-            cv2.imshow('image', img)
-            # cv2.imshow('binary', ~binary)
-            ylKp, ylCoords = detector.run(img, yellow)
-            rdKp, rdCoords = detector.run(img, red)
-            emptKp, emptCoords = detector.run(img, blue, True)
-            # imKp = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            # imKp = cv2.drawKeypoints(imKp, rdKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            # imKp = cv2.drawKeypoints(imKp, emptKp, np.array([]), (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+		# color = self.calibrate()
+		# binary = self.detectColor(frame, color)
+		# cv2.imshow('bin', binary)
+		# cv2.imshow('image', frame)
+					
+		img, binary = tracker.detect(frame,blue)
+		cv2.imshow('image', img)
+		# cv2.imshow('binary', ~binary)
+		ylKp, ylCoords = detector.run(img, yellow)
+		rdKp, rdCoords = detector.run(img, red)
+		emptKp, emptCoords = detector.run(img, blue, True)
+		# imKp = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+		# imKp = cv2.drawKeypoints(imKp, rdKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+		# imKp = cv2.drawKeypoints(imKp, emptKp, np.array([]), (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-            # cv2.circle(img, (50,50), 4, (255,0,0),3)
-            # cv2.imshow('im', img)
+		return ct.createPython(rdCoords, ylCoords, emptCoords);
             
-            if cv2.waitKey(0) ==  ord('q'):
-                break
-
-            for i in ylCoords:
-                cv2.circle(img, (int(i[0]),int(i[1])), 12, (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-                
-            # imKp = cv2.circle(imKp, rdCoords, 12, (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            # imKp = cv2.circle(imKp, emptCoords, 12, (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            
-            # cv2.imshow('yellow', imKp)
-            cv2.imshow('yellow', img)
-            
-            
-if __name__ == '__main__':
-    app = UI()
-    app.run()

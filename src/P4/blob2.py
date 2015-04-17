@@ -35,7 +35,3 @@ class Blob(object):
         # print(infos)
         
         return keypoints, infos
-    
-if __name__ == '__main__':
-    blob = Blob()
-    blob.run()
