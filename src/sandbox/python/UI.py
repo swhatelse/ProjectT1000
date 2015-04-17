@@ -94,17 +94,29 @@ class UI(object):
             img, binary = tracker.detect(frame,blue)
             cv2.imshow('image', img)
             # cv2.imshow('binary', ~binary)
-            ylKp = detector.run(img, yellow)
-            rdKp = detector.run(img, red)
-            emptKp = detector.run(img, blue, True)
-            imKp = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            imKp = cv2.drawKeypoints(imKp, rdKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            imKp = cv2.drawKeypoints(imKp, emptKp, np.array([]), (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            cv2.imshow('yellow', imKp)
+            ylKp, ylCoords = detector.run(img, yellow)
+            rdKp, rdCoords = detector.run(img, red)
+            emptKp, emptCoords = detector.run(img, blue, True)
+            # imKp = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            # imKp = cv2.drawKeypoints(imKp, rdKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            # imKp = cv2.drawKeypoints(imKp, emptKp, np.array([]), (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+            # cv2.circle(img, (50,50), 4, (255,0,0),3)
+            # cv2.imshow('im', img)
             
-            if cv2.waitKey(30) ==  ord('q'):
+            if cv2.waitKey(0) ==  ord('q'):
                 break
 
+            for i in ylCoords:
+                cv2.circle(img, (int(i[0]),int(i[1])), 12, (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+                
+            # imKp = cv2.circle(imKp, rdCoords, 12, (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            # imKp = cv2.circle(imKp, emptCoords, 12, (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            
+            # cv2.imshow('yellow', imKp)
+            cv2.imshow('yellow', img)
+            
+            
 if __name__ == '__main__':
     app = UI()
     app.run()
