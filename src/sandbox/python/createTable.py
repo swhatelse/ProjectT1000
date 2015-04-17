@@ -3,16 +3,16 @@ import Plateau
 def createPython(reds, yellows, emptys):
 	reds.sort();
 	yellows.sort();
-	allInOne = reds+yellows+emptys;
-    allInOne.sort();
+	pions = reds+yellows;
+    pions.sort();
     
-    if len(allInOne) != 42 :
+    if len(allInOne)+len(emptys) != 42 :
 		raise None;
 	
 	x = 0;
 	y = 0;
 	plateau = Plateau.Plateau();
-	for e in allInOne:
+	for e in pions:
 		if (e.x==reds[0].x &&  e.y==reds[0].y):
 			plateau.plateau[x][y] = Plateau.J[1];
 			reds.remove(0);
