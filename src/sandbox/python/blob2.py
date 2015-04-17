@@ -29,8 +29,12 @@ class Blob(object):
             keypoints = self.detector.detect(~binary)
         else:
             keypoints = self.detector.detect(binary)
-            
-        return keypoints
+
+        infos = [ kp.pt for kp in keypoints ]
+
+        # print(infos)
+        
+        return keypoints, infos
     
 if __name__ == '__main__':
     blob = Blob()
