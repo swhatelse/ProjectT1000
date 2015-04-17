@@ -41,7 +41,7 @@ class Blob(object):
 
     def run(self):
         # Read image
-        # self.im = cv2.imread("../../Images/puissance4.png", 1)
+        self.im = cv2.imread("../../Images/puissance4.png", 1)
         # self.im = cv2.imread("../../Images/blob_test.jpg", 1)
         # self.imGray = cv2.imread("../../Images/puissance4.png", cv2.IMREAD_GRAYSCALE)
         # noise = cv2.imread('../../Images/puissance4.png',1)
@@ -51,7 +51,7 @@ class Blob(object):
         while True:
             # cv2.randn(noise, 1,(256,256,256));
             # self.im = tmp + noise
-            ret, self.im = self.cam.read()
+            # ret, self.im = self.cam.read()
             
             self.lowH = cv2.getTrackbarPos('lowH','track')
             self.lowS = cv2.getTrackbarPos('lowS','track')
