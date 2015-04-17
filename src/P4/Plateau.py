@@ -37,7 +37,7 @@ class Plateau:
         return c<0 or c>=self.NB_COLONNE or self.plateau[0][c]!=self._J[0]
     
     def _set_case_plateau(self, colonne, ligne, joueur) :
-        if not joueur_exist(joueur):
+        if not self._joueur_exist(joueur):
             self.erreur("erreur, mauvaise valeur pour le joueur: "+str(joueur))
             exit
         else :
@@ -204,6 +204,32 @@ class Plateau:
         
     def end(self):
         return self.winner()!=self._J[0]
-        
-                    
+    
+    def coherence(self):
+        result=True
+        for colonne in range(0,self.NB_COLONNE):
+            ligne=self.NB_LIGNE
+            flag=0
+            while(ligne>0 and result):
+                ligne-=1
+                if(flag==0 and self.plateau[ligne][colonne]==self._J[0]):
+                    flag=1
+                elif(flag==1 and self.plateau[ligne][colonne]!=self._J[0]):
+                    #~ self.affichePlateau()
+                    result=False
+        return result
 
+def erreur(s):
+    print s    
+    
+if __name__ == '__main__':
+    plateau=Plateau(erreur)
+    plateau.affichePlateau()
+    print plateau.coherence()
+    plateau._set_case_plateau(0,plateau.NB_LIGNE-1,plateau._J[1])
+    plateau.affichePlateau()
+    print plateau.coherence()
+    plateau._set_case_plateau(0,plateau.NB_LIGNE-3,plateau._J[1])
+    plateau.affichePlateau()
+    print plateau.coherence()
+    
