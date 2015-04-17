@@ -7,7 +7,7 @@ import Interface_sortie
 
 class Interface_mouvement :
 
-        def __init__(self) :
+    def __init__(self) :
 		#on defini la liste des mouvements possibles		
 		self.Liste_mouvement= ["P4_Position_Debut_Jeu", "P4_Position_Think", "P4_Position_Think_End", "P4_Position_Prise_Jeton", "P4_Position_Lacher_Jeton", "SitDown"]
 
