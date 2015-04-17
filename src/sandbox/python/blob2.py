@@ -29,7 +29,6 @@ class Blob(object):
             keypoints = self.detector.detect(~binary)
         else:
             keypoints = self.detector.detect(binary)
-            cv2.imshow('test', binary)
             
         return keypoints
     

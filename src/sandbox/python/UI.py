@@ -76,24 +76,27 @@ class UI(object):
         tracker = tr.Tracker()
         detector = bl.Blob()
 
-        blue = Color.Color(108,121,106,152,255,255)
+        # blue = Color.Color(108,121,106,152,255,255)
+        blue = Color.Color(43,0,0,255,255,255)
         yellow = Color.Color(20,186,218,33,255,255)
-        red = Color.Color(132,169,96,179,255,255)
+        # red = Color.Color(132,169,96,179,255,255)
+        red = Color.Color(0,100,100,15,255,255)
         
         while True:
             # frame = cv2.imread('../../Images/P4_Lointain.jpg',1)
             frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
 
-            color = self.calibrate()
-            bin = self.detectColor(frame, color)
-            cv2.imshow('bin', ~bin)
-            
+            # color = self.calibrate()
+            # binary = self.detectColor(frame, color)
+            # cv2.imshow('bin', binary)
+            # cv2.imshow('image', frame)
+                        
             img, binary = tracker.detect(frame,blue)
             cv2.imshow('image', img)
             # cv2.imshow('binary', ~binary)
             ylKp = detector.run(img, yellow)
             rdKp = detector.run(img, red)
-            emptKp = detector.run(img, color, True)
+            emptKp = detector.run(img, blue, True)
             imKp = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             imKp = cv2.drawKeypoints(imKp, rdKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             imKp = cv2.drawKeypoints(imKp, emptKp, np.array([]), (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
