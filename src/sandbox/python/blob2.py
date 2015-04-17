@@ -24,12 +24,12 @@ class Blob(object):
 
     def run(self, img, color, invert = False):
         binary = self.detectColor(img, color)
-            
         # Detect blobs.
         if not invert:
             keypoints = self.detector.detect(~binary)
         else:
             keypoints = self.detector.detect(binary)
+            cv2.imshow('test', binary)
             
         return keypoints
     

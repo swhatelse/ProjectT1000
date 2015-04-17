@@ -28,10 +28,10 @@ class UI(object):
         
         cv2.namedWindow('track')
         # cv2.setMouseCallback('image', self.onmouse)
-        cv2.createTrackbar('lowH','track',self.lowH,359,nothing)
+        cv2.createTrackbar('lowH','track',self.lowH,255,nothing)
         cv2.createTrackbar('lowS','track',self.lowS,255,nothing)
         cv2.createTrackbar('lowV','track',self.lowV,255,nothing)
-        cv2.createTrackbar('highH','track',self.highH,359,nothing)
+        cv2.createTrackbar('highH','track',self.highH,255,nothing)
         cv2.createTrackbar('highS','track',self.highS,255,nothing)
         cv2.createTrackbar('highV','track',self.highV,255,nothing)
 
@@ -81,7 +81,8 @@ class UI(object):
         red = Color.Color(132,169,96,179,255,255)
         
         while True:
-            frame = cv2.imread('../../Images/P4_Lointain.jpg',1)
+            # frame = cv2.imread('../../Images/P4_Lointain.jpg',1)
+            frame = cv2.imread('../cam/img/280px-Puissance4_01.svg.png',1)
 
             color = self.calibrate()
             bin = self.detectColor(frame, color)
