@@ -8,7 +8,7 @@ def createPython(reds, yellows, emptys):
     
     plateau = Plateau.Plateau();
     
-    if len(allInOne)+len(emptys) != plateau.NB_LIGNE*plateau.NB_COLONNE :
+    if len(pions)+len(emptys) != plateau.NB_LIGNE*plateau.NB_COLONNE :
 		raise None;
 	
 	x = 0;
