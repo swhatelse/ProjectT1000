@@ -1,6 +1,6 @@
 import Plateau
 
-def createPython(reds, yellows, emptys):
+def createTable(reds, yellows, emptys):
 	reds.sort();
 	yellows.sort();
 	pions = reds+yellows;

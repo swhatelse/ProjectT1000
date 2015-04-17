@@ -101,5 +101,5 @@ class UI(object):
 		# imKp = cv2.drawKeypoints(imKp, rdKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 		# imKp = cv2.drawKeypoints(imKp, emptKp, np.array([]), (255,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-		return ct.createPython(rdCoords, ylCoords, emptCoords);
+		return ct.createTable(rdCoords, ylCoords, emptCoords);
             
