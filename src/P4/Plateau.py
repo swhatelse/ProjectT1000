@@ -11,6 +11,11 @@
 
 import random
 
+"""
+-vide 0
+-rouge 1
+-jaune 2
+"""
 J=[0,1,2]
 class Plateau:
 

@@ -50,27 +50,25 @@ if __name__ == '__main__':
     
     p=Plateau.Plateau(erreur)
     ia1=IA.IA(p)
-    ia2=IA.IA(p)
     
     ########################################
     
- 
     import time
      #~ 
+     
+    r=random.randrange(0,2)
     while (not p.end()):
     #~ if (not p.end()):
-        time.sleep (0.1)
+        print r
+        if(r==0):
         # Le joueur joue
-        p.addColonne(ia1.choix_colonne(1,5),Plateau.J[1])
-        affichage(p)
-        if p.end():
-            break
-        #~ p.addColonne(ia2.choix_colonne(1,5),Plateau.J[2])
-        affichage(p)
-            
-        time.sleep (0.2)
-        #~ clic=False
-        
+            p.addColonne(ia1.choix_colonne(1,6),Plateau.J[1])
+            affichage(p)
+            if p.end():
+                break
+            affichage(p)
+        r=0
+        print "humain!"
         clic=False
         while(not clic):
             time.sleep (0.1)
@@ -84,10 +82,14 @@ if __name__ == '__main__':
                         p.addColonne(colonne,Plateau.J[2])
                         clic=True
                     
-             # On modifie les variables pour tenir compte du jeton depose.
+        # On modifie les variables pour tenir compte du jeton depose.
                     affichage(p)
                 elif event.type == pygame.QUIT:
                     clic=True
-        print "gagnant joueur:"+str(p.winner())
+        print "plus humain"
+    print "gagnant joueur:"+str(p.winner())
+        
+        
+    print p.toString()
 
     ########################################
