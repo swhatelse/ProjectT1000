@@ -6,12 +6,14 @@ def createPython(reds, yellows, emptys):
 	pions = reds+yellows;
     pions.sort();
     
-    if len(allInOne)+len(emptys) != 42 :
+    plateau = Plateau.Plateau();
+    
+    if len(allInOne)+len(emptys) != plateau.NB_LIGNE*plateau.NB_COLONNE :
 		raise None;
 	
 	x = 0;
 	y = 0;
-	plateau = Plateau.Plateau();
+	
 	for e in pions:
 		if (e.x==reds[0].x &&  e.y==reds[0].y):
 			plateau.plateau[x][y] = Plateau.J[1];
