@@ -28,12 +28,19 @@ class UI(object):
         
         cv2.namedWindow('track')
         # cv2.setMouseCallback('image', self.onmouse)
-        cv2.createTrackbar('lowH','track',self.lowH,179,nothing)
-        cv2.createTrackbar('lowS','track',self.lowS,255,nothing)
-        cv2.createTrackbar('lowV','track',self.lowV,255,nothing)
-        cv2.createTrackbar('highH','track',self.highH,179,nothing)
-        cv2.createTrackbar('highS','track',self.highS,255,nothing)
-        cv2.createTrackbar('highV','track',self.highV,255,nothing)
+        # cv2.createTrackbar('lowH','track',self.lowH,179,nothing)
+        # cv2.createTrackbar('lowS','track',self.lowS,255,nothing)
+        # cv2.createTrackbar('lowV','track',self.lowV,255,nothing)
+        # cv2.createTrackbar('highH','track',self.highH,179,nothing)
+        # cv2.createTrackbar('highS','track',self.highS,255,nothing)
+        # cv2.createTrackbar('highV','track',self.highV,255,nothing)
+
+        cv2.createTrackbar('lowH','track',0,179,nothing)
+        cv2.createTrackbar('lowS','track',0,255,nothing)
+        cv2.createTrackbar('lowV','track',0,255,nothing)
+        cv2.createTrackbar('highH','track',179,179,nothing)
+        cv2.createTrackbar('highS','track',255,255,nothing)
+        cv2.createTrackbar('highV','track',255,255,nothing)
 
     # def onmouse(self, event, x, y, flags, param):
     #     if event == cv2.EVENT_LBUTTONDOWN:
@@ -56,19 +63,19 @@ class UI(object):
     #             cv2.imshow('image', self.frame)
 
     def calibrate(self):
-        self.lowH = cv2.getTrackbarPos('lowH','track')
-        self.lowS = cv2.getTrackbarPos('lowS','track')
-        self.lowV = cv2.getTrackbarPos('lowV','track')
-        self.highH = cv2.getTrackbarPos('highH','track')
-        self.highS = cv2.getTrackbarPos('highS','track')
-        self.highV = cv2.getTrackbarPos('highV','track')
-        color = Color.Color(self.lowH,self.lowS,self.lowV,self.highH,self.highS,self.highV)
+        lowH = cv2.getTrackbarPos('lowH','track')
+        lowS = cv2.getTrackbarPos('lowS','track')
+        lowV = cv2.getTrackbarPos('lowV','track')
+        highH = cv2.getTrackbarPos('highH','track')
+        highS = cv2.getTrackbarPos('highS','track')
+        highV = cv2.getTrackbarPos('highV','track')
+        color = Color.Color(lowH,lowS,lowV,highH,highS,highV)
         return color
 
     def detectColor(self, img, color):
         hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
-        # hsv = cv2.GaussianBlur(hsv,(5,5),1);
-        hsv = cv2.medianBlur(hsv,5);
+        # hsv = cv2.GaussianBlur(hsv,(5,5),3)
+        hsv = cv2.medianBlur(hsv,5)
         binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
         return binary
 
@@ -88,21 +95,17 @@ class UI(object):
             # cv2.imshow('image', frame)
             
             img, binary = tracker.detect(frame,blue)
-            # cv2.imshow('image', img)
-            # # cv2.imshow('binary', ~binary)
             # ylKp, ylCoords = detector.run(img, yellow)
-            # rdKp, rdCoords = detector.run(img, red)
             # emptKp, emptCoords = detector.run(img, blue, True)
-            # # imKp = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
             # for i in ylCoords:
             #     cv2.circle(img, (int(i[0]),int(i[1])), 10, (0,0,255), 2)
 
-            # # img = frame.copy()
+            # blKp, ylKp, rdKp = detector.findObjects(img,color)
             blKp, ylKp, rdKp = detector.findObjects(img)
             img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            img = cv2.drawKeypoints(img, rdKp, np.array([]), (255,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             cv2.imshow('img', img)
             
             if cv2.waitKey(30) ==  ord('q'):
