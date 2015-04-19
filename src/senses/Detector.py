@@ -61,6 +61,3 @@ class Detector(object):
         else:
             return blKp, ylKp, rdKp
     
-if __name__ == '__main__':
-    blob = Blob()
-    blob.run()

@@ -53,11 +53,15 @@ class TestDetector(object):
             img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             img = cv2.drawKeypoints(img, rdKp, np.array([]), (255,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             cv2.imshow('img', img)
-            print(len(rdKp))
+            blKp = sorted(blKp, key = lambda x:x.pt)
             
-            if cv2.waitKey(30) ==  ord('q'):
+            if cv2.waitKey(0) ==  ord('q'):
                 break
             
+            # sort by position
+            for b in blKp: 
+                print(b.pt)
+
             
 if __name__ == '__main__':
     app = TestDetector()
