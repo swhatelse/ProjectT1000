@@ -29,10 +29,8 @@ class Detector(object):
     # Params color: use for debuging
     def getAll(self, img, color = None):
         if color:
-            # blBin = Color.detectColor(img,color,self.ksize,self.weight)
             blBin = Color.detectColor(img,color)
         else:
-            # blBin = Color.detectColor(img,Color.BLUE,self.ksize,self.weight)
             blBin = Color.detectColor(img,Color.BLUE)
             
         if self.DEBUG:
@@ -46,10 +44,8 @@ class Detector(object):
     def getYellows(self, img, color = None):
         if color:
             binary = Color.detectColor(img,color,self.ksize,self.weight)
-            # binary = Color.detectColor(img,color)
         else:
             binary = Color.detectColor(img,Color.YELLOW,self.ksize,self.weight)
-            # binary = Color.detectColor(img,Color.YELLOW)
             
         if self.DEBUG:
             cv2.imshow("ylBin", binary)
@@ -64,13 +60,9 @@ class Detector(object):
         if color1 and color2:
             rdBin1 = Color.detectColor(img,color1,self.ksize,self.weight)
             rdBin2 = Color.detectColor(img,color2,self.ksize,self.weight)
-            # rdBin1 = Color.detectColor(img,color1)
-            # rdBin2 = Color.detectColor(img,color2)
         else:
             rdBin1 = Color.detectColor(img,Color.RED1,self.ksize,self.weight)
             rdBin2 = Color.detectColor(img,Color.RED2,self.ksize,self.weight)
-            # rdBin1 = Color.detectColor(img,Color.RED1)
-            # rdBin2 = Color.detectColor(img,Color.RED2)
 
             rdBin = cv2.bitwise_or(rdBin1, rdBin2)
 
