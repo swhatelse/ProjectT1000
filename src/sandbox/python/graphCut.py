@@ -61,9 +61,9 @@ class GraphCut(object):
             # cv2.grabCut(img2,mask,(0,0,1,1),imBg,imFg,1,cv2.GC_INIT_WITH_MASK)
             cv2.grabCut(img2,mask,(0,0,1,1),bgdmodel,fgdmodel,1,cv2.GC_INIT_WITH_MASK)
             
-            cv2.imshow("fg", imFg)
-            cv2.imshow("bg", imBg)
-            cv2.imshow("img2", img2)
+            # cv2.imshow("fg", imFg)
+            # cv2.imshow("bg", imBg)
+            # cv2.imshow("img2", img2)
             if cv2.waitKey(30) ==  ord('q'):
                 break
 

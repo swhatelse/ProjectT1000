@@ -18,13 +18,44 @@ class Detector(object):
         self.detector = cv2.SimpleBlobDetector(self.params)
         self.tracker = tr.Tracker()
         self.DEBUG = debug
+        self.ksize = 0
+        self.weight = 0
         
-    def detectColor(self, img, color):
-        hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
-        blur = cv2.medianBlur(hsv,5)
-        binary = cv2.inRange(blur, color.lowHSV, color.highHSV)
-        return binary
+    def getAll(self, img, color = None):
+        if color:
+            blBin = Color.detectColor(img,color,self.ksize,self.weight)
+        else:
+            blBin = Color.detectColor(img,Color.BLUE,self.ksize,self.weight)
+        if self.DEBUG:
+            cv2.imshow("blBin", blBin)
+        blKp = self.detector.detect(blBin)
+        return blKp
 
+    def getYellows(self, img, color = None):
+        if color:
+            ylBin = Color.detectColor(img,color,self.ksize,self.weight)
+        else:
+            ylBin = Color.detectColor(img,Color.YELLOW,self.ksize,self.weight)
+        if self.DEBUG:
+            cv2.imshow("ylBin", ylBin)
+        ylKp = self.detector.detect(ylBin)
+        return ylKp
+
+    def getReds(self, img, color1 = None, color2 = None):
+        if color1 and color2:
+            rdBin1 = Color.detectColor(img,color1,self.ksize,self.weight)
+            rdBin2 = Color.detectColor(img,color2,self.ksize,self.weight)
+        else:
+            rdBin1 = Color.detectColor(img,Color.RED1,self.ksize,self.weight)
+            rdBin2 = Color.detectColor(img,Color.RED2,self.ksize,self.weight)
+
+            rdBin = cv2.bitwise_or(rdBin1, rdBin2)
+        if self.DEBUG:
+            cv2.imshow("rdBin", rdBin)
+        blKp = self.detector.detect(rdBin)
+        return blKp
+
+    
     # Return sets of keypoint for plateau and yellow and red pions
     # it also returns the image in debug mode on which the algo as
     # worked on
@@ -42,21 +73,22 @@ class Detector(object):
         img, binary = self.tracker.detect(img,blue)
 
         if color:
-            blBin = self.detectColor(img,color);
+            blBin = self.detectColor(img,color)
         else:
-            blBin = self.detectColor(img,blue);
-        ylBin = self.detectColor(img,yellow);
-        rdBin1 = self.detectColor(img,red1);
-        rdBin2 = self.detectColor(img,red2);
+            blBin = self.detectColor(img,blue)
+        ylBin = self.detectColor(img,yellow)
+        rdBin1 = self.detectColor(img,red1)
+        rdBin2 = self.detectColor(img,red2)
 
-        rdBin = cv2.bitwise_or(rdBin1, rdBin2);
+        rdBin = cv2.bitwise_or(rdBin1, rdBin2)
 
         # for blue, we don't need to invert
-        blKp = self.detector.detect(blBin);
-        ylKp = self.detector.detect(~ylBin);
-        rdKp = self.detector.detect(~rdBin);
+        blKp = self.detector.detect(blBin)
+        ylKp = self.detector.detect(~ylBin)
+        rdKp = self.detector.detect(~rdBin)
 
         if self.DEBUG:
+            cv2.imshow("blBin", blBin)
             return blKp, ylKp, rdKp, img
         else:
             return blKp, ylKp, rdKp
