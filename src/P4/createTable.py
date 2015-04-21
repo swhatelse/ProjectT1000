@@ -3,7 +3,7 @@ import Plateau
 def createTable(reds, yellows, emptys):
 	reds.sort();
 	yellows.sort();
-	pions = reds+yellows;
+	pions = reds+yellows+emptys;
     pions.sort();
     
     plateau = Plateau.Plateau();
