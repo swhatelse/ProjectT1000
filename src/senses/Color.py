@@ -11,10 +11,13 @@ class Color(object):
         self.lowHSV = np.array([lowH, lowS, lowV], dtype=np.uint8)
         self.highHSV = np.array([highH, highS, highV], dtype=np.uint8)
 
-def detectColor(img, color, ksize, weight):
+def detectColor(img, color, ksize = None, weight = None):
     hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
     binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
-    blur = cv2.GaussianBlur(binary,(ksize,ksize), weight)
+    if ksize and weight:
+        blur = cv2.GaussianBlur(binary,(ksize,ksize), weight)
+    else:
+        blur = cv2.GaussianBlur(binary,(25,25), 25)
     return blur
 
 # Constantes

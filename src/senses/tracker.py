@@ -14,12 +14,6 @@ class Tracker(object):
         self.frame = None
         self.trackWin = None
         self.drag = False
-        self.lowH = 0
-        self.lowS = 177
-        self.lowV = 255
-        self.highH = 91
-        self.highS = 255
-        self.highV = 255
         self.hist = None
         self.tracking_state = True
         self.DEBUG = debug
@@ -31,6 +25,7 @@ class Tracker(object):
         binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
         return binary
 
+    # Use this only for debug
     def show_hist(self):
         bin_count = self.hist.shape[0]
         bin_w = 24
@@ -41,7 +36,10 @@ class Tracker(object):
             img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
             cv2.imshow('hist', img)
 
-
+    # Find ONE object in the image and return the reduce image
+    # containing this object
+    # return isolated : the target
+    # return mask : the binary image for debuging purpose 
     def detect(self, img, color):
         height, width, depth = img.shape
             
