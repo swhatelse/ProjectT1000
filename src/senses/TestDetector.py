@@ -90,10 +90,53 @@ class TestDetector(object):
             img2 = img
 
             color, detector.ksize, detector.weight = self.calibrate()
-            blKp = detector.getAll(img2,color)
-            # blKp = detector.getAll(img2)
+            # blKp = detector.getAll(img2,color)
+            blKp = detector.getAll(img2)
 
             img2 = cv2.drawKeypoints(img2, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            cv2.imshow("noise",img2)
+            cv2.imshow("detect",img2)
+
+            if cv2.waitKey(30) ==  ord('q'):
+                break
+
+    def testGetYellows(self):
+        tracker = tr.Tracker(True)
+        detector = bl.Detector(True)
+        frame = cv2.imread('../Images/P4_Lointain.jpg',1)
+        img, binary = tracker.detect(frame,Color.BLUE)
+
+        while True:
+            noise = img.copy()
+            cv2.randn(noise, 1,(256,256,256));
+            # img2 = img + noise
+            img2 = img
+
+            color, detector.ksize, detector.weight = self.calibrate()
+            kp = detector.getYellows(img2)
+
+            img2 = cv2.drawKeypoints(img2, kp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            cv2.imshow("noise",img2)
+            cv2.imshow("detect",img2)
+
+            if cv2.waitKey(30) ==  ord('q'):
+                break
+
+    def testGetReds(self):
+        tracker = tr.Tracker(True)
+        detector = bl.Detector(True)
+        frame = cv2.imread('../Images/P4_Lointain.jpg',1)
+        img, binary = tracker.detect(frame,Color.BLUE)
+
+        while True:
+            noise = img.copy()
+            cv2.randn(noise, 1,(256,256,256));
+            img2 = img + noise
+
+            color, detector.ksize, detector.weight = self.calibrate()
+            kp = detector.getReds(img2)
+
+            img2 = cv2.drawKeypoints(img2, kp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             cv2.imshow("noise",img2)
             cv2.imshow("detect",img2)
 
@@ -103,4 +146,6 @@ class TestDetector(object):
         
 if __name__ == '__main__':
     app = TestDetector()
-    app.testGetAll()
+    # app.testGetAll()
+    # app.testGetYellows()
+    app.testGetReds()

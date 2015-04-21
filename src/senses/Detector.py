@@ -10,6 +10,10 @@ import Color
 def nothing(x):
     pass
 
+# The purpose of this class is to find the positions of
+# pions and case of the P4. It preferable to send him
+# image with the focus on the P4. To do that, use the
+# class tracker
 class Detector(object):
 
     def __init__(self, debug = False):
@@ -20,27 +24,38 @@ class Detector(object):
         self.DEBUG = debug
         self.ksize = 0
         self.weight = 0
-        
+
+    # Params img: image of the target
+    # Params color: use for debuging
     def getAll(self, img, color = None):
         if color:
             blBin = Color.detectColor(img,color,self.ksize,self.weight)
         else:
             blBin = Color.detectColor(img,Color.BLUE,self.ksize,self.weight)
+            
         if self.DEBUG:
             cv2.imshow("blBin", blBin)
+            
         blKp = self.detector.detect(blBin)
         return blKp
 
+    # Params img: image of the target
+    # Params color: use for debuging
     def getYellows(self, img, color = None):
         if color:
-            ylBin = Color.detectColor(img,color,self.ksize,self.weight)
+            binary = Color.detectColor(img,color,self.ksize,self.weight)
         else:
-            ylBin = Color.detectColor(img,Color.YELLOW,self.ksize,self.weight)
+            binary = Color.detectColor(img,Color.YELLOW,self.ksize,self.weight)
+            
         if self.DEBUG:
-            cv2.imshow("ylBin", ylBin)
-        ylKp = self.detector.detect(ylBin)
-        return ylKp
+            cv2.imshow("ylBin", binary)
+            
+        kp = self.detector.detect(~binary)
+        return kp
 
+    # Params img: image of the target
+    # Params color1: use for debuging
+    # Params color2: use for debuging
     def getReds(self, img, color1 = None, color2 = None):
         if color1 and color2:
             rdBin1 = Color.detectColor(img,color1,self.ksize,self.weight)
@@ -50,12 +65,17 @@ class Detector(object):
             rdBin2 = Color.detectColor(img,Color.RED2,self.ksize,self.weight)
 
             rdBin = cv2.bitwise_or(rdBin1, rdBin2)
+
         if self.DEBUG:
             cv2.imshow("rdBin", rdBin)
-        blKp = self.detector.detect(rdBin)
+
+        blKp = self.detector.detect(~rdBin)
         return blKp
 
-    
+
+    ################    WARNING OBSELETE   ######################
+    # For reason of safety, do not use this function, you may hurt
+    # your self.
     # Return sets of keypoint for plateau and yellow and red pions
     # it also returns the image in debug mode on which the algo as
     # worked on
