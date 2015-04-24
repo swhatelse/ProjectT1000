@@ -1,12 +1,14 @@
 import Plateau
-
+def perr(message):
+    print message
+    
 def createTable(reds, yellows, emptys):
     reds.sort();
     yellows.sort();
     pions = reds+yellows+emptys;
     pions.sort();
     
-    plateau = Plateau.Plateau();
+    plateau = Plateau.Plateau(perr);
     
     if len(pions)+len(emptys) != plateau.NB_LIGNE*plateau.NB_COLONNE :
         raise "Not 42 cells";

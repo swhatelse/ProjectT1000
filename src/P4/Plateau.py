@@ -25,7 +25,6 @@ class Plateau:
         self.NB_COLONNE = 7
         self.plateau = [[self._J[0] for x in range(0, self.NB_COLONNE)] for x in range(0, self.NB_LIGNE)]
         self.erreur=erreur
-        self._premier=1
     def _joueur_exist(self,joueur):
         b = False
         for i in self._J:
@@ -118,22 +117,6 @@ class Plateau:
                 #~ print "je pense "+str(joueur)+"= "+str(j)+ " en "+str(i)
                 value=i
         return value
-    
-    def tour(self):
-        joueur=[0,0,0]
-        for l in range(0,self.NB_LIGNE):
-            for c in range(0,self.NB_COLONNE):
-                joueur[self.whois(self.plateau[l][c])]+=1
-        premier = self.whois(self._J[1])
-        second = self.whois(self._J[2])
-        if self._premier!=self.whois(self._J[1]) :
-            premier+=second
-            second=premier-second
-            premier-=second
-        at=premier
-        if(joueur[second]<joueur[premier]):
-            at=second
-        self._tour=at
         
     def winner(self):
         b= False
@@ -205,7 +188,7 @@ class Plateau:
     def end(self):
         return self.winner()!=self._J[0]
     
-    def coherence(self):
+    def coherencePhysique(self):
         result=True
         for colonne in range(0,self.NB_COLONNE):
             ligne=self.NB_LIGNE
@@ -218,6 +201,13 @@ class Plateau:
                     #~ self.affichePlateau()
                     result=False
         return result
+        
+    #~ def coherenceJoueurs(self):
+        #~ result=True
+        #~ joueur=[0,0,0]
+        #~ for colonne in range(0,self.NB_COLONNE):
+            #~ 
+        #~ return result
 
 def erreur(s):
     print s    
