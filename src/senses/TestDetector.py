@@ -39,9 +39,9 @@ class TestDetector(object):
         
         return color, ksize, weight
 
-    def detectColor(self, img, color):
+    def detectColor(self, img, color, ksize, weight):
         hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
-        hsv = cv2.medianBlur(hsv,5)
+        hsv = cv2.medianBlur(hsv,ksize)
         binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
         cv2.imshow('bin', binary)
         return binary
@@ -77,17 +77,17 @@ class TestDetector(object):
             # for b in blKp: 
             #     print(b.pt)
 
-    def testGetAll(self):
+    def testGetAll(self, frame):
         tracker = tr.Tracker(True)
         detector = bl.Detector(True)
-        frame = cv2.imread('../Images/P4_Lointain.jpg',1)
+        # frame = cv2.imread('../Images/P4_Lointain.jpg',1)
         img, binary = tracker.detect(frame,Color.BLUE)
 
         while True:
             noise = img.copy()
             cv2.randn(noise, 1,(256,256,256));
-            # img2 = img + noise
-            img2 = img
+            img2 = img + noise
+            # img2 = img
 
             color, detector.ksize, detector.weight = self.calibrate()
             # blKp = detector.getAll(img2,color)
@@ -100,10 +100,9 @@ class TestDetector(object):
             if cv2.waitKey(30) ==  ord('q'):
                 break
 
-    def testGetYellows(self):
+    def testGetYellows(self,frame):
         tracker = tr.Tracker(True)
         detector = bl.Detector(True)
-        frame = cv2.imread('../Images/P4_Lointain.jpg',1)
         img, binary = tracker.detect(frame,Color.BLUE)
 
         while True:
@@ -122,10 +121,9 @@ class TestDetector(object):
             if cv2.waitKey(30) ==  ord('q'):
                 break
 
-    def testGetReds(self):
+    def testGetReds(self,frame):
         tracker = tr.Tracker(True)
         detector = bl.Detector(True)
-        frame = cv2.imread('../Images/P4_Lointain.jpg',1)
         img, binary = tracker.detect(frame,Color.BLUE)
 
         while True:
@@ -142,10 +140,55 @@ class TestDetector(object):
 
             if cv2.waitKey(30) ==  ord('q'):
                 break
+    def testDetectColor(self,frame):
+        tracker = tr.Tracker(True)
+        img, binary = tracker.detect(frame,Color.BLUE)
 
-        
+        while True:
+            color, ksize, weight = self.calibrate()
+            noise = img.copy()
+            cv2.randn(noise, 1,(256,256,256));
+            img2 = img + noise
+
+            binary = self.detectColor(frame, Color.BLUE, ksize, weight)
+            
+            if cv2.waitKey(30) ==  ord('q'):
+                break
+
+    def testVideo(self): 
+        tracker = tr.Tracker(True)
+        detector = bl.Detector(True)
+        cam = cv2.VideoCapture(0)
+
+        while True:
+            ret, frame = cam.read()
+            img, binary = tracker.detect(frame,Color.BLUE)
+            noise = img.copy()
+            cv2.randn(noise, 1,(256,256,256));
+            img2 = img
+
+            color, detector.ksize, detector.weight = self.calibrate()
+            # blKp = detector.getAll(img2,color)
+            blKp = detector.getAll(img2)
+            ylKp = detector.getYellows(img2)
+            rdKp = detector.getReds(img2)
+
+            img2 = cv2.drawKeypoints(img2, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            img2 = cv2.drawKeypoints(img2, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            img2 = cv2.drawKeypoints(img2, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            cv2.imshow("noise",img2)
+            cv2.imshow("detect",img2)
+
+            if cv2.waitKey(30) ==  ord('q'):
+                break
+       
 if __name__ == '__main__':
     app = TestDetector()
-    # app.testGetAll()
+    frame0 = cv2.imread('../Images/P4_Lointain.jpg',1)
+    frame1 = cv2.imread('../Images/P4_Biais_Gauche.jpg',1)
+    frame2 = cv2.imread('../Images/P4_Biais_Droit.jpg',1)
+    # app.testGetAll(frame0)
+    # app.testDetectColor(frame1)
     # app.testGetYellows()
-    app.testGetReds()
+    # app.testGetReds()
+    app.testVideo()
