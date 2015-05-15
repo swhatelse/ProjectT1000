@@ -29,6 +29,22 @@ class Client(object):
 
         return self.sock.recv(1024)
 
+    def handle(self):
+        pass
+    
+    def run(self):
+        # Debut de la partie
+        # while True:
+        
+        # Prise de la photo
+        
+        # Envoi de la demande au serveur
+
+        # Indique que faire
+        
+        # Réaction au events
+        pass
+    
 def __exit__(self, type, value, traceback):
     print("exited properly")
     self.sock.close()

@@ -1,0 +1,2 @@
+Pour faire fonctionner les imports de package perso:
+export export PYTHONPATH=$PYTHONPATH:/my/other/path
