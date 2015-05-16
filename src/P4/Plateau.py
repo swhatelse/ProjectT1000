@@ -202,12 +202,20 @@ class Plateau:
                     result=False
         return result
         
-    #~ def coherenceJoueurs(self):
-        #~ result=True
-        #~ joueur=[0,0,0]
-        #~ for colonne in range(0,self.NB_COLONNE):
-            #~ 
-        #~ return result
+    def Tour(self):
+        tour=self._J[0]
+        joueur=[0,0,0]
+        for colonne in range(0,self.NB_COLONNE):
+            for ligne in range(0,self.NB_LIGNE):
+                joueur[self.whois(self.plateau[ligne][colonne])]+=1
+        if(joueur[1]-joueur[2]>1 or joueur[1]-joueur[2]<-1):
+            tour=self._J[0]
+        elif(joueur[1]>=joueur[2]):
+            tour=self.joueur[1];
+        else:
+            tour=self.joueur[2]
+        
+        return tour
 
 def erreur(s):
     print s    
