@@ -15,6 +15,7 @@ class Server(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
+        self.gameContinue = False
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.bind((self.IP, self.port))
@@ -53,7 +54,7 @@ class Server(object):
     def handleInterraction(self, game, cnx):
         data = cnx.recv(1024)
         if data == "stop":
-            sys.exit()
+            self.gameContinue = False
     
     def handleIm_test(self):
         try:
@@ -87,7 +88,8 @@ class Server(object):
             # waiting for a player
             cnx, addr = self.sock.accept()
             game = Game()
-            while not game.isEnd():
+            self.gameContinue = True
+            while not game.isEnd() and self.gameContinue:
                 msgType = cnx.recv(8)
                 self.handle(msgType, game, cnx)
                 game.display()
