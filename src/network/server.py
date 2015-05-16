@@ -26,15 +26,18 @@ class Server(object):
     # - envoi du type de message
     # - envoi de la taille
     # - envoi de la donnée
-    def handle(self,msgType):
+    def handle(self, msgType, game, cnx):
         if (msgType == MsgType.DATA):
-            self.handleImg()
+            self.handleImg(game, cnx)
         elif (msgType == MsgType.INTERACTION):
-            self.handleInterraction()
+            self.handleInterraction(game, cnx)
 
-    def handleImg(self):
+    def handleImg(self, game, cnx):
+        # Récupère la taille de l'image
         length = cnx.recv(8)
         length = int(length.decode())
+
+        # Récupère l'image
         received = 0
         with open("img.jpg", 'wb') as f:
             while received < length:
@@ -42,11 +45,15 @@ class Server(object):
                 data = cnx.recv(1024)
                 f.write(data)
                 received += len(data)
-
             f.close()
+            
+            nextMove = game.nextMove("img.jpg")
+            cnx.send(nextMove)
 
-    def handleInterraction(self):
-        pass
+    def handleInterraction(self, game, cnx):
+        data = cnx.recv(1024)
+        if data == "stop":
+            sys.exit()
     
     def handleIm_test(self):
         try:
@@ -82,8 +89,8 @@ class Server(object):
             game = Game()
             while not game.isEnd():
                 msgType = cnx.recv(8)
-                self.handle(msgType)
-            break
+                self.handle(msgType, game, cnx)
+                game.display()
 
     def shutdown(self):
         self.sock.close()
