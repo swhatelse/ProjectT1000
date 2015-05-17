@@ -93,9 +93,9 @@ class Client(object):
                 else :
                     self.humanPlays()
     
-def __exit__(self, type, value, traceback):
-    print("exited properly")
-    self.sock.close()
+    def __exit__(self, type, value, traceback):
+        print("exited properly")
+        self.sock.close()
 
 if __name__ == "__main__":
     client = Client()

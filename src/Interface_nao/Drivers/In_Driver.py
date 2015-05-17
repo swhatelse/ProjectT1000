@@ -12,7 +12,10 @@ class Interface_entree:
     # Take a screenshot of the game
     def Prendre_Photo(self) :
         os.system('import -window root ../../Images/img.jpg')
-            
+
+    def Attente_Bumper(self,text,Event):
+        key = raw_input(text + ' : ' )
+        
     def Attente_senseur(self, Texte):
         # #on attend la reponse du senseur sur le crane
 
@@ -52,4 +55,4 @@ class Interface_entree:
         
 if __name__ == "__main__":
     test = Interface_entree()
-    test.Prendre_Photo()
+    test.Attente_Bumper("Test", "iuguyf")

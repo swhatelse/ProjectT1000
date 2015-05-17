@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 def say(Text, Vitesse) :
     print('Nao says : ' + Text)
