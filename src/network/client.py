@@ -7,6 +7,10 @@ import os
 import random
 
 from Interface_nao import *
+from Network.test import NetUtilsDriver as NetUtils
+import In_Driver as Reception
+import Move_Driver as Action
+import Say_Driver as Nao_dit
 
 class Client(object):
     def __init__(self):
