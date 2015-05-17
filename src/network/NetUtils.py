@@ -23,10 +23,12 @@ def encode(msg, length):
 def send(cnx, msgType, length = 0, msg = None):
     cnx.send(encode(msgType,1))
         
-    if  not msg == None:
+    if not msg == None:
         # Encode size on 8 chars
         length = encode(length,8)
         cnx.send(length.encode())
+        if not msgType == MSG_IMG:
+            msg = str(msg)
         cnx.send(msg)
 
 def receive(cnx):

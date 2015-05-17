@@ -7,7 +7,7 @@ import sys
 import time
 import pygame
 
-from P4 import *
+from P4 import Game
 from network import NetUtils
 
 
@@ -111,10 +111,10 @@ class Server(object):
                 print('En attente de joueur')
                 cnx, addr = self.sock.accept()
                 msgType, nbAI = NetUtils.receive(cnx)
-                if nbAI == 2:
-                    game = Game(True)
+                if nbAI == '2':
+                    game = Game.Game(True)
                 else:
-                    game = Game()
+                    game = Game.Game(False)
                 
                     self.gameContinue = True
                     while not game.isEnd() and self.gameContinue:

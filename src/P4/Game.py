@@ -17,18 +17,18 @@ class Game(object):
     def __init__(self, doubleIA = False):
         try:
             self.p = Plateau.Plateau(erreur)
-            self.ia1=IA.IA(self.p)
-            self.player = 1
-            self.doubleIA = doubleIA
-            # UI
-            pygame.init ()
-            self.image = pygame.image.load ("Grille.png")
-            sizeim = self.image.get_size ()
-            size = (sizeim[0]*1, sizeim[1])
-            self.screen = pygame.display.set_mode (size)
-            self.pionjaune = pygame.image.load ("PionJaune.png")
-            self.pionrouge = pygame.image.load ("PionRouge.png")
-            self.font = pygame.font.Font ("freesansbold.ttf", 15)
+            # self.ia1=IA.IA(self.p)
+            # self.player = 1
+            # self.doubleIA = doubleIA
+            # # UI
+            # pygame.init ()
+            # self.image = pygame.image.load ("Grille.png")
+            # sizeim = self.image.get_size ()
+            # size = (sizeim[0]*1, sizeim[1])
+            # self.screen = pygame.display.set_mode (size)
+            # self.pionjaune = pygame.image.load ("PionJaune.png")
+            # self.pionrouge = pygame.image.load ("PionRouge.png")
+            # self.font = pygame.font.Font ("freesansbold.ttf", 15)
         except:
             sys.exit("Impossible d'initialiser le jeu")
 
