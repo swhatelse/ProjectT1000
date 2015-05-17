@@ -2,7 +2,6 @@ from naoqi import ALProxy
 """
 Cette classe permet a nao de signaler vocalement les infos
 
-
 """
 
 class Interface_sortie :
