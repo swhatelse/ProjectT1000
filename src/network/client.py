@@ -24,21 +24,32 @@ class Client(object):
 
     # Interroge le serveur sur le coup à jouer
     def request(self):
-        length = bytes(os.path.getsize(self.path))
-        # Sert à fixer la taille du message contenant la taille
-        # de l'image à envoyer. Comme ça de l'autre côté on sait
-        # la quantité d'octets à lire
-        for i in range(8-len(length)):
-            length = "0"+ length
-        self.sock.send(length.encode())
+        # length = bytes(os.path.getsize(self.path))
+        # # Sert à fixer la taille du message contenant la taille
+        # # de l'image à envoyer. Comme ça de l'autre côté on sait
+        # # la quantité d'octets à lire
+        # for i in range(8-len(length)):
+        #     length = "0"+ length
+        # self.sock.send(length.encode())
 
+        # fd = open(self.path, 'rb')
+        # img = fd.read()
+        # self.sock.send(img)
+        # fd.close()
+
+        # # récupération du coup à jouer
+        # return self.sock.recv(1024)
+
+        length = os.path.getsize(self.path)
         fd = open(self.path, 'rb')
         img = fd.read()
-        self.sock.send(img)
+        NetUtils.send(self.sock,2,length,img)
         fd.close()
 
         # récupération du coup à jouer
-        return self.sock.recv(1024)
+        msgType, move = NetUtils.receive(self.sock)
+        return move
+        
 
     def naoPlays(self):
         Nao_dit.Interface_sortie("Je commence a jouer","")
