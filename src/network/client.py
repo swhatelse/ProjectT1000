@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-
+# -*- coding: utf-8 -*-
 import cv2
 import socket
 import sys
@@ -7,10 +7,9 @@ import os
 import random
 
 from Interface_nao import *
-from Network.test import NetUtilsDriver as NetUtils
-import In_Driver as Reception
-import Move_Driver as Action
-import Say_Driver as Nao_dit
+from Interface_nao.Drivers import In_Driver as Reception
+from Interface_nao.Drivers import Move_Driver as Action
+from Interface_nao.Drivers import Say_Driver as Nao_dit
 
 class Client(object):
     def __init__(self):

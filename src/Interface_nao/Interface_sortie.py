@@ -27,19 +27,19 @@ class Interface_sortie :
             interface_nao.post.say(str(self.Phrase)) #on dis notre texte
 
             
-def say(self, Text, Vitesse) :
+def say(Text, Vitesse) :
     try:#on tente de ce connecter au proxy du dialogue
 		interface_nao = ALProxy("ALTextToSpeech", "localhost", 9559)
     except: #on renvoi l'erreur
-        self.logger.error("Module 'ALTEXtToSpeech' not found.")
+        logger.error("Module 'ALTEXtToSpeech' not found.")
 
     if(Text !="") :
         if(Vitesse != "") :
-            self.Phrase = "\RSPD=" + str(Vitesse) + "\ "
+            Phrase = "\RSPD=" + str(Vitesse) + "\ "
         else :
-            self.Phrase = "\RSPD= 100\ "
+            Phrase = "\RSPD= 100\ "
 		    
-        self.Phrase += Text
-        self.Phrase += "\RST\ "      
-        interface_nao.post.say(str(self.Phrase)) #on dis notre texte
+        Phrase += Text
+        Phrase += "\RST\ "      
+        interface_nao.post.say(str(Phrase)) #on dis notre texte
             
