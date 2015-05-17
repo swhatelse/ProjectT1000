@@ -86,8 +86,8 @@ class TestDetector(object):
         while True:
             noise = img.copy()
             cv2.randn(noise, 1,(256,256,256));
-            img2 = img + noise
-            # img2 = img
+            # img2 = img + noise
+            img2 = img
 
             color, detector.ksize, detector.weight = self.calibrate()
             # blKp = detector.getAll(img2,color)
@@ -129,7 +129,8 @@ class TestDetector(object):
         while True:
             noise = img.copy()
             cv2.randn(noise, 1,(256,256,256));
-            img2 = img + noise
+            # img2 = img + noise
+            img2 = img
 
             color, detector.ksize, detector.weight = self.calibrate()
             kp = detector.getReds(img2)
@@ -181,14 +182,29 @@ class TestDetector(object):
 
             if cv2.waitKey(30) ==  ord('q'):
                 break
-       
+
+    def testTracker(self):
+        tracker = tr.Tracker(True)
+        cam = cv2.VideoCapture(0)
+        
+        while True:
+            ret, frame = cam.read()
+            color, ksize, weight = self.calibrate()
+            img, binary = tracker.detect(frame,color)
+
+            cv2.imshow("bin", binary)
+            if cv2.waitKey(30) ==  ord('q'):
+                break
+        pass
+    
 if __name__ == '__main__':
     app = TestDetector()
     frame0 = cv2.imread('../Images/P4_Lointain.jpg',1)
     frame1 = cv2.imread('../Images/P4_Biais_Gauche.jpg',1)
     frame2 = cv2.imread('../Images/P4_Biais_Droit.jpg',1)
-    app.testGetAll(frame0)
+    # app.testGetAll(frame0)
     # app.testDetectColor(frame1)
-    # app.testGetYellows()
-    # app.testGetReds()
+    # app.testGetYellows(frame0)
+    # app.testGetReds(frame0)
+    app.testTracker()
     # app.testVideo()

@@ -48,6 +48,7 @@ class Tracker(object):
             
         roi = cv2.cvtColor(roi,cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(roi,color.lowHSV,color.highHSV)
+        # mask = Color.detectColor(img,color)
         hist = cv2.calcHist([roi], [0], mask, [16], [0,180])
         cv2.normalize(hist, hist, 0, 255, cv2.NORM_MINMAX)
         self.hist = hist.reshape(-1)
@@ -60,6 +61,7 @@ class Tracker(object):
             cv2.rectangle(img, (x,y),(x+w, y+h),(0,255,0),2)
         isolated = img[y:y+h, x:x+w]
         if self.DEBUG:
+            cv2.imshow('rect', img)
             self.show_hist()
 
         return isolated, mask

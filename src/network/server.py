@@ -7,7 +7,7 @@ import time
 import pygame
 from P4 import * 
 
-class MsgType(Enum):
+class MsgType:
     DATA = 1
     INTERACTION = 2
 
@@ -23,10 +23,6 @@ class Server(object):
         except:
             sys.exit("Impossible d'initialiser le server")
 
-    # Protocole de communication fonctionnant en 3 temps:
-    # - envoi du type de message
-    # - envoi de la taille
-    # - envoi de la donnée
     def handle(self, msgType, game, cnx):
         if (msgType == MsgType.DATA):
             self.handleImg(game, cnx)
@@ -34,11 +30,9 @@ class Server(object):
             self.handleInterraction(game, cnx)
 
     def handleImg(self, game, cnx):
-        # Récupère la taille de l'image
         length = cnx.recv(8)
         length = int(length.decode())
 
-        # Récupère l'image
         received = 0
         with open("img.jpg", 'wb') as f:
             while received < length:
@@ -97,10 +91,10 @@ class Server(object):
     def shutdown(self):
         self.sock.close()
         
-def __exit__(self, type, value, traceback):
-    print("exited properly")
-    self.sock.close()
+    def __exit__(self, type, value, traceback):
+        print("exited properly")
+        self.sock.close()
 
 if __name__ == "__main__":
     serveur = Server()
-    serveur.handleIm_test()
+    # serveur.handleIm_test()
