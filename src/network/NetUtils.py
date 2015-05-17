@@ -10,6 +10,7 @@ MSG_DATA = 1
 MSG_IMG = 2
 
 def encode(msg, length):
+    msg = bytes(msg)
     for i in range(length-len(msg)):
         msg = "0"+ msg
     return msg

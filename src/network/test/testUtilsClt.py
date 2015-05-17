@@ -22,7 +22,7 @@ class TestUtilsClt(object):
         length = bytes(os.path.getsize(self.path))
         fd = open(self.path, 'rb')
         img = fd.read()
-        NetUtils.send(self.sock, MSG_IMG ,length,img)
+        NetUtils.send(self.sock, 2,length,img)
         print('Sent')
         fd.close()
 
