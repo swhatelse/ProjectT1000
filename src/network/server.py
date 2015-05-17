@@ -11,10 +11,6 @@ from P4 import *
 from network import NetUtils
 
 
-class MsgType:
-    DATA = 1
-    INTERACTION = 2
-
 class Server(object):
     def __init__(self):
         self.IP = "127.0.0.1"
@@ -35,10 +31,16 @@ class Server(object):
 
     def handle(self, game, cnx):
         msgType, data = NetUtils.receive(cnx)
-        if (msgType == MSG_IMG):
+        # image
+        if msgType == 1:
+            pass
+        elif msgType == 2:
             nextMove = game.nextMove("../Images/img.jpg")
             NetUtils.send(cnx,MSG_DATA,len(nextMove),nextMove)
-        elif (msgType == MSG_HALT):
+        elif msgType == 3:
+            pass
+        # halt
+        elif msgType == -1:
             NetUtils.send(cnx,MSG_HALT)
 
 
@@ -102,19 +104,30 @@ class Server(object):
     #             game.display()
                 
     def run(self):
-        while True:
-            # waiting for a player
-            cnx, addr = self.sock.accept()
-            msgType, nbAI = cnx.receive()
-            if nbAI == 2:
-                game = Game(True)
-            else:
-                game = Game()
+        try:
+            print('Démarrage du serveur')
+            while True:
+                # waiting for a player
+                print('En attente de joueur')
+                cnx, addr = self.sock.accept()
+                msgType, nbAI = NetUtils.receive(cnx)
+                if nbAI == 2:
+                    game = Game(True)
+                else:
+                    game = Game()
                 
-            self.gameContinue = True
-            while not game.isEnd() and self.gameContinue:
-                self.handle(game, cnx)
-                game.display()
+                    self.gameContinue = True
+                    while not game.isEnd() and self.gameContinue:
+                        self.handle(game, cnx)
+                        game.display()
+                        
+        except KeyboardInterrupt:
+            print("connection closed")
+            self.sock.shutdown()
+            self.sock.close()
+            cnx.shutdown()
+            cnx.close()
+
 
     def shutdown(self):
         self.sock.close()
@@ -124,6 +137,6 @@ class Server(object):
         self.sock.close()
 
 if __name__ == "__main__":
-    serveur = Server()
+    server = Server()
     server.run()
     # serveur.handleIm_test()

@@ -8,6 +8,7 @@ import os
 MSG_HALT = -1
 MSG_DATA = 1
 MSG_IMG = 2
+MSG_START = 3
 
 def encode(msg, length):
     msg = bytes(msg)
@@ -34,6 +35,10 @@ def receive(cnx):
         data = None
     elif msgType == MSG_DATA:
         length = cnx.recv(8)
+        length = int(length.decode())
+        data = cnx.recv(length)
+    elif msgType == MSG_START:
+        length = cnx.recv(1)
         length = int(length.decode())
         data = cnx.recv(length)
     else:

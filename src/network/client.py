@@ -10,6 +10,7 @@ from Interface_nao import *
 from Interface_nao.Drivers import In_Driver as Reception
 from Interface_nao.Drivers import Move_Driver as Action
 from Interface_nao.Drivers import Say_Driver as Nao_dit
+from network import NetUtils
 
 class Client(object):
     def __init__(self):
@@ -19,7 +20,7 @@ class Client(object):
         self.inGame = False
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.entry = Interface_entree()
+            self.entry = Reception.Interface_entree()
         except:
             sys.exit("Impossible d'initialiser le client")
 
@@ -67,7 +68,7 @@ class Client(object):
         ready = 0
         #on attend que l'on ai presse le pied gauche
         while(ready == 0):
-            ready = Reponse_nao.Attente_Bumper("", "LeftBumperPressed")
+            ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
             time.sleep(1)
             
             Position_nao.Faire(Positions.Lacher_Jeton,5)
@@ -77,18 +78,19 @@ class Client(object):
         Nao_dit.Interface_sortie("A vous de commencer","")
         human_done = False
         while not human_done:
-            human_done = Reponse_nao.Attente_Bumper("", "LeftBumperPressed")
+            human_done = self.entry.Attente_Bumper("", "LeftBumperPressed")
             time.sleep(1)
     
     def run(self, doubleIA = False):
         # Debut de la partie
         while True:
-            inGame = Reponse_nao.Attente_Bumper("", "LeftBumperPressed")
+            inGame = self.entry.Attente_Bumper("", "LeftBumperPressed")
             self.sock.connect((self.IP, self.port))
+            
             if doubleIA:
-                NetUtils.send(self.sock, MSG_START, 1, 2)
+                NetUtils.send(self.sock, 3, 1, 2)
             else:
-                NetUtils.send(self.sock, MSG_START, 1, 1)
+                NetUtils.send(self.sock, 3, 1, 1)
                 
             Joueur_courant = random.randint(1,2)
             while inGame:
