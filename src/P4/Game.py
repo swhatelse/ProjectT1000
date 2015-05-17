@@ -14,11 +14,12 @@ def erreur(s):
 
 # Classe d'encapsulation du jeu. 
 class Game(object):
-    def __init__(self):
+    def __init__(self, doubleIA = False):
         try:
             self.p = Plateau.Plateau(erreur)
-            self.ia=IA.IA(self.p)
-            
+            self.ia1=IA.IA(self.p)
+            self.player = 1
+            self.doubleIA = doubleIA
             # UI
             pygame.init ()
             self.image = pygame.image.load ("Grille.png")
@@ -44,13 +45,26 @@ class Game(object):
                     screen.blit(pionjaune,(16+97*j,13+97.5*i))
                     pygame.display.flip()
             
+    # def nextMove(self,path):
+    #     img = cv2.imread(path)
+    #     plateau = getPlateau(img)        
+    #     move = self.ia1.choix_colonne(1,6),Plateau.J[1]
+    #     plateau.addColonne(move)
+    #     return move
+
     def nextMove(self,path):
         img = cv2.imread(path)
-        plateau = getPlateau(img)        
-        move = self.ia.choix_colonne(1,6),Plateau.J[1]
+        plateau = getPlateau(img)
+
+        if doubleIA:
+            move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
+            self.player = self.player % 2 + 1
+        else:
+            move = self.ia1.choix_colonne(1,6),Plateau.J[1]
         plateau.addColonne(move)
         return move
 
+    
     def isEnd(self):
         return self.p.end()
 

@@ -6,7 +6,10 @@ import socket
 import sys
 import time
 import pygame
-from P4 import * 
+
+from P4 import *
+from network import NetUtils
+
 
 class MsgType:
     DATA = 1
@@ -24,11 +27,20 @@ class Server(object):
         except:
             sys.exit("Impossible d'initialiser le server")
 
-    def handle(self, msgType, game, cnx):
-        if (msgType == MsgType.DATA):
-            self.handleImg(game, cnx)
-        elif (msgType == MsgType.INTERACTION):
-            self.handleInterraction(game, cnx)
+    # def handle(self, msgType, game, cnx):
+    #     if (msgType == MsgType.DATA):
+    #         self.handleImg(game, cnx)
+    #     elif (msgType == MsgType.INTERACTION):
+    #         self.handleInterraction(game, cnx)
+
+    def handle(self, game, cnx):
+        msgType, data = NetUtils.receive(cnx)
+        if (msgType == MSG_IMG):
+            nextMove = game.nextMove("../Images/img.jpg")
+            NetUtils.send(cnx,MSG_DATA,len(nextMove),nextMove)
+        elif (msgType == MSG_HALT):
+            NetUtils.send(cnx,MSG_HALT)
+
 
     def handleImg(self, game, cnx):
         length = cnx.recv(8)
@@ -78,15 +90,30 @@ class Server(object):
             self.sock.close()
             cnx.close()
 
+    # def run(self):
+    #     while True:
+    #         # waiting for a player
+    #         cnx, addr = self.sock.accept()
+    #         game = Game()
+    #         self.gameContinue = True
+    #         while not game.isEnd() and self.gameContinue:
+    #             msgType = cnx.recv(8)
+    #             self.handle(msgType, game, cnx)
+    #             game.display()
+                
     def run(self):
         while True:
             # waiting for a player
             cnx, addr = self.sock.accept()
-            game = Game()
+            msgType, nbAI = cnx.receive()
+            if nbAI == 2:
+                game = Game(True)
+            else:
+                game = Game()
+                
             self.gameContinue = True
             while not game.isEnd() and self.gameContinue:
-                msgType = cnx.recv(8)
-                self.handle(msgType, game, cnx)
+                self.handle(game, cnx)
                 game.display()
 
     def shutdown(self):
@@ -98,4 +125,5 @@ class Server(object):
 
 if __name__ == "__main__":
     serveur = Server()
+    server.run()
     # serveur.handleIm_test()

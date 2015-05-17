@@ -40,7 +40,7 @@ def receive(cnx):
         length = cnx.recv(8)
         length = int(length.decode())
         received = 0
-        with open("img.jpg", 'wb') as f:
+        with open("../Images/img.jpg", 'wb') as f:
             while received < length:
                 print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)

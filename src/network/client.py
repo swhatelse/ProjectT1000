@@ -19,8 +19,6 @@ class Client(object):
         self.inGame = False
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect((self.IP, self.port))
-
             self.entry = Interface_entree()
         except:
             sys.exit("Impossible d'initialiser le client")
@@ -82,16 +80,28 @@ class Client(object):
             human_done = Reponse_nao.Attente_Bumper("", "LeftBumperPressed")
             time.sleep(1)
     
-    def run(self):
+    def run(self, doubleIA = False):
         # Debut de la partie
         while True:
             inGame = Reponse_nao.Attente_Bumper("", "LeftBumperPressed")
+            self.sock.connect((self.IP, self.port))
+            if doubleIA:
+                NetUtils.send(self.sock, MSG_START, 1, 2)
+            else:
+                NetUtils.send(self.sock, MSG_START, 1, 1)
+                
             Joueur_courant = random.randint(1,2)
             while inGame:
                 if(Joueur_courant == 1):
                     self.naoPlays()
                 else :
-                    self.humanPlays()
+                    if not doubleIA:
+                        self.humanPlays()
+                    else:
+                        self.naoPlays()
+                Joueur_courant = Joueur_courant % 2 + 1
+
+            self.sock.shutdown()
     
     def __exit__(self, type, value, traceback):
         print("exited properly")
@@ -99,4 +109,4 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    
+    client.run()
