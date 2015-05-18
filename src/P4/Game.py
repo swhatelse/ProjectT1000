@@ -74,13 +74,13 @@ class Game(object):
         self.p = Plateau.createTable(rdKp, ylKp, blKp)
 
         if self.doubleIA:
-            # move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
-            move = self.ia1.choix_colonne(1,6)
+            move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
+            # move = self.ia1.choix_colonne(1,6)
             self.player = self.player % 2 + 1
         else:
-            # move = self.ia1.choix_colonne(1,6),Plateau.J[1]
-            move = self.ia1.choix_colonne(1,6)
-        # self.p.addColonne(move)
+            move = self.ia1.choix_colonne(1,6),Plateau.J[1]
+            # move = self.ia1.choix_colonne(1,6)
+        self.p.addColonne(move[0],move[1])
         return move
 
     

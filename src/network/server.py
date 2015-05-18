@@ -37,7 +37,7 @@ class Server(object):
             nextMove = game.nextMove("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg")
             print("Coup : " + str(nextMove))
             # NetUtils.send(cnx,NetUtils.MSG_DATA,len(nextMove),nextMove)
-            NetUtils.send(cnx,NetUtils.MSG_DATA,1,nextMove)
+            NetUtils.send(cnx,NetUtils.MSG_DATA,1,nextMove[0])
         elif msgType == NetUtils.MSG_START:
             pass
         # halt
