@@ -21,6 +21,20 @@ class TestUtilsSrv(object):
         msgType, data = NetUtils.receive(cnx)
         print('received')
 
+    def testRecv2(self):
+        cnx, addr = self.sock.accept()
+        msgType, data = NetUtils.receive(cnx)
+        # data = int(data)
+        print(msgType)
+        print(data)
+
+    def stop(self):
+        self.sock.shutdown()
+        self.sock.close()
+        
 if __name__ == "__main__":
-    test = TestUtilsSrv()
-    test.testRecv()
+    try:
+        test = TestUtilsSrv()
+        test.testRecv2()
+    except KeyboardInterrupt:
+        test.stop()

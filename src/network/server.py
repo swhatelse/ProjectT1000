@@ -111,6 +111,7 @@ class Server(object):
                 print('En attente de joueur')
                 cnx, addr = self.sock.accept()
                 msgType, nbAI = NetUtils.receive(cnx)
+                nbAI = int(nbAI.decode())
                 if nbAI == '2':
                     game = Game.Game(True)
                 else:

@@ -8,6 +8,8 @@ import time
 import senses
 import IA
 import Plateau
+from senses import tracker as Tr
+from senses import Detector as Dr
 
 def erreur(s):
     print s
@@ -29,6 +31,10 @@ class Game(object):
             # self.pionjaune = pygame.image.load ("PionJaune.png")
             # self.pionrouge = pygame.image.load ("PionRouge.png")
             # self.font = pygame.font.Font ("freesansbold.ttf", 15)
+
+            self.tracker = Tr.Tracker()
+            self.detector = Dr.Detector()
+            
         except:
             sys.exit("Impossible d'initialiser le jeu")
 
@@ -53,8 +59,16 @@ class Game(object):
     #     return move
 
     def nextMove(self,path):
-        img = cv2.imread(path)
-        plateau = getPlateau(img)
+        frame = cv2.imread(path)
+        tracker = tr.Tracker(True)
+        detector = bl.Detector(True)
+        img, binary = tracker.detect(frame,Color.BLUE)
+
+        blKp = detector.getAll(img2)
+        ylKp = detector.getYellows(img2)
+        rdKp = detector.getReds(img2)
+
+        Plateau.createTable(rdKp, ylKp, blKp)
 
         if doubleIA:
             move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]

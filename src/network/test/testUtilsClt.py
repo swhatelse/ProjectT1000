@@ -25,7 +25,17 @@ class TestUtilsClt(object):
         NetUtils.send(self.sock, 2,length,img)
         print('Sent')
         fd.close()
+        
+    def testSend2(self):
+        NetUtils.send(self.sock, 3, 1, 2)
 
+    def stop(self):
+        self.sock.shutdown()
+        self.sock.close()
+        
 if __name__ == "__main__":
-    test = TestUtilsClt()
-    test.testSend()
+    try:
+        test = TestUtilsClt()
+        test.testSend2()
+    except KeyboardInterrupt:
+        test.stop()

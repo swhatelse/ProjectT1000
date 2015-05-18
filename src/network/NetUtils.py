@@ -27,12 +27,14 @@ def send(cnx, msgType, length = 0, msg = None):
         # Encode size on 8 chars
         length = encode(length,8)
         cnx.send(length.encode())
+
         if not msgType == MSG_IMG:
-            msg = str(msg)
-        cnx.send(msg)
+            cnx.send(encode(msg,1))
+        else:
+            cnx.send(msg)
 
 def receive(cnx):
-    msgType = cnx.recv(1)
+    msgType = int(cnx.recv(1).decode())
     if msgType == MSG_HALT:
         data = None
     elif msgType == MSG_DATA:
@@ -40,14 +42,14 @@ def receive(cnx):
         length = int(length.decode())
         data = cnx.recv(length)
     elif msgType == MSG_START:
-        length = cnx.recv(1)
+        length = cnx.recv(8)
         length = int(length.decode())
         data = cnx.recv(length)
     else:
         length = cnx.recv(8)
         length = int(length.decode())
         received = 0
-        with open("../Images/img.jpg", 'wb') as f:
+        with open("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg", 'wb') as f:
             while received < length:
                 print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)
