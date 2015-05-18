@@ -2,6 +2,11 @@
 import socket
 import cv2
 import numpy
+<<<<<<< HEAD
+=======
+from random import *
+import ResValue 
+>>>>>>> mehdi
 
 def recvall(sock, count):
     buf = b''
@@ -25,6 +30,7 @@ TCP_PORT_client = 5002
 
 sock = socket.socket()
 sock.connect((TCP_IP_client, TCP_PORT_client))
+<<<<<<< HEAD
 
 while(True):
     length = recvall(conn,16)
@@ -47,11 +53,32 @@ while(True):
     #~ data = numpy.array(imgencode)
     #~ stringData = data.tostring()
     stringData=str(1)
+=======
+colonne=0;
+while(True):
+#~ while(colonne!=ResValue.V.Fin):
+    length = recvall(conn,16)
+    stringData = recvall(conn, int(length))
+    data = numpy.fromstring(stringData, dtype='uint8')
+   
+     
+    
+    #~ --
+    colonne=int(random()*20 -11)
+    stringData=str(colonne)
+>>>>>>> mehdi
     
     sock.send( str(len(stringData)).ljust(16));
     print stringData
     sock.send( stringData );
+<<<<<<< HEAD
     cv2.imshow('CLIENT',decimg)
+=======
+    
+    decimg=cv2.imdecode(data,1) 
+    cv2.imshow('SERVEUR',decimg)
+    cv2.waitKey(1)
+>>>>>>> mehdi
 cv2.destroyAllWindows() 
 sock.close()
 s.close()
