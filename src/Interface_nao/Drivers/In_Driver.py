@@ -11,7 +11,7 @@ class Interface_entree:
         pass
     # Take a screenshot of the game
     def Prendre_Photo(self) :
-        os.system('import -window root ../../Images/img.jpg')
+        os.system('import -window root /home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg')
 
     def Attente_Bumper(self,text,Event):
         key = raw_input(text + ' : ' )

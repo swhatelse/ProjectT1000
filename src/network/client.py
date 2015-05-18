@@ -17,7 +17,7 @@ class Client(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
-        self.path = '/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/P4_Lointain.jpg'
+        self.path = '/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg'
         self.inGame = False
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -59,6 +59,8 @@ class Client(object):
 
     def naoPlays(self):
         Nao_dit.Interface_sortie("Je commence a jouer","")
+        # DEBUG
+        time.sleep(1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
@@ -66,7 +68,7 @@ class Client(object):
         action = self.request()
         
         self.Position_nao.Faire(Action.Think_End,5)
-        Nao_dit.Interface_sortie("Coup a jouer" + str((action + 1)),"")
+        # Nao_dit.Interface_sortie("Coup a jouer" + str((action + 1)),"")
         self.Position_nao.Faire(Action.Prise_Jeton,10)
         
         ready = 0
@@ -99,7 +101,6 @@ class Client(object):
             Joueur_courant = random.randint(1,2)
             while self.inGame:
                 print('Début de la partie')
-                sys.stdout.flush()
                 if(Joueur_courant == 1):
                     self.naoPlays()
                 else :

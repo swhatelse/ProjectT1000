@@ -5,6 +5,9 @@ import sys
 import cv2
 import time
 
+import cv2
+import numpy as np
+
 import senses
 import IA
 import Plateau
@@ -42,36 +45,42 @@ class Game(object):
             for j in range(len(matrice[i])):
                 if matrice[i][j]==Plateau.J[1]:
                     self.screen.blit(self.pionrouge,(16+97*j,13+97.5*i))
-                    pygame.display.flip()
+                    # pygame.display.flip()
                 if matrice[i][j]==Plateau.J[2]:
                     self.screen.blit(self.pionjaune,(16+97*j,13+97.5*i))
-                    pygame.display.flip()
+                    # pygame.display.flip()
+        pygame.display.flip()
             
-    # def nextMove(self,path):
-    #     img = cv2.imread(path)
-    #     plateau = getPlateau(img)        
-    #     move = self.ia1.choix_colonne(1,6),Plateau.J[1]
-    #     plateau.addColonne(move)
-    #     return move
-
     def nextMove(self,path):
         frame = cv2.imread(path)
-        tracker = Tr.Tracker(True)
-        detector = Dr.Detector(True)
+        tracker = Tr.Tracker()
+        detector = Dr.Detector()
         img, binary = tracker.detect(frame,Color.BLUE)
 
         blKp = detector.getAll(img)
         ylKp = detector.getYellows(img)
         rdKp = detector.getReds(img)
 
+        # img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        # img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        # img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+        # # DEBUG
+        # cv2.imshow("img",img)
+        # while True:
+        #     if cv2.waitKey(30) ==  ord('q'):
+        #         break
+        
         self.p = Plateau.createTable(rdKp, ylKp, blKp)
 
-        if doubleIA:
-            move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
+        if self.doubleIA:
+            # move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
+            move = self.ia1.choix_colonne(1,6)
             self.player = self.player % 2 + 1
         else:
-            move = self.ia1.choix_colonne(1,6),Plateau.J[1]
-        self.p.addColonne(move)
+            # move = self.ia1.choix_colonne(1,6),Plateau.J[1]
+            move = self.ia1.choix_colonne(1,6)
+        # self.p.addColonne(move)
         return move
 
     

@@ -9,7 +9,7 @@ import pygame
 
 from P4 import Game
 from network import NetUtils
-
+from P4 import Plateau
 
 class Server(object):
     def __init__(self):
@@ -34,8 +34,10 @@ class Server(object):
         if msgType == NetUtils.MSG_DATA:
             pass
         elif msgType == NetUtils.MSG_IMG:
-            nextMove = game.nextMove("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/P4_Lointain.jpg")
-            NetUtils.send(cnx,MSG_DATA,len(nextMove),nextMove)
+            nextMove = game.nextMove("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg")
+            print("Coup : " + str(nextMove))
+            # NetUtils.send(cnx,NetUtils.MSG_DATA,len(nextMove),nextMove)
+            NetUtils.send(cnx,NetUtils.MSG_DATA,1,nextMove)
         elif msgType == NetUtils.MSG_START:
             pass
         # halt
@@ -118,11 +120,11 @@ class Server(object):
                 else:
                     game = Game.Game(False)
                     print("Man vs machine")
-                    
+
                 self.gameContinue = True
                 while not game.isEnd() and self.gameContinue:
                     game.display()
-                    # self.handle(game, cnx)
+                    self.handle(game, cnx)
 
                         
         except KeyboardInterrupt:
