@@ -38,11 +38,11 @@ class Plateau:
     def _set_case_plateau(self, colonne, ligne, joueur) :
         if not self._joueur_exist(joueur):
             self.erreur("erreur, mauvaise valeur pour le joueur: "+str(joueur))
-            exit
+            return None
         else :
             if self._en_dehors(ligne,colonne):
                 self.erreur("en dehors du tableau!")
-                exit
+                return None
         self.plateau[ligne][colonne] = joueur;
     
     def _en_dehors(self,ligne,colonne):
@@ -57,16 +57,16 @@ class Plateau:
        
         if not self._joueur_exist(joueur):
             self.erreur("erreur, mauvaise valeur pour le joueur :"+ str(joueur))
-            return
+            return None
         if self._en_dehors(0,colonne):
             self.erreur("en dehors du tableau!")
-            exit
+            return None
         i=self.NB_LIGNE-1
         while(i>=0 and self.plateau[i][colonne]!=self._J[0]):
             i-=1
         if self._en_dehors(i,colonne) :
             self.erreur("colonne pleine")
-            return
+            return None
         self.plateau[i][colonne]=joueur
     
     def removeColonne(self,colonne):
@@ -81,7 +81,7 @@ class Plateau:
     def get_case_plateau(self, colonne, ligne) :
         if self._en_dehors(ligne,colonne):
             self.erreur("en dehors du tableau")
-            exit
+            return None
         return self.plateau[colonne][ligne]
 
     def init_plateau(self) :
@@ -210,7 +210,8 @@ class Plateau:
         #~ return result
 
 def erreur(s):
-    print s    
+    print s  
+    exit  
     
 if __name__ == '__main__':
     plateau=Plateau(erreur)
