@@ -15,6 +15,7 @@ class Interface_entree:
 
     def Attente_Bumper(self,text,Event):
         key = raw_input(text + ' : ' )
+        return True
         
     def Attente_senseur(self, Texte):
         # #on attend la reponse du senseur sur le crane

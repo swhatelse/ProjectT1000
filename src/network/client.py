@@ -5,6 +5,7 @@ import socket
 import sys
 import os
 import random
+import time
 
 from Interface_nao import *
 from Interface_nao.Drivers import In_Driver as Reception
@@ -16,11 +17,12 @@ class Client(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
-        self.path = '../../Images/P4_Lointain.jpg'
+        self.path = '/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/P4_Lointain.jpg'
         self.inGame = False
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.entry = Reception.Interface_entree()
+            self.Position_nao = Action.Interface_mouvement()
         except:
             sys.exit("Impossible d'initialiser le client")
 
@@ -43,27 +45,29 @@ class Client(object):
         # return self.sock.recv(1024)
 
         length = os.path.getsize(self.path)
+        print(length)
         fd = open(self.path, 'rb')
         img = fd.read()
-        NetUtils.send(self.sock,2,length,img)
+        NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
         fd.close()
 
         # récupération du coup à jouer
         msgType, move = NetUtils.receive(self.sock)
+        print('img sent')
         return move
         
 
     def naoPlays(self):
         Nao_dit.Interface_sortie("Je commence a jouer","")
         self.entry.Prendre_Photo()
-        Position_nao.Faire(Positions.Think,5)
+        self.Position_nao.Faire(Action.Think,5)
         
         # Envoi de la demande au serveur
         action = self.request()
         
-        Position_nao.Faire(Positions.Think_End,5)
+        self.Position_nao.Faire(Action.Think_End,5)
         Nao_dit.Interface_sortie("Coup a jouer" + str((action + 1)),"")
-        Position_nao.Faire(Positions.Prise_Jeton,10)
+        self.Position_nao.Faire(Action.Prise_Jeton,10)
         
         ready = 0
         #on attend que l'on ai presse le pied gauche
@@ -71,7 +75,7 @@ class Client(object):
             ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
             time.sleep(1)
             
-            Position_nao.Faire(Positions.Lacher_Jeton,5)
+            self.Position_nao.Faire(Action.Lacher_Jeton,5)
             Nao_dit.Interface_sortie("J'ai fini de jouer", "")
 
     def humanPlays(self):
@@ -84,16 +88,18 @@ class Client(object):
     def run(self, doubleIA = False):
         # Debut de la partie
         while True:
-            inGame = self.entry.Attente_Bumper("", "LeftBumperPressed")
+            self.inGame = self.entry.Attente_Bumper("", "LeftBumperPressed")
             self.sock.connect((self.IP, self.port))
             
             if doubleIA:
                 NetUtils.send(self.sock, 3, 1, 2)
             else:
                 NetUtils.send(self.sock, 3, 1, 1)
-                
+
             Joueur_courant = random.randint(1,2)
-            while inGame:
+            while self.inGame:
+                print('Début de la partie')
+                sys.stdout.flush()
                 if(Joueur_courant == 1):
                     self.naoPlays()
                 else :
@@ -103,12 +109,10 @@ class Client(object):
                         self.naoPlays()
                 Joueur_courant = Joueur_courant % 2 + 1
 
-            self.sock.shutdown()
-    
     def __exit__(self, type, value, traceback):
         print("exited properly")
         self.sock.close()
 
 if __name__ == "__main__":
     client = Client()
-    client.run()
+    client.run(True)

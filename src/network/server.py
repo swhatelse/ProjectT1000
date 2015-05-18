@@ -31,13 +31,12 @@ class Server(object):
 
     def handle(self, game, cnx):
         msgType, data = NetUtils.receive(cnx)
-        # image
-        if msgType == 1:
+        if msgType == NetUtils.MSG_DATA:
             pass
-        elif msgType == 2:
-            nextMove = game.nextMove("../Images/img.jpg")
+        elif msgType == NetUtils.MSG_IMG:
+            nextMove = game.nextMove("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/P4_Lointain.jpg")
             NetUtils.send(cnx,MSG_DATA,len(nextMove),nextMove)
-        elif msgType == 3:
+        elif msgType == NetUtils.MSG_START:
             pass
         # halt
         elif msgType == -1:
@@ -49,7 +48,7 @@ class Server(object):
         length = int(length.decode())
 
         received = 0
-        with open("img.jpg", 'wb') as f:
+        with open("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg", 'wb') as f:
             while received < length:
                 print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)
@@ -57,7 +56,7 @@ class Server(object):
                 received += len(data)
             f.close()
             
-            nextMove = game.nextMove("img.jpg")
+            nextMove = game.nextMove("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg")
             cnx.send(nextMove)
 
     def handleInterraction(self, game, cnx):
@@ -112,15 +111,19 @@ class Server(object):
                 cnx, addr = self.sock.accept()
                 msgType, nbAI = NetUtils.receive(cnx)
                 nbAI = int(nbAI.decode())
-                if nbAI == '2':
+                print(nbAI)
+                if nbAI == 2:
                     game = Game.Game(True)
+                    print("Machine vs machine")
                 else:
                     game = Game.Game(False)
-                
-                    self.gameContinue = True
-                    while not game.isEnd() and self.gameContinue:
-                        self.handle(game, cnx)
-                        game.display()
+                    print("Man vs machine")
+                    
+                self.gameContinue = True
+                while not game.isEnd() and self.gameContinue:
+                    game.display()
+                    # self.handle(game, cnx)
+
                         
         except KeyboardInterrupt:
             print("connection closed")

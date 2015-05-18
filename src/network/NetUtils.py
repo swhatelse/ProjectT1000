@@ -22,7 +22,7 @@ def encode(msg, length):
 # send msg
 def send(cnx, msgType, length = 0, msg = None):
     cnx.send(encode(msgType,1))
-        
+    # cnx.send(str(msgType).ljust(1))        
     if not msg == None:
         # Encode size on 8 chars
         length = encode(length,8)
@@ -34,7 +34,10 @@ def send(cnx, msgType, length = 0, msg = None):
             cnx.send(msg)
 
 def receive(cnx):
-    msgType = int(cnx.recv(1).decode())
+    msgType = cnx.recv(1) #int(cnx.recv(1).decode())
+    print(msgType)
+    msgType = int(msgType.decode())
+    
     if msgType == MSG_HALT:
         data = None
     elif msgType == MSG_DATA:

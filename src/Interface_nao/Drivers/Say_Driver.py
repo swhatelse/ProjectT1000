@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-def say(Text, Vitesse) :
+def Interface_sortie(Text, Vitesse) :
     print('Nao says : ' + Text)
 
 if __name__ == "__main__":

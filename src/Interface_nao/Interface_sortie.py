@@ -27,7 +27,7 @@ class Interface_sortie :
             interface_nao.post.say(str(self.Phrase)) #on dis notre texte
 
             
-def say(Text, Vitesse) :
+def Interface_sortie(Text, Vitesse) :
     try:#on tente de ce connecter au proxy du dialogue
 		interface_nao = ALProxy("ALTextToSpeech", "localhost", 9559)
     except: #on renvoi l'erreur
