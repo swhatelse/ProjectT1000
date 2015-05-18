@@ -28,8 +28,8 @@ TCP_PORT_client = 5002
 sock = socket.socket()
 sock.connect((TCP_IP_client, TCP_PORT_client))
 colonne=0;
-#~ while(True):
-while(colonne!=ResValue.V.Fin):
+while(True):
+#~ while(colonne!=ResValue.V.Fin):
     length = recvall(conn,16)
     stringData = recvall(conn, int(length))
     data = numpy.fromstring(stringData, dtype='uint8')
@@ -45,7 +45,7 @@ while(colonne!=ResValue.V.Fin):
     sock.send( stringData );
     
     decimg=cv2.imdecode(data,1) 
-    cv2.imshow('CLIENT',decimg)
+    cv2.imshow('SERVEUR',decimg)
     cv2.waitKey(1)
 cv2.destroyAllWindows() 
 sock.close()

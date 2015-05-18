@@ -29,8 +29,8 @@ s.listen(True)
 conn, addr = s.accept()
 capture = cv2.VideoCapture(0)
 colonne=0
-while(colonne!=ResValue.V.Fin):
-#~ while(True  ):
+#~ while(colonne!=ResValue.V.Fin):
+while(True  ):
     ret, frame = capture.read()
     
     encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),90]
