@@ -36,11 +36,12 @@ class Client(object):
         NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
         fd.close()
 
+    def handle(self):
         # récupération du coup à jouer
         msgType, move = NetUtils.receive(self.sock)
         print('img sent')
-        return move
-        
+        return msgType, move
+
 
     def naoPlays(self):
         Nao_dit.Interface_sortie("Je commence a jouer","")
@@ -50,21 +51,26 @@ class Client(object):
         self.Position_nao.Faire(Action.Think,5)
         
         # Envoi de la demande au serveur
-        action = self.request()
+        self.request()
+        action, move = self.handle()
         
         self.Position_nao.Faire(Action.Think_End,5)
-        # Nao_dit.Interface_sortie("Coup a jouer" + str((action + 1)),"")
-        Nao_dit.Interface_sortie("Coup a jouer" + action,"")
-        self.Position_nao.Faire(Action.Prise_Jeton,10)
+
+        if action == NetUtils.MSG_DATA:
+            # Nao_dit.Interface_sortie("Coup a jouer" + str((move + 1)),"")
+            Nao_dit.Interface_sortie("Coup a jouer" + move,"")
+            self.Position_nao.Faire(Action.Prise_Jeton,10)
         
-        ready = 0
-        #on attend que l'on ai presse le pied gauche
-        while(ready == 0):
-            ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-            time.sleep(1)
+            ready = 0
+            #on attend que l'on ai presse le pied gauche
+            while(ready == 0):
+                ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
+                time.sleep(1)
             
-            self.Position_nao.Faire(Action.Lacher_Jeton,5)
-            Nao_dit.Interface_sortie("J'ai fini de jouer", "")
+                self.Position_nao.Faire(Action.Lacher_Jeton,5)
+                Nao_dit.Interface_sortie("J'ai fini de jouer", "")
+        elif action == NetUtils.MSG_HALT:
+            self.inGame = False
 
     def humanPlays(self):
         Nao_dit.Interface_sortie("A vous de commencer","")
@@ -80,9 +86,9 @@ class Client(object):
             self.sock.connect((self.IP, self.port))
             
             if doubleIA:
-                NetUtils.send(self.sock, 3, 1, 2)
+                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 2)
             else:
-                NetUtils.send(self.sock, 3, 1, 1)
+                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 1)
 
             Joueur_courant = random.randint(1,2)
             while self.inGame:
@@ -95,6 +101,8 @@ class Client(object):
                     else:
                         self.naoPlays()
                 Joueur_courant = Joueur_courant % 2 + 1
+
+            self.sock.shutdown(SHUT_RDWR)
 
     def __exit__(self, type, value, traceback):
         print("exited properly")

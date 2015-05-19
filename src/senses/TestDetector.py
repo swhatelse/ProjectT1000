@@ -206,6 +206,6 @@ if __name__ == '__main__':
     # app.testGetAll(frame3)
     # app.testDetectColor(frame1)
     # app.testGetYellows(frame3)
-    app.testGetReds(frame3)
-    # app.testTracker()
+    # app.testGetReds(frame3)
+    app.testTracker()
     # app.testVideo()

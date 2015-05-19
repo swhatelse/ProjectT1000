@@ -128,6 +128,9 @@ class Server(object):
                     self.handle(game, cnx)
                     game.display()
 
+                print('Partie terminée')
+                NetUtils.send(cnx,NetUtils.MSG_HALT)
+
                         
         except KeyboardInterrupt:
             print("connection closed")

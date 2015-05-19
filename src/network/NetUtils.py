@@ -7,7 +7,7 @@ import os
 from Global import const
 
 # Type de message
-MSG_HALT = -1
+MSG_HALT = 0
 MSG_DATA = 1
 MSG_IMG = 2
 MSG_START = 3
