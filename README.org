@@ -37,3 +37,6 @@
 ** Nao VS Nao
    Il est également possible de faire jouer Nao contre lui même avec l'option DoubleIA à 
    True
+* Lancer le jeu
+  Simpler lancer le client.py sur Nao et le serveur.py sur le pc, c'est deux fichiers 
+  sont dans network.
