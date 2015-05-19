@@ -3,6 +3,7 @@
 import numpy as np
 import os
 import cv2
+import time
 
 from Global import const
 
@@ -16,6 +17,7 @@ class Interface_entree:
 
     def Attente_Bumper(self,text,Event):
         # key = raw_input(text + ' : ' )
+        time.sleep(1)
         return True
         
     def Attente_senseur(self, Texte):

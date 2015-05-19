@@ -56,7 +56,6 @@ def receive(cnx):
         received = 0
         with open(const.ROOT_PATH +"/Images/img.jpg", 'wb') as f:
             while received < length:
-                print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)
                 f.write(data)
                 received += len(data)
