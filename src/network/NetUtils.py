@@ -4,6 +4,8 @@ import socket
 import sys
 import os
 
+from Global import const
+
 # Type de message
 MSG_HALT = -1
 MSG_DATA = 1
@@ -52,7 +54,7 @@ def receive(cnx):
         length = cnx.recv(8)
         length = int(length.decode())
         received = 0
-        with open("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg", 'wb') as f:
+        with open(const.ROOT_PATH +"/Images/img.jpg", 'wb') as f:
             while received < length:
                 print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)
