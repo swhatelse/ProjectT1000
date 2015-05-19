@@ -7,13 +7,13 @@ import os
 import random
 import time
 
-# from Interface_nao.Drivers import In_Driver as Reception
-# from Interface_nao.Drivers import Move_Driver as Action
-# from Interface_nao.Drivers import Say_Driver as Nao_dit
+from Interface_nao.Drivers import In_Driver as Reception
+from Interface_nao.Drivers import Move_Driver as Action
+from Interface_nao.Drivers import Say_Driver as Nao_dit
 
-from Interface_nao import Interface_entree as Reception
-from Interface_nao import Interface_mouvement as Action
-from Interface_nao import Interface_sortie as Nao_dit
+# from Interface_nao import Interface_entree as Reception
+# from Interface_nao import Interface_mouvement as Action
+# from Interface_nao import Interface_sortie as Nao_dit
 
 from network import NetUtils
 from Global import Const
@@ -124,3 +124,4 @@ class Client(object):
 if __name__ == "__main__":
     client = Client()
     client.run(True)
+    # client.run(False)
