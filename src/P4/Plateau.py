@@ -237,8 +237,12 @@ def createTable(reds, yellows, emptys):
     if(len(reds) > 0 or len(yellows) > 0):
         x = 0;
         y = 0;
-        rRed = reds[0].size/2
-        rYell = yellows[0].size/2
+        
+        if len(reds) > 0 :
+			rRed = reds[0].size/2
+		if len(yellows) > 0 :
+			rYell = yellows[0].size/2
+        
         while len(emptys)>0 :
             tmp = []
             #~ Retrait des 6 premiers puis tri sur les Y
