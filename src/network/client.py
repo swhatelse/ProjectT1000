@@ -7,21 +7,24 @@ import os
 import random
 import time
 
-from Interface_nao import *
-from Interface_nao.Drivers import In_Driver as Reception
-from Interface_nao.Drivers import Move_Driver as Action
-from Interface_nao.Drivers import Say_Driver as Nao_dit
+# from Interface_nao.Drivers import In_Driver as Reception
+# from Interface_nao.Drivers import Move_Driver as Action
+# from Interface_nao.Drivers import Say_Driver as Nao_dit
+
+from Interface_nao import Interface_entree as Reception
+from Interface_nao import Interface_mouvement as Action
+from Interface_nao import Interface_sortie as Nao_dit
+
 from network import NetUtils
-from Global import const
+from Global import Const
 
 class Client(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
-        self.path = const.ROOT_PATH + "/Images/img.jpg"
+        self.path = Const.ROOT_PATH_CLT + "/Images/img.jpg"
         self.inGame = False
         try:
-            # self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.entry = Reception.Interface_entree()
             self.Position_nao = Action.Interface_mouvement()
         except:
@@ -54,7 +57,6 @@ class Client(object):
         self.Position_nao.Faire(Action.Think_End,5)
 
         if action == NetUtils.MSG_DATA:
-            # Nao_dit.Interface_sortie("Coup a jouer" + str(int(move) + 1),"")
             Nao_dit.Interface_sortie("Coup a jouer en " + str(int(move) + 1),"")
             self.Position_nao.Faire(Action.Prise_Jeton,10)
         

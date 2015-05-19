@@ -14,7 +14,7 @@ import Plateau
 from senses import tracker as Tr
 from senses import Detector as Dr
 from senses import Color
-from Global import const
+from Global import Const
 
 def erreur(s):
     print s
@@ -28,12 +28,12 @@ class Game(object):
         self.ia1=IA.IA(self.p)
         # UI
         pygame.init ()
-        self.image = pygame.image.load (const.ROOT_PATH + "/P4/Grille.png")
+        self.image = pygame.image.load (Const.ROOT_PATH_SRV + "/Images/Grille.png")
         sizeim = self.image.get_size ()
         size = (sizeim[0]*1, sizeim[1])
         self.screen = pygame.display.set_mode (size)
-        self.pionjaune = pygame.image.load (const.ROOT_PATH +"/P4/PionJaune.png")
-        self.pionrouge = pygame.image.load (const.ROOT_PATH +"/P4/PionRouge.png")
+        self.pionjaune = pygame.image.load (Const.ROOT_PATH_SRV +"/Images/PionJaune.png")
+        self.pionrouge = pygame.image.load (Const.ROOT_PATH_SRV +"/Images/PionRouge.png")
         self.font = pygame.font.Font ("freesansbold.ttf", 15)
         self.tracker = Tr.Tracker()
         self.detector = Dr.Detector()
