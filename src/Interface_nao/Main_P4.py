@@ -79,7 +79,7 @@ if __name__ == '__main__':
                     ok = False
                     while(not ok):
                         col = raw_input("Entrez la colonne que l'adversaire a joue :")
-                        if(isinstance(int(col), int) or (0 >= int(col) and int(col) <= 6)):
+                        if(0 >= int(col) and int(col) <= 6):
                             ok = True                   
                     plateau.addColonne(int(col), 2)
                     plateau.affichePlateau()
