@@ -253,7 +253,7 @@ def createTable(reds, yellows, emptys):
 			
         #     for e in tmp :
         #         #~	Range X	and Range Y 
-        #         if (	len(reds) > 0
+        #         if (len(reds) > 0
         #         and e.pt[0]-rRed>=reds[0].pt[0] and e.pt[0]+rRed<=reds[0].pt[0] 
         #         and e.pt[1]-rRed>=reds[0].pt[1] and e.pt[1]+rRed<=reds[0].pt[1]):
         #             plateau.plateau[x][y] = Plateau.J[1];
@@ -261,7 +261,7 @@ def createTable(reds, yellows, emptys):
         #             if(len(reds) > 0):
         #                 rRed = reds[0].size/2
                         
-        #         elif (	len(yellows) > 0
+        #         elif (len(yellows) > 0
         #         and e.pt[0]-rYell>=yellows[0].pt[0] and e.pt[0]+rYell<=yellows[0].pt[0] 
         #         and e.pt[1]-rYell>=yellows[0].pt[1] and e.pt[1]+rYell<=yellows[0].pt[1]):
         #             plateau.plateau[x][y] = Plateau.J[2];
@@ -291,8 +291,7 @@ def createTable(reds, yellows, emptys):
                 num=-1
                 red=None
                 for i,r in enumerate(reds):
-                    if (    len(reds) > 0
-                    and e.pt[0]-rRed<=r.pt[0] and e.pt[0]+rRed>=r.pt[0] 
+                    if (e.pt[0]-rRed<=r.pt[0] and e.pt[0]+rRed>=r.pt[0] 
                     and e.pt[1]-rRed<=r.pt[1] and e.pt[1]+rRed>=r.pt[1]):
                         num=i
                         red=r
@@ -304,8 +303,7 @@ def createTable(reds, yellows, emptys):
                     num=-1
                     yell=None
                     for i,ye in enumerate(yellows):
-                        if (    len(reds) > 0
-                        and e.pt[0]-rYell<=ye.pt[0] and e.pt[0]+rYell>=ye.pt[0] 
+                        if (e.pt[0]-rYell<=ye.pt[0] and e.pt[0]+rYell>=ye.pt[0] 
                         and e.pt[1]-rYell<=ye.pt[1] and e.pt[1]+rYell>=ye.pt[1]):
                             num=i
                             yell=ye
@@ -316,6 +314,13 @@ def createTable(reds, yellows, emptys):
                  
                 x += 1;
             y += 1;   
+            
+    print("~"+str(len(reds)))
+    print("~"+str(len(yellows)))
+    print("~"+str(len(emptys)))
+    
+    if(len(reds)>0 or len(yellows)>0):
+		raise Exception("snif2");
          
     return plateau;
 
