@@ -58,7 +58,7 @@ class Client(object):
 
         if action == NetUtils.MSG_DATA:
             # Nao_dit.Interface_sortie("Coup a jouer" + str((move + 1)),"")
-            Nao_dit.Interface_sortie("Coup a jouer" + move,"")
+            Nao_dit.Interface_sortie("Coup a jouer" + str(int(move) + 1),"")
             self.Position_nao.Faire(Action.Prise_Jeton,10)
         
             ready = 0
