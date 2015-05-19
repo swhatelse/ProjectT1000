@@ -143,9 +143,40 @@ class TestDetector(object):
             if cv2.waitKey(30) ==  ord('q'):
                 break
 
+    def detectColor(self, img, color, ksize = None, weight = None):
+        hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+        binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
+        if ksize and weight:
+            blur = cv2.medianBlur(binary,ksize)
+        else:
+            # blur = cv2.GaussianBlur(binary,(25,25), 25)
+            blur = cv2.medianBlur(binary,17)
+
+        dist = cv2.distanceTransform(blur, cv2.cv.CV_DIST_C, cv2.cv.CV_DIST_MASK_PRECISE)
+        # dist = cv2.distanceTransform(blur, cv2.cv.CV_DIST_L2, 3)
+        dist = cv2.normalize(blur, 0.0, 0.5, cv2.NORM_MINMAX);
+
+        return dist
+
+    def testDetectColor(self):
+        img = cv2.imread('../Images/P4_Lointain.jpg',1)
         
+        while True:
+            color, ksize, weight = self.calibrate()
+            
+            noise = img.copy()
+            cv2.randn(noise, 1,(256,256,256));
+            img2 = img + noise
+            
+            binary = self.detectColor(img2,Color.BLUE, ksize, weight)
+            cv2.imshow('binary',binary)
+
+            if cv2.waitKey(30) ==  ord('q'):
+                break
+
 if __name__ == '__main__':
     app = TestDetector()
     # app.testGetAll()
     # app.testGetYellows()
-    app.testGetReds()
+    # app.testGetReds()
+    app.testDetectColor()
