@@ -239,36 +239,84 @@ def createTable(reds, yellows, emptys):
         y = 0;
         
         if len(reds) > 0 :
-			rRed = reds[0].size/2
-		if len(yellows) > 0 :
-			rYell = yellows[0].size/2
+            rRed = reds[0].size/2
+        if len(yellows) > 0 :
+            rYell = yellows[0].size/2
         
-        while len(emptys)>0 :
-            tmp = []
-            #~ Retrait des 6 premiers puis tri sur les Y
-            for i in range (0,5):
-                tmp.append(emptys.remove(0));
-            tmp = sorted(tmp, key = lambda x:x.pt[1]);
+        # while len(emptys)>0 :
+        #     tmp = []
+        #     print(len(emptys))
+        #     #~ Retrait des 6 premiers puis tri sur les Y
+        #     for i in range (0,6):
+        #         tmp.append(emptys.pop());
+        #     tmp = sorted(tmp, key = lambda x:x.pt[1]);
 			
-            for e in tmp :
-                #~	Range X	and Range Y 
-                if (	len(reds) > 0
-                and e.pt[0]-rRed>=reds[0].pt[0] and e.pt[0]+rRed<=reds[0].pt[0] 
-                and e.pt[1]-rRed>=reds[0].pt[1] and e.pt[1]+rRed<=reds[0].pt[1]):
-                    plateau.plateau[x][y] = Plateau.J[1];
-                    reds.remove(0);
-                    if(len(reds) > 0):
-                        rRed = reds[0].size/2
+        #     for e in tmp :
+        #         #~	Range X	and Range Y 
+        #         if (	len(reds) > 0
+        #         and e.pt[0]-rRed>=reds[0].pt[0] and e.pt[0]+rRed<=reds[0].pt[0] 
+        #         and e.pt[1]-rRed>=reds[0].pt[1] and e.pt[1]+rRed<=reds[0].pt[1]):
+        #             plateau.plateau[x][y] = Plateau.J[1];
+        #             reds.pop();
+        #             if(len(reds) > 0):
+        #                 rRed = reds[0].size/2
                         
-                elif (	len(yellows) > 0
-                and e.pt[0]-rYell>=yellows[0].pt[0] and e.pt[0]+rYell<=yellows[0].pt[0] 
-                and e.pt[1]-rYell>=yellows[0].pt[1] and e.pt[1]+rYell<=yellows[0].pt[1]):
-                    plateau.plateau[x][y] = Plateau.J[2];
-                    yellows.remove(0);
-                    if(len(yellows) > 0):
-                        rYell = yellows[0].size/2
+        #         elif (	len(yellows) > 0
+        #         and e.pt[0]-rYell>=yellows[0].pt[0] and e.pt[0]+rYell<=yellows[0].pt[0] 
+        #         and e.pt[1]-rYell>=yellows[0].pt[1] and e.pt[1]+rYell<=yellows[0].pt[1]):
+        #             plateau.plateau[x][y] = Plateau.J[2];
+        #             yellows.pop();
+        #             if(len(yellows) > 0):
+        #                 rYell = yellows[0].size/2
+        #         x += 1;
+        #     y += 1;
+
+
+        ################################################################
+
+        while len(emptys)>0 :
+            #~ Retrait des 6 premiers puis tri sur les Y 
+            #~ print "---------------------------------"
+            tmp=[]
+            for i in range (0,plateau.NB_LIGNE):
+                if(len(emptys)>0):
+                    tmp.append(emptys.pop(0));
+            tmp = sorted(tmp, key = lambda x:x.pt[1]);
+            x=0
+            for e in tmp :
+                #~ print e
+                #~  Range X and Range Y 
+                #~ print str(e.pt[0])+" "+str(e.pt[1]) +" "+str(reds[len(reds)-1].pt[0])+" "+str(reds[len(reds)-1].pt[1]),
+                #~ print " "+str(len(reds))
+                num=-1
+                red=None
+                for i,r in enumerate(reds):
+                    if (    len(reds) > 0
+                    and e.pt[0]-rRed<=r.pt[0] and e.pt[0]+rRed>=r.pt[0] 
+                    and e.pt[1]-rRed<=r.pt[1] and e.pt[1]+rRed>=r.pt[1]):
+                        num=i
+                        red=r
+                        break
+                if(num>=0):
+                    reds.pop(i)
+                    plateau.plateau[x][y] = J[1];
+                else:
+                    num=-1
+                    yell=None
+                    for i,ye in enumerate(yellows):
+                        if (    len(reds) > 0
+                        and e.pt[0]-rYell<=ye.pt[0] and e.pt[0]+rYell>=ye.pt[0] 
+                        and e.pt[1]-rYell<=ye.pt[1] and e.pt[1]+rYell>=ye.pt[1]):
+                            num=i
+                            yell=ye
+                            break
+                    if(num>=0):
+                        yellows.pop(i)
+                        plateau.plateau[x][y] = J[2];
+                 
                 x += 1;
-            y += 1;
+            y += 1;   
+         
     return plateau;
 
     

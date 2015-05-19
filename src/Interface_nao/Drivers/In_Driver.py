@@ -14,7 +14,7 @@ class Interface_entree:
         os.system('import -window root /home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg')
 
     def Attente_Bumper(self,text,Event):
-        key = raw_input(text + ' : ' )
+        # key = raw_input(text + ' : ' )
         return True
         
     def Attente_senseur(self, Texte):
