@@ -36,29 +36,26 @@ class Client(object):
         NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
         fd.close()
 
-    def handle(self):
         # récupération du coup à jouer
         msgType, move = NetUtils.receive(self.sock)
         print('img sent')
         return msgType, move
 
-
     def naoPlays(self):
-        Nao_dit.Interface_sortie("Je commence a jouer","")
+        Nao_dit.Interface_sortie("A moi de jouer!","")
         # DEBUG
         time.sleep(1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
         # Envoi de la demande au serveur
-        self.request()
-        action, move = self.handle()
+        action, move = self.request()
         
         self.Position_nao.Faire(Action.Think_End,5)
 
         if action == NetUtils.MSG_DATA:
-            # Nao_dit.Interface_sortie("Coup a jouer" + str((move + 1)),"")
-            Nao_dit.Interface_sortie("Coup a jouer" + str(int(move) + 1),"")
+            # Nao_dit.Interface_sortie("Coup a jouer" + str(int(move) + 1),"")
+            Nao_dit.Interface_sortie("Coup a jouer en " + str(int(move) + 1),"")
             self.Position_nao.Faire(Action.Prise_Jeton,10)
         
             ready = 0
@@ -73,7 +70,7 @@ class Client(object):
             self.inGame = False
 
     def humanPlays(self):
-        Nao_dit.Interface_sortie("A vous de commencer","")
+        Nao_dit.Interface_sortie("A vous de jouer","")
         human_done = False
         while not human_done:
             human_done = self.entry.Attente_Bumper("", "LeftBumperPressed")
@@ -102,8 +99,8 @@ class Client(object):
 
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
+            Nao_dit.Interface_sortie("Let's rock baby!","")
             while self.inGame:
-                print('Début de la partie')
                 if(Joueur_courant == 1):
                     self.naoPlays()
                 else :
