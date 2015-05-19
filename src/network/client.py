@@ -12,12 +12,13 @@ from Interface_nao.Drivers import In_Driver as Reception
 from Interface_nao.Drivers import Move_Driver as Action
 from Interface_nao.Drivers import Say_Driver as Nao_dit
 from network import NetUtils
+from Global import const
 
 class Client(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
-        self.path = '/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg'
+        self.path = const.ROOT_PATH + "/Images/img.jpg"
         self.inGame = False
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -10,6 +10,7 @@ import pygame
 from P4 import Game
 from network import NetUtils
 from P4 import Plateau
+from Global import const
 
 class Server(object):
     def __init__(self):
@@ -34,7 +35,7 @@ class Server(object):
         if msgType == NetUtils.MSG_DATA:
             pass
         elif msgType == NetUtils.MSG_IMG:
-            nextMove = game.nextMove("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg")
+            nextMove = game.nextMove(const.ROOT_PATH + "/Images/img.jpg")
             print("Coup : " + str(nextMove))
             # NetUtils.send(cnx,NetUtils.MSG_DATA,len(nextMove),nextMove)
             NetUtils.send(cnx,NetUtils.MSG_DATA,1,nextMove[0])
@@ -50,7 +51,7 @@ class Server(object):
         length = int(length.decode())
 
         received = 0
-        with open("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg", 'wb') as f:
+        with open(const.ROOT_PATH + "/Images/img.jpg", 'wb') as f:
             while received < length:
                 print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)
@@ -58,7 +59,7 @@ class Server(object):
                 received += len(data)
             f.close()
             
-            nextMove = game.nextMove("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg")
+            nextMove = game.nextMove(const.ROOT_PATH + "/Images/img.jpg")
             cnx.send(nextMove)
 
     def handleInterraction(self, game, cnx):

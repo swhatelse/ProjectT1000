@@ -226,12 +226,15 @@ def createTable(reds, yellows, emptys):
 	
     reds = sorted(reds, key = lambda x:x.pt);
     yellows = sorted(yellows, key = lambda x:x.pt);
-    emptys = sorted(yellows, key = lambda x:x.pt);
-	
+    emptys = sorted(emptys, key = lambda x:x.pt);
+
+    print(len(reds))
+    print(len(yellows))
+    print(len(emptys))
     plateau = Plateau(erreur);
     
     #~ si il existe des pions
-    if(len(reds) > 0 and len(yellows) > 0):
+    if(len(reds) > 0 or len(yellows) > 0):
         x = 0;
         y = 0;
         rRed = reds[0].size/2

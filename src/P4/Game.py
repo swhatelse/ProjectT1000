@@ -14,6 +14,7 @@ import Plateau
 from senses import tracker as Tr
 from senses import Detector as Dr
 from senses import Color
+from Global import const
 
 def erreur(s):
     print s
@@ -27,12 +28,12 @@ class Game(object):
         self.ia1=IA.IA(self.p)
         # UI
         pygame.init ()
-        self.image = pygame.image.load ("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/P4/Grille.png")
+        self.image = pygame.image.load (const.ROOT_PATH + "/P4/Grille.png")
         sizeim = self.image.get_size ()
         size = (sizeim[0]*1, sizeim[1])
         self.screen = pygame.display.set_mode (size)
-        self.pionjaune = pygame.image.load ("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/P4/PionJaune.png")
-        self.pionrouge = pygame.image.load ("/home/steven/Programmation/PATIA/NAO/ProjectT1000/src/P4/PionRouge.png")
+        self.pionjaune = pygame.image.load (const.ROOT_PATH +"/P4/PionJaune.png")
+        self.pionrouge = pygame.image.load (const.ROOT_PATH +"/P4/PionRouge.png")
         self.font = pygame.font.Font ("freesansbold.ttf", 15)
         self.tracker = Tr.Tracker()
         self.detector = Dr.Detector()
@@ -61,25 +62,24 @@ class Game(object):
         ylKp = detector.getYellows(img)
         rdKp = detector.getReds(img)
 
-        # img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        # img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        # img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-        # # DEBUG
+        # DEBUG
         # cv2.imshow("img",img)
         # while True:
         #     if cv2.waitKey(30) ==  ord('q'):
         #         break
         
         self.p = Plateau.createTable(rdKp, ylKp, blKp)
+        print(self.p.plateau)
 
         if self.doubleIA:
             move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
-            # move = self.ia1.choix_colonne(1,6)
             self.player = self.player % 2 + 1
         else:
             move = self.ia1.choix_colonne(1,6),Plateau.J[1]
-            # move = self.ia1.choix_colonne(1,6)
         self.p.addColonne(move[0],move[1])
         return move
 
