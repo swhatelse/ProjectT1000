@@ -4,6 +4,7 @@ import numpy as np
 import os
 import cv2
 
+from Global import const
 
 class Interface_entree:
 
@@ -11,7 +12,7 @@ class Interface_entree:
         pass
     # Take a screenshot of the game
     def Prendre_Photo(self) :
-        os.system('import -window root /home/steven/Programmation/PATIA/NAO/ProjectT1000/src/Images/img.jpg')
+        os.system('import -window root ' + const.ROOT_PATH + '/Images/img.jpg')
 
     def Attente_Bumper(self,text,Event):
         # key = raw_input(text + ' : ' )
