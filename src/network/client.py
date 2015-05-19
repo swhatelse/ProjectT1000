@@ -21,7 +21,7 @@ class Client(object):
         self.path = const.ROOT_PATH + "/Images/img.jpg"
         self.inGame = False
         try:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            # self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.entry = Reception.Interface_entree()
             self.Position_nao = Action.Interface_mouvement()
         except:
@@ -83,13 +83,24 @@ class Client(object):
         # Debut de la partie
         while True:
             self.inGame = self.entry.Attente_Bumper("", "LeftBumperPressed")
-            self.sock.connect((self.IP, self.port))
-            
+            try:
+                self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            except:
+                sys.exit("Echec lors de l'ouverture du socket")
+            try:
+                self.sock.connect((self.IP, self.port))
+            except:
+                sys.exit("Echec lors de la connexion au serveur")
+
+            # Activation du jeux IA contre IA pour test et débuggage
             if doubleIA:
                 NetUtils.send(self.sock, NetUtils.MSG_START, 1, 2)
             else:
                 NetUtils.send(self.sock, NetUtils.MSG_START, 1, 1)
 
+            # TODO : choix du niveau de difficulté
+
+            # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
             while self.inGame:
                 print('Début de la partie')
@@ -100,9 +111,12 @@ class Client(object):
                         self.humanPlays()
                     else:
                         self.naoPlays()
+                # Determine le joueur suivant
                 Joueur_courant = Joueur_courant % 2 + 1
 
-            self.sock.shutdown(SHUT_RDWR)
+            self.sock.shutdown(socket.SHUT_RDWR)
+            self.sock.close
+            Nao_dit.Interface_sortie("Partie terminée","")
 
     def __exit__(self, type, value, traceback):
         print("exited properly")

@@ -94,17 +94,6 @@ class Server(object):
             self.sock.close()
             cnx.close()
 
-    # def run(self):
-    #     while True:
-    #         # waiting for a player
-    #         cnx, addr = self.sock.accept()
-    #         game = Game()
-    #         self.gameContinue = True
-    #         while not game.isEnd() and self.gameContinue:
-    #             msgType = cnx.recv(8)
-    #             self.handle(msgType, game, cnx)
-    #             game.display()
-                
     def run(self):
         try:
             print('Démarrage du serveur')
