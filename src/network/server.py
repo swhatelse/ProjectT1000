@@ -114,7 +114,7 @@ class Server(object):
                 cnx, addr = self.sock.accept()
                 msgType, nbAI = NetUtils.receive(cnx)
                 nbAI = int(nbAI.decode())
-                print(nbAI)
+                print("Nombre d'IA " + str(nbAI))
                 if nbAI == 2:
                     game = Game.Game(True)
                     print("Machine vs machine")
@@ -126,6 +126,7 @@ class Server(object):
                 while not game.isEnd() and self.gameContinue:
                     game.display()
                     self.handle(game, cnx)
+                    game.display()
 
                         
         except KeyboardInterrupt:

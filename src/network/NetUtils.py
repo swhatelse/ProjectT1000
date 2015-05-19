@@ -37,7 +37,7 @@ def send(cnx, msgType, length = 0, msg = None):
 
 def receive(cnx):
     msgType = cnx.recv(1) #int(cnx.recv(1).decode())
-    print(msgType)
+    print('Msg type: ' + str(msgType))
     msgType = int(msgType.decode())
     
     if msgType == MSG_HALT:
