@@ -7,7 +7,7 @@ class IA:
     def __init__(self,plateau):
         self.plateau=plateau
         self.ia=Plateau.J[0]
-        self.profondeur=6
+        self.profondeur=0
         
     def inverserJoueur(self,joueur):
         return Plateau.J[3-self.plateau.whois(joueur)]
