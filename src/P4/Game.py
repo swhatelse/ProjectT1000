@@ -77,6 +77,7 @@ class Game(object):
             
             try :
                 self.p = Plateau.createTable(rdKp, ylKp, blKp)
+                self.ia1.plateau = self.p
                 done = True;
             except :
                 pass
