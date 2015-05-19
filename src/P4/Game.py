@@ -56,23 +56,30 @@ class Game(object):
         frame = cv2.imread(path)
         tracker = Tr.Tracker()
         detector = Dr.Detector()
-        img, binary = tracker.detect(frame,Color.BLUE)
-
-        blKp = detector.getAll(img)
-        ylKp = detector.getYellows(img)
-        rdKp = detector.getReds(img)
-
-        img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-
-        # DEBUG
-        # cv2.imshow("img",img)
-        # while True:
-        #     if cv2.waitKey(30) ==  ord('q'):
-        #         break
         
-        self.p = Plateau.createTable(rdKp, ylKp, blKp)
+        done = False;
+        while not done :
+            img, binary = tracker.detect(frame,Color.BLUE)
+
+            blKp = detector.getAll(img)
+            ylKp = detector.getYellows(img)
+            rdKp = detector.getReds(img)
+
+            img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+            #DEBUG
+            #cv2.imshow("img",img)
+            #while True:
+            #    if cv2.waitKey(30) ==  ord('q'):
+            #        break
+            
+            try :
+                self.p = Plateau.createTable(rdKp, ylKp, blKp)
+                done = True;
+            except :
+                pass
         print(self.p.plateau)
 
         if self.doubleIA:
