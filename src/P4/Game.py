@@ -21,11 +21,12 @@ def erreur(s):
 
 # Classe d'encapsulation du jeu. 
 class Game(object):
-    def __init__(self, doubleIA = False):
+    def __init__(self, doubleIA = False, difficulty = 4):
         self.player = 1
         self.doubleIA = doubleIA
         self.p = Plateau.Plateau(erreur)
         self.ia1=IA.IA(self.p)
+        self.difficulty = difficulty
         # UI
         pygame.init ()
 
@@ -89,13 +90,16 @@ class Game(object):
             
         if self.doubleIA:
             # move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
-            move = self.ia1.choix_colonne(self.player,6),Plateau.J[self.player]
+            move = self.ia1.choix_colonne(self.player,self.difficulty),Plateau.J[self.player]
             self.player = self.player % 2 + 1
         else:
-            move = self.ia1.choix_colonne(1,6),Plateau.J[1]
+            move = self.ia1.choix_colonne(1,self.difficulty),Plateau.J[1]
+            
         self.p.addColonne(move[0],move[1])
         return move
 
+    def winner(self):
+        return int(self.p.whois(self.p.winner()))
     
     def isEnd(self):
         return self.p.end()

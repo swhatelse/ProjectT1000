@@ -36,22 +36,18 @@ class Client(object):
         fd = open(self.path, 'rb')
         img = fd.read()
         NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
-        print('Image sent')
         fd.close()
         # récupération du coup à jouer
         msgType, move = NetUtils.receive(self.sock)
-        print('Order received')
         return msgType, move
 
     def naoPlays(self):
         # DEBUG
-        print("NaoPlays")
         time.sleep(1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
         # Envoi de la demande au serveur
-        print("NaoCommunique")
         action, move = self.request()
         
         self.Position_nao.Faire(Action.Think_End,5)
@@ -71,7 +67,6 @@ class Client(object):
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
         elif action == NetUtils.MSG_FAILURE:
-            print("NaoPlaysAgain")
             self.naoPlays()
 
     def naoFirstPlays(self):
@@ -100,11 +95,9 @@ class Client(object):
 
             # Activation du jeux IA contre IA pour test et débuggage
             if doubleIA:
-                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 2)
+                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 2)
             else:
-                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 1)
-
-            # TODO : choix du niveau de difficulté
+                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 1)
 
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)

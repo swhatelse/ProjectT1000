@@ -31,18 +31,23 @@ def send(cnx, msgType, length = 0, msg = None):
         length = encode(length,8)
         cnx.send(length.encode())
 
+        # Les messages simples sont encodés sur un octet
         if not msgType == MSG_IMG:
             cnx.send(encode(msg,1))
         else:
             cnx.send(msg)
 
 def receive(cnx):
-    msgType = cnx.recv(1) #int(cnx.recv(1).decode())
+    # On récupère d'abord le type du message
+    msgType = cnx.recv(1)
     print('Msg type: ' + str(msgType))
     msgType = int(msgType.decode())
-    
+
+    # Puis en le traite en fonction de son type
     if msgType == MSG_HALT:
-        data = None
+        length = cnx.recv(8)
+        length = int(length.decode())
+        data = cnx.recv(length)
     elif msgType == MSG_DATA:
         length = cnx.recv(8)
         length = int(length.decode())

@@ -24,33 +24,27 @@ class Server(object):
         except:
             sys.exit("Impossible d'initialiser le server")
 
-    # def handle(self, msgType, game, cnx):
-    #     if (msgType == MsgType.DATA):
-    #         self.handleImg(game, cnx)
-    #     elif (msgType == MsgType.INTERACTION):
-    #         self.handleInterraction(game, cnx)
-
+    # Gère la récéption de message
     def handle(self, game, cnx):
-        print('handle')
         msgType, data = NetUtils.receive(cnx)
+
         if msgType == NetUtils.MSG_DATA:
             pass
+        
         elif msgType == NetUtils.MSG_IMG:
             nextMove = game.nextMove(Const.ROOT_PATH_SRV + "/Images/img.jpg")
             print("Coup : " + str(nextMove))
-            # NetUtils.send(cnx,NetUtils.MSG_DATA,len(nextMove),nextMove)
-            
+
             if nextMove[0] >= 0:
                 NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
             else :
-                print("Envoi demande d image")
                 NetUtils.send(cnx, NetUtils.MSG_FAILURE, 0, None)
                 self.handle(game, cnx)
         elif msgType == NetUtils.MSG_START:
             pass
-        # halt
-        elif msgType == -1:
-            NetUtils.send(cnx,MSG_HALT)
+        
+        elif msgType == NetUtils.MSG_HALT:
+            NetUtils.send(cnx,NetUtils.MSG_HALT)
 
 
     def handleImg(self, game, cnx):
@@ -105,9 +99,10 @@ class Server(object):
         try:
             print('Démarrage du serveur')
             while True:
-                # waiting for a player
                 print('En attente de joueur')
                 cnx, addr = self.sock.accept()
+
+                # defini le mode de jeux
                 msgType, nbAI = NetUtils.receive(cnx)
                 nbAI = int(nbAI.decode())
                 print("Nombre d'IA " + str(nbAI))
@@ -118,6 +113,7 @@ class Server(object):
                     game = Game.Game(False)
                     print("Man vs machine")
 
+                # début la partie
                 self.gameContinue = True
                 while not game.isEnd() and self.gameContinue:
                     game.display()
@@ -125,7 +121,10 @@ class Server(object):
                     game.display()
 
                 print('Partie terminée')
-                NetUtils.send(cnx,NetUtils.MSG_HALT)
+                winner = game.winner()
+                print("winner : " + str(winner))
+                NetUtils.send(cnx,NetUtils.MSG_HALT,1,winner)
+                # NetUtils.send(cnx,NetUtils.MSG_HALT)
 
                         
         except KeyboardInterrupt:
