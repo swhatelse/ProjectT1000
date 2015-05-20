@@ -7,9 +7,9 @@ import os
 import random
 import time
 
-# from Interface_nao.Drivers import In_Driver as Reception
-# from Interface_nao.Drivers import Move_Driver as Action
-# from Interface_nao.Drivers import Say_Driver as Nao_dit
+from Interface_nao.Drivers import In_Driver as Reception
+from Interface_nao.Drivers import Move_Driver as Action
+from Interface_nao.Drivers import Say_Driver as Nao_dit
 
 from Interface_nao import Interface_entree as Reception
 from Interface_nao import Interface_mouvement as Action
