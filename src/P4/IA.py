@@ -29,8 +29,7 @@ class IA:
         l = 0
         liste=[]
         colonneHasard = 0
-        if(profondeur == 0 or self.plateau.end()):     
-        # Si profondeur atteinte ou situationFinale (grille remplie, bot joueur gagne, adversaire gagne)
+        if(profondeur == 0 or self.plateau.end()):#cas ou le jeu est fini ou la profondeur est de 0 de base
             valeurMax = self.evaluationHeuristique(joueur, profondeur)
         else:
             for c in range(0,self.plateau.NB_COLONNE):    # Pour chaque colonnes
@@ -102,10 +101,10 @@ class IA:
         win=self.plateau.winner()
         if(win==self.ia): 
             #~ print "win:"+str(win)
-            valeur = 202+10*profondeur
+            valeur = 202+10*(self.profondeur-profondeur+1)/self.profondeur
         elif(win!=Plateau.J[0]): 
             #~ print "loose:"+str(win)
-            valeur = -(200+10*profondeur)
+            valeur = -(200+10*(self.profondeur-profondeur+1)/self.profondeur)
         return valeur
 
 def erreur(s):
