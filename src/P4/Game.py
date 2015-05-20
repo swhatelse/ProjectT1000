@@ -28,12 +28,12 @@ class Game(object):
         self.ia1=IA.IA(self.p)
         # UI
         pygame.init ()
-        self.image = pygame.image.load (const.ROOT_PATH + "/P4/Grille.png")
+        self.image = pygame.image.load (const.ROOT_PATH + "Images/Grille.png")
         sizeim = self.image.get_size ()
         size = (sizeim[0]*1, sizeim[1])
         self.screen = pygame.display.set_mode (size)
-        self.pionjaune = pygame.image.load (const.ROOT_PATH +"/P4/PionJaune.png")
-        self.pionrouge = pygame.image.load (const.ROOT_PATH +"/P4/PionRouge.png")
+        self.pionjaune = pygame.image.load (const.ROOT_PATH +"Images/PionJaune.png")
+        self.pionrouge = pygame.image.load (const.ROOT_PATH +"Images/PionRouge.png")
         self.font = pygame.font.Font ("freesansbold.ttf", 15)
         self.tracker = Tr.Tracker()
         self.detector = Dr.Detector()
@@ -57,30 +57,29 @@ class Game(object):
         tracker = Tr.Tracker()
         detector = Dr.Detector()
         
-        done = False;
-        while not done :
-            img, binary = tracker.detect(frame,Color.BLUE)
+        img, binary = tracker.detect(frame,Color.BLUE)
 
-            blKp = detector.getAll(img)
-            ylKp = detector.getYellows(img)
-            rdKp = detector.getReds(img)
+		blKp = detector.getAll(img)
+		ylKp = detector.getYellows(img)
+		rdKp = detector.getReds(img)
 
-            img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+		img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+		img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+		img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-            #DEBUG
-            #cv2.imshow("img",img)
-            #while True:
-            #    if cv2.waitKey(30) ==  ord('q'):
-            #        break
-            
-            try :
-                self.p = Plateau.createTable(rdKp, ylKp, blKp)
-                self.ia1.plateau = self.p
-                done = True;
-            except :
-                pass
+		#DEBUG
+		#cv2.imshow("img",img)
+		#while True:
+		#    if cv2.waitKey(30) ==  ord('q'):
+		#        break
+		
+		try :
+			self.p = Plateau.createTable(rdKp, ylKp, blKp)
+			self.ia1.plateau = self.p
+			done = True;
+		except :
+			return -1,0
+			
         print(self.p.plateau)
 
         if self.doubleIA:

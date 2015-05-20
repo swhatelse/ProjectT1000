@@ -38,7 +38,11 @@ class Server(object):
             nextMove = game.nextMove(const.ROOT_PATH + "/Images/img.jpg")
             print("Coup : " + str(nextMove))
             # NetUtils.send(cnx,NetUtils.MSG_DATA,len(nextMove),nextMove)
-            NetUtils.send(cnx,NetUtils.MSG_DATA,1,nextMove[0])
+            
+            if nextMove[0] >= 0:
+                NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
+            else
+                NetUtils.send(cnx, NetUtils.MSG_IMG, 0, None)
         elif msgType == NetUtils.MSG_START:
             pass
         # halt

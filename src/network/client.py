@@ -42,9 +42,11 @@ class Client(object):
         print('img sent')
         return msgType, move
 
+    def naoFirstPlays(self)
+        Nao_dit.Interface_sortie("Je commence a jouer","")
+        naoPlays()
 
     def naoPlays(self):
-        Nao_dit.Interface_sortie("Je commence a jouer","")
         # DEBUG
         time.sleep(1)
         self.entry.Prendre_Photo()
@@ -71,7 +73,9 @@ class Client(object):
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
-
+		elif action == NetUtils.MSG_IMG:
+			naoPlays()
+        
     def humanPlays(self):
         Nao_dit.Interface_sortie("A vous de commencer","")
         human_done = False
@@ -105,7 +109,7 @@ class Client(object):
             while self.inGame:
                 print('Début de la partie')
                 if(Joueur_courant == 1):
-                    self.naoPlays()
+                    self.naoFirstPlays()
                 else :
                     if not doubleIA:
                         self.humanPlays()
