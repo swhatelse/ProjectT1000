@@ -21,19 +21,22 @@ def erreur(s):
 
 # Classe d'encapsulation du jeu. 
 class Game(object):
-    def __init__(self, doubleIA = False):
+    def __init__(self, doubleIA = False, difficulty = 3):
         self.player = 1
         self.doubleIA = doubleIA
         self.p = Plateau.Plateau(erreur)
         self.ia1=IA.IA(self.p)
+        self.difficulty = difficulty
         # UI
         pygame.init ()
+
         self.image = pygame.image.load (Const.ROOT_PATH_SRV + "/Images/Grille.png")
         sizeim = self.image.get_size ()
         size = (sizeim[0]*1, sizeim[1])
         self.screen = pygame.display.set_mode (size)
         self.pionjaune = pygame.image.load (Const.ROOT_PATH_SRV +"/Images/PionJaune.png")
         self.pionrouge = pygame.image.load (Const.ROOT_PATH_SRV +"/Images/PionRouge.png")
+        
         self.font = pygame.font.Font ("freesansbold.ttf", 15)
         self.tracker = Tr.Tracker()
         self.detector = Dr.Detector()
@@ -57,41 +60,46 @@ class Game(object):
         tracker = Tr.Tracker()
         detector = Dr.Detector()
         
-        done = False;
-        while not done :
-            img, binary = tracker.detect(frame,Color.BLUE)
+        img, binary = tracker.detect(frame,Color.BLUE)
 
-            blKp = detector.getAll(img)
-            ylKp = detector.getYellows(img)
-            rdKp = detector.getReds(img)
+        blKp = detector.getAll(img)
+        ylKp = detector.getYellows(img)
+        rdKp = detector.getReds(img)
 
-            img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-            #DEBUG
-            #cv2.imshow("img",img)
-            #while True:
-            #    if cv2.waitKey(30) ==  ord('q'):
-            #        break
+		#DEBUG
+		#cv2.imshow("img",img)
+		#while True:
+		#    if cv2.waitKey(30) ==  ord('q'):
+		#        break
+
+        try :
+            tmp = Plateau.createTable(rdKp, ylKp, blKp)
+            if(self.p.isNext(tmp)):
+                self.p = tmp
+                self.ia1.plateau = tmp
+            else :
+                print("Erreur de coherence")
+                raise Exception("Erreur de coherence")
+        except :
+            print("Demande d'image")
+            return -1,0
             
-            try :
-                self.p = Plateau.createTable(rdKp, ylKp, blKp)
-                self.ia1.plateau = self.p
-                done = True;
-            except :
-                pass
-        print(self.p.plateau)
-
         if self.doubleIA:
             # move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
-            move = self.ia1.choix_colonne(self.player,3),Plateau.J[self.player]
+            move = self.ia1.choix_colonne(self.player,self.difficulty),Plateau.J[self.player]
             self.player = self.player % 2 + 1
         else:
-            move = self.ia1.choix_colonne(1,3),Plateau.J[1]
+            move = self.ia1.choix_colonne(1,self.difficulty),Plateau.J[1]
+            
         self.p.addColonne(move[0],move[1])
         return move
 
+    def winner(self):
+        return int(self.p.whois(self.p.winner()))
     
     def isEnd(self):
         return self.p.end()

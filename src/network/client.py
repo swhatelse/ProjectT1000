@@ -7,13 +7,13 @@ import os
 import random
 import time
 
-from Interface_nao.Drivers import In_Driver as Reception
-from Interface_nao.Drivers import Move_Driver as Action
-from Interface_nao.Drivers import Say_Driver as Nao_dit
+# from Interface_nao.Drivers import In_Driver as Reception
+# from Interface_nao.Drivers import Move_Driver as Action
+# from Interface_nao.Drivers import Say_Driver as Nao_dit
 
-# from Interface_nao import Interface_entree as Reception
-# from Interface_nao import Interface_mouvement as Action
-# from Interface_nao import Interface_sortie as Nao_dit
+from Interface_nao import Interface_entree as Reception
+from Interface_nao import Interface_mouvement as Action
+from Interface_nao import Interface_sortie as Nao_dit
 
 from network import NetUtils
 from Global import Const
@@ -33,19 +33,15 @@ class Client(object):
     # Interroge le serveur sur le coup à jouer
     def request(self):
         length = os.path.getsize(self.path)
-        print(length)
         fd = open(self.path, 'rb')
         img = fd.read()
         NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
         fd.close()
-
         # récupération du coup à jouer
         msgType, move = NetUtils.receive(self.sock)
-        print('img sent')
         return msgType, move
 
     def naoPlays(self):
-        Nao_dit.Interface_sortie("A moi de jouer!","")
         # DEBUG
         time.sleep(0.1)
         self.entry.Prendre_Photo()
@@ -64,13 +60,22 @@ class Client(object):
             #on attend que l'on ai presse le pied gauche
             while(ready == 0):
                 ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-                time.sleep(0.1)
+                time.sleep(0.02)
             
                 self.Position_nao.Faire(Action.Lacher_Jeton,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
+            Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
+            # Nao_dit.Interface_sortie("Partie terminé ", "")
+            
+        elif action == NetUtils.MSG_FAILURE:
+            self.naoPlays()
 
+    def naoFirstPlays(self):
+        Nao_dit.Interface_sortie("Je commence a jouer","")
+        self.naoPlays()
+        
     def humanPlays(self):
         Nao_dit.Interface_sortie("A vous de jouer","")
         human_done = False
@@ -97,14 +102,12 @@ class Client(object):
             else:
                 NetUtils.send(self.sock, NetUtils.MSG_START, 1, 1)
 
-            # TODO : choix du niveau de difficulté
-
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
             Nao_dit.Interface_sortie("Let's rock baby!","")
             while self.inGame:
                 if(Joueur_courant == 1):
-                    self.naoPlays()
+                    self.naoFirstPlays()
                 else :
                     if not doubleIA:
                         self.humanPlays()
@@ -114,7 +117,7 @@ class Client(object):
                 Joueur_courant = Joueur_courant % 2 + 1
 
             self.sock.shutdown(socket.SHUT_RDWR)
-            self.sock.close
+            self.sock.close()
             Nao_dit.Interface_sortie("Partie terminée","")
 
     def __exit__(self, type, value, traceback):
@@ -123,5 +126,5 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    client.run(True)
-    # client.run(False)
+    # client.run(True)
+    client.run(False)
