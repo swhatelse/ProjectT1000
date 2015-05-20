@@ -101,10 +101,10 @@ class IA:
         win=self.plateau.winner()
         if(win==self.ia): 
             #~ print "win:"+str(win)
-            valeur = 202+50*(self.profondeur-profondeur+1)/self.profondeur
+            valeur = 202+50*profondeur/self.profondeur
         elif(win!=Plateau.J[0]): 
             #~ print "loose:"+str(win)
-            valeur = -(200+50*(self.profondeur-profondeur+1)/self.profondeur)
+            valeur = -(200+50*profondeur/self.profondeur)
         return valeur
 
 def erreur(s):
