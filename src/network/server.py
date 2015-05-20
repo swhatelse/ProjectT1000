@@ -120,11 +120,10 @@ class Server(object):
                     game.display()
 
                 print('Partie terminée')
-                # winner = game.winner()
-                # winner = 0
-                # print("winner : " + str(winner))
-                # NetUtils.send(cnx,NetUtils.MSG_HALT,1,winner)
-                NetUtils.send(cnx,NetUtils.MSG_HALT)
+                winner = game.winner()
+                print("winner : " + str(winner))
+                NetUtils.send(cnx,NetUtils.MSG_HALT,1,winner)
+                # NetUtils.send(cnx,NetUtils.MSG_HALT)
 
                         
         except KeyboardInterrupt:

@@ -21,7 +21,7 @@ def erreur(s):
 
 # Classe d'encapsulation du jeu. 
 class Game(object):
-    def __init__(self, doubleIA = False, difficulty = 6):
+    def __init__(self, doubleIA = False, difficulty = 3):
         self.player = 1
         self.doubleIA = doubleIA
         self.p = Plateau.Plateau(erreur)

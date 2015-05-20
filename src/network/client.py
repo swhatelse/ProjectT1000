@@ -47,7 +47,7 @@ class Client(object):
     def naoPlays(self):
         Nao_dit.Interface_sortie("A moi de jouer!","")
         # DEBUG
-        # time.sleep(1)
+        time.sleep(0.1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
@@ -70,8 +70,8 @@ class Client(object):
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
-            # Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
-            Nao_dit.Interface_sortie("Partie terminé ", "")
+            Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
+            # Nao_dit.Interface_sortie("Partie terminé ", "")
             
 
     def humanPlays(self):
