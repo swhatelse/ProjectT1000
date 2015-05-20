@@ -32,7 +32,7 @@ class Server(object):
             pass
         
         elif msgType == NetUtils.MSG_IMG:
-            nextMove = game.nextMove(Const.ROOT_PATH_SRV + "/Images/img.jpg")
+            nextMove = game.nextMove(Const.ROOT_PATH + "/Images/img.jpg")
             print("Coup : " + str(nextMove))
             if nextMove[0] >= 0:
                 NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
@@ -51,7 +51,7 @@ class Server(object):
         length = int(length.decode())
 
         received = 0
-        with open(Const.ROOT_PATH_SRV + "/Images/img.jpg", 'wb') as f:
+        with open(Const.ROOT_PATH + "/Images/img.jpg", 'wb') as f:
             while received < length:
                 print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)
@@ -59,7 +59,7 @@ class Server(object):
                 received += len(data)
             f.close()
             
-            nextMove = game.nextMove(Const.ROOT_PATH_SRV + "/Images/img.jpg")
+            nextMove = game.nextMove(Const.ROOT_PATH + "/Images/img.jpg")
             cnx.send(nextMove)
 
     def handleInterraction(self, game, cnx):
