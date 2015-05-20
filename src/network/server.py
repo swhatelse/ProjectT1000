@@ -31,6 +31,7 @@ class Server(object):
     #         self.handleInterraction(game, cnx)
 
     def handle(self, game, cnx):
+        print('handle')
         msgType, data = NetUtils.receive(cnx)
         if msgType == NetUtils.MSG_DATA:
             pass
@@ -41,8 +42,10 @@ class Server(object):
             
             if nextMove[0] >= 0:
                 NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
-            else
-                NetUtils.send(cnx, NetUtils.MSG_IMG, 0, None)
+            else :
+                print("Envoi demande d image")
+                NetUtils.send(cnx, NetUtils.MSG_FAILURE, 0, None)
+                self.handle(game, cnx)
         elif msgType == NetUtils.MSG_START:
             pass
         # halt
@@ -127,9 +130,9 @@ class Server(object):
                         
         except KeyboardInterrupt:
             print("connection closed")
-            self.sock.shutdown()
+            self.sock.shutdown(socket.SHUT_RDWR)
             self.sock.close()
-            cnx.shutdown()
+            cnx.shutdown(socket.SHUT_RDWR)
             cnx.close()
 
 
