@@ -32,9 +32,8 @@ class Server(object):
             pass
         
         elif msgType == NetUtils.MSG_IMG:
-            nextMove = game.nextMove(Const.ROOT_PATH_SRV + "/Images/img.jpg")
+            nextMove = game.nextMove(Const.ROOT_PATH + "/Images/img.png")
             print("Coup : " + str(nextMove))
-
             if nextMove[0] >= 0:
                 NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
             else :
@@ -52,7 +51,7 @@ class Server(object):
         length = int(length.decode())
 
         received = 0
-        with open(Const.ROOT_PATH_SRV + "/Images/img.jpg", 'wb') as f:
+        with open(Const.ROOT_PATH + "/Images/img.png", 'wb') as f:
             while received < length:
                 print(str(received) + ' < ' + str(length)) 
                 data = cnx.recv(1024)
@@ -60,7 +59,7 @@ class Server(object):
                 received += len(data)
             f.close()
             
-            nextMove = game.nextMove(Const.ROOT_PATH_SRV + "/Images/img.jpg")
+            nextMove = game.nextMove(Const.ROOT_PATH + "/Images/img.png")
             cnx.send(nextMove)
 
     def handleInterraction(self, game, cnx):
@@ -75,7 +74,7 @@ class Server(object):
             length = cnx.recv(8)
             length = int(length.decode())
             received = 0
-            with open("img.jpg", 'wb') as f:
+            with open("img.png", 'wb') as f:
                 while received < length:
                     print(str(received) + ' < ' + str(length)) 
                     data = cnx.recv(1024)
@@ -104,17 +103,20 @@ class Server(object):
 
                 # defini le mode de jeux
                 msgType, nbAI = NetUtils.receive(cnx)
-                nbAI = int(nbAI.decode())
-                print("Nombre d'IA " + str(nbAI))
-                if nbAI == 2:
-                    game = Game.Game(True)
-                    print("Machine vs machine")
-                else:
-                    game = Game.Game(False)
-                    print("Man vs machine")
+                if msgType == NetUtils.MSG_START:
+                    nbAI = int(nbAI.decode())
+                    print("Nombre d'IA " + str(nbAI))
+                    if nbAI == 2:
+                        game = Game.Game(True)
+                        print("Machine vs machine")
+                    else:
+                        game = Game.Game(False)
+                        print("Man vs machine")
 
-                # début la partie
-                self.gameContinue = True
+                    # début la partie
+                    self.gameContinue = True
+                    # self.gameContinue = False
+                    
                 while not game.isEnd() and self.gameContinue:
                     game.display()
                     self.handle(game, cnx)

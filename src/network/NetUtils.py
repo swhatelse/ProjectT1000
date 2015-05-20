@@ -48,6 +48,7 @@ def receive(cnx):
         length = cnx.recv(8)
         length = int(length.decode())
         data = cnx.recv(length)
+        # data = None
     elif msgType == MSG_DATA:
         length = cnx.recv(8)
         length = int(length.decode())
@@ -62,7 +63,7 @@ def receive(cnx):
         length = cnx.recv(8)
         length = int(length.decode())
         received = 0
-        with open(Const.ROOT_PATH_SRV +"/Images/img.jpg", 'wb') as f:
+        with open(Const.ROOT_PATH +"/Images/img.png", 'wb') as f:
             while received < length:
                 data = cnx.recv(1024)
                 f.write(data)

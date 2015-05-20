@@ -21,7 +21,7 @@ def erreur(s):
 
 # Classe d'encapsulation du jeu. 
 class Game(object):
-    def __init__(self, doubleIA = False, difficulty = 2):
+    def __init__(self, doubleIA = False, difficulty = 3):
         self.player = 1
         self.doubleIA = doubleIA
         self.p = Plateau.Plateau(erreur)
@@ -30,12 +30,12 @@ class Game(object):
         # UI
         pygame.init ()
 
-        self.image = pygame.image.load (Const.ROOT_PATH_SRV + "/Images/Grille.png")
+        self.image = pygame.image.load (Const.ROOT_PATH + "/Images/Grille.png")
         sizeim = self.image.get_size ()
         size = (sizeim[0]*1, sizeim[1])
         self.screen = pygame.display.set_mode (size)
-        self.pionjaune = pygame.image.load (Const.ROOT_PATH_SRV +"/Images/PionJaune.png")
-        self.pionrouge = pygame.image.load (Const.ROOT_PATH_SRV +"/Images/PionRouge.png")
+        self.pionjaune = pygame.image.load (Const.ROOT_PATH +"/Images/PionJaune.png")
+        self.pionrouge = pygame.image.load (Const.ROOT_PATH +"/Images/PionRouge.png")
         
         self.font = pygame.font.Font ("freesansbold.ttf", 15)
         self.tracker = Tr.Tracker()

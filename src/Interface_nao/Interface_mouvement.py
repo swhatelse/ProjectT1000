@@ -5,23 +5,21 @@ import Interface_sortie
 """ Cette classe permet de realiser les mouvements que nous avons enregistrer dans choregraphe
 """
 
-# class Positions(Enum):
-#     Debut_Jeu = 0
-#     Think = 1
-#     Think_End = 2
-#     Prise_Jeton = 3
-#     Lacher_Jeton = 4
-#     SitDown = 5
-#     Fin_Jeu = 6
-#     StandUp = 7
+Debut_Jeu = 0
+Think = 1
+Think_End = 2
+Prise_Jeton = 3
+Lacher_Jeton = 4
+SitDown = 5
+Fin_Jeu = 6
+StandUp = 7
+
 
 class Interface_mouvement :
 
 
     def __init__(self) :
 		#on defini la liste des mouvements possibles		
-		# self.Liste_mouvement= ["P4_Position_Debut_Jeu", "P4_Position_Think", "P4_Position_Think_End", "P4_Position_Prise_Jeton", "P4_Position_Lacher_Jeton", "SitDown", "P4_Position_Fin_Jeu", "StandUp"]
-
         self.Liste_mouvement= ["Debut_Jeu", "Think", "Think_End", "Prise_Jeton", "Lacher_Jeton", "SitDown", "Fin_Jeu", "StandUp"]
 
     """

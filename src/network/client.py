@@ -22,7 +22,7 @@ class Client(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
-        self.path = Const.ROOT_PATH_CLT + "/Images/img.jpg"
+        self.path = Const.ROOT_PATH + "/Images/img.png"
         self.inGame = False
         try:
             self.entry = Reception.Interface_entree()
@@ -35,20 +35,25 @@ class Client(object):
         length = os.path.getsize(self.path)
         fd = open(self.path, 'rb')
         img = fd.read()
+        print("Envoi de l'image au serveur")
         NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
         fd.close()
         # récupération du coup à jouer
+        print("Attente de la réponse du serveur")
         msgType, move = NetUtils.receive(self.sock)
         return msgType, move
 
     def naoPlays(self):
         # DEBUG
-        #time.sleep(1)
+        time.sleep(0.1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
         # Envoi de la demande au serveur
         action, move = self.request()
+        print("Réponse reçu:")
+        print("Action :" + str(action))
+        print("Move : " + str(move))
         
         self.Position_nao.Faire(Action.Think_End,5)
 
@@ -60,12 +65,14 @@ class Client(object):
             #on attend que l'on ai presse le pied gauche
             while(ready == 0):
                 ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-                time.sleep(0.01)
+                time.sleep(0.02)
             
                 self.Position_nao.Faire(Action.Lacher_Jeton,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
+            Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
+            
         elif action == NetUtils.MSG_FAILURE:
             self.naoPlays()
 
@@ -95,13 +102,17 @@ class Client(object):
 
             # Activation du jeux IA contre IA pour test et débuggage
             if doubleIA:
-                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 2)
+                print("IA VS IA")
+                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 2)
             else:
-                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 1)
+                print("Humain VS IA")
+                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 1)
 
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
+            print("Le joueur " + str(Joueur_courant) + " commence")
             Nao_dit.Interface_sortie("Let's rock baby!","")
+            
             while self.inGame:
                 if(Joueur_courant == 1):
                     self.naoFirstPlays()
@@ -114,7 +125,7 @@ class Client(object):
                 Joueur_courant = Joueur_courant % 2 + 1
 
             self.sock.shutdown(socket.SHUT_RDWR)
-            self.sock.close
+            self.sock.close()
             Nao_dit.Interface_sortie("Partie terminée","")
 
     def __exit__(self, type, value, traceback):
