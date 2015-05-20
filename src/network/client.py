@@ -11,22 +11,23 @@ import time
 # from Interface_nao.Drivers import Move_Driver as Action
 # from Interface_nao.Drivers import Say_Driver as Nao_dit
 
-from Interface_nao import Interface_entree as Reception
-from Interface_nao import Interface_mouvement as Action
-from Interface_nao import Interface_sortie as Nao_dit
+import Interface_entree as Reception
+import Interface_mouvement as Action
+import Interface_sortie as Nao_dit
 
-from network import NetUtils
-from Global import Const
+import NetUtils
+import Const
 
 class Client(object):
     def __init__(self):
-        self.IP = "127.0.0.1"
+        self.IP = "192.168.0.107"
         self.port = 6669
         self.path = Const.ROOT_PATH + "/Images/img.jpg"
         self.inGame = False
         try:
             self.entry = Reception.Interface_entree()
             self.Position_nao = Action.Interface_mouvement()
+            self.Position_nao.Faire(0,40)
         except:
             sys.exit("Impossible d'initialiser le client")
 
@@ -47,7 +48,7 @@ class Client(object):
         # DEBUG
         time.sleep(0.1)
         self.entry.Prendre_Photo()
-        self.Position_nao.Faire(Action.Think,5)
+        self.Position_nao.Faire(1,5)
         
         # Envoi de la demande au serveur
         action, move = self.request()
@@ -55,11 +56,11 @@ class Client(object):
         print("Action :" + str(action))
         print("Move : " + str(move))
         
-        self.Position_nao.Faire(Action.Think_End,5)
+        self.Position_nao.Faire(2,5)
 
         if action == NetUtils.MSG_DATA:
             Nao_dit.Interface_sortie("Coup a jouer en " + str(int(move) + 1),"")
-            self.Position_nao.Faire(Action.Prise_Jeton,10)
+            self.Position_nao.Faire(3,10)
         
             ready = 0
             #on attend que l'on ai presse le pied gauche
@@ -67,7 +68,7 @@ class Client(object):
                 ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
                 time.sleep(0.02)
             
-                self.Position_nao.Faire(Action.Lacher_Jeton,5)
+                self.Position_nao.Faire(4,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
@@ -129,6 +130,7 @@ class Client(object):
             Nao_dit.Interface_sortie("Partie terminée","")
 
     def __exit__(self, type, value, traceback):
+        self.Position_nao.Faire(6,10)#on remet nao en position de securite
         print("exited properly")
         self.sock.close()
 

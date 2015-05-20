@@ -20,9 +20,9 @@ class Interface_mouvement :
 
     def __init__(self) :
 		#on defini la liste des mouvements possibles		
-		# self.Liste_mouvement= ["P4_Position_Debut_Jeu", "P4_Position_Think", "P4_Position_Think_End", "P4_Position_Prise_Jeton", "P4_Position_Lacher_Jeton", "SitDown", "P4_Position_Fin_Jeu", "StandUp"]
+		self.Liste_mouvement= ["P4_Position_Debut_Jeu", "P4_Position_Think", "P4_Position_Think_End", "P4_Position_Prise_Jeton", "P4_Position_Lacher_Jeton", "SitDown", "P4_Position_Fin_Jeu", "StandUp"]
 
-        self.Liste_mouvement= ["Debut_Jeu", "Think", "Think_End", "Prise_Jeton", "Lacher_Jeton", "SitDown", "Fin_Jeu", "StandUp"]
+        #self.Liste_mouvement= ["Debut_Jeu", "Think", "Think_End", "Prise_Jeton", "Lacher_Jeton", "SitDown", "Fin_Jeu", "StandUp"]
 
     """
     @Choix_Mouvement est un numero de la liste initialiser a la creation de notre classe ci-dessus
