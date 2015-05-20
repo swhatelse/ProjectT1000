@@ -206,6 +206,7 @@ class Plateau:
         return self.winner()!=self._J[0]
         
     def isNext(self, p):
+        jBis = [0,0,0]
         diff=0
         for colonne in range(0, self.NB_COLONNE):
             lastIsEmpty=False
@@ -219,21 +220,9 @@ class Plateau:
                     if(diff>1):
                         print("2 coups de differences")
                         return False
-        return True;
-					
-    def coherence(self):
-        result=True
-        for colonne in range(0,self.NB_COLONNE):
-            ligne=self.NB_LIGNE
-            flag=0
-            while(ligne>0 and result):
-                ligne-=1
-                if(flag==0 and self.plateau[ligne][colonne]==self._J[0]):
-                    flag=1
-                elif(flag==1 and self.plateau[ligne][colonne]!=self._J[0]):
-                    #~ self.affichePlateau()
-                    result=False
-        return result
+                jBis[p.plateau[ligne][colonne]] += 1;
+        diffColor = jBis[1]-jBis[2];
+        return diffColor>=-1 and diffColor<=1;
 
 def erreur(s):
     print s    

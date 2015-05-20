@@ -43,7 +43,7 @@ class Client(object):
 
     def naoPlays(self):
         # DEBUG
-        time.sleep(1)
+        #time.sleep(1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
@@ -60,7 +60,7 @@ class Client(object):
             #on attend que l'on ai presse le pied gauche
             while(ready == 0):
                 ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-                time.sleep(1)
+                time.sleep(0.01)
             
                 self.Position_nao.Faire(Action.Lacher_Jeton,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
