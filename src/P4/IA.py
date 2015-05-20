@@ -101,14 +101,14 @@ class IA:
         win=self.plateau.winner()
         if(win==self.ia): 
             #~ print "win:"+str(win)
-            valeur = 202+50*profondeur/self.profondeur
+            valeur = 101/(self.profondeur-profondeur)
         elif(win!=Plateau.J[0]): 
             #~ print "loose:"+str(win)
-            valeur = -(200+50*profondeur/self.profondeur)
+            valeur = -100/(self.profondeur-profondeur)
         return valeur
 
 def erreur(s):
-    print s    
+    print s
 
 if __name__ == '__main__':
     """fonction main de test de l'ia"""
