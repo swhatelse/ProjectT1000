@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 import cv2
 import numpy as np
@@ -8,6 +9,7 @@ import Color
 def nothing(x):
     pass
 
+""" Permet localiser UN et UN SEUL objet en fonction de ça couleur """
 class Tracker(object):
 
     def __init__(self, debug = False):
@@ -25,7 +27,7 @@ class Tracker(object):
         binary = cv2.inRange(hsv, color.lowHSV, color.highHSV)
         return binary
 
-    # Use this only for debug
+    """ Utilisé pour le debug, affiche l'histogramme de projection """
     def show_hist(self):
         bin_count = self.hist.shape[0]
         bin_w = 24
@@ -36,10 +38,9 @@ class Tracker(object):
             img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
             cv2.imshow('hist', img)
 
-    # Find ONE object in the image and return the reduce image
-    # containing this object
-    # return isolated : the target
-    # return mask : the binary image for debuging purpose 
+    """ Trouve UN objet dans une image et retourne une image réduite centrée sur l'objet """ 
+    """ return isolated : la cible """
+    """ return mask : image binaire pour du debug """ 
     def detect(self, img, color):
         height, width, depth = img.shape
             
@@ -48,7 +49,6 @@ class Tracker(object):
             
         roi = cv2.cvtColor(roi,cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(roi,color.lowHSV,color.highHSV)
-        # mask = Color.detectColor(img,color)
         hist = cv2.calcHist([roi], [0], mask, [16], [0,180])
         cv2.normalize(hist, hist, 0, 255, cv2.NORM_MINMAX)
         self.hist = hist.reshape(-1)

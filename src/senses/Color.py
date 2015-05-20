@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 import numpy as np
 import cv2
 
+""" Sert à définir une plage de couleur en HSV """
 class Color(object):
     def __init__(self, low, high):
         self.lowHSV = low

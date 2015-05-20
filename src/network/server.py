@@ -37,8 +37,6 @@ class Server(object):
             print("Coup : " + str(nextMove))
             if nextMove >= 0:
                 tmp = json.dumps(nextMove)
-                print(tmp)
-                # NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
                 NetUtils.send(cnx, NetUtils.MSG_DATA, len(tmp), tmp)
             else :
                 NetUtils.send(cnx, NetUtils.MSG_FAILURE, 0, None)
@@ -50,28 +48,6 @@ class Server(object):
         elif msgType == NetUtils.MSG_HALT:
             NetUtils.send(cnx,NetUtils.MSG_HALT)
 
-
-    def handleImg(self, game, cnx):
-        length = cnx.recv(8)
-        length = int(length.decode())
-
-        received = 0
-        with open(Const.ROOT_PATH + "/Images/img.png", 'wb') as f:
-            while received < length:
-                print(str(received) + ' < ' + str(length)) 
-                data = cnx.recv(1024)
-                f.write(data)
-                received += len(data)
-            f.close()
-            
-            nextMove = game.nextMove(Const.ROOT_PATH + "/Images/img.png")
-            cnx.send(nextMove)
-
-    def handleInterraction(self, game, cnx):
-        data = cnx.recv(1024)
-        if data == "stop":
-            self.gameContinue = False
-    
     def run(self):
         try:
             print('Démarrage du serveur')
