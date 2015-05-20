@@ -6,6 +6,7 @@ import sys
 import os
 import random
 import time
+import json
 
 from Interface_nao.Drivers import In_Driver as Reception
 from Interface_nao.Drivers import Move_Driver as Action
@@ -50,13 +51,16 @@ class Client(object):
         self.Position_nao.Faire(Action.Think,5)
         
         # Envoi de la demande au serveur
-        action, move = self.request()
+        action, result = self.request()
+        result = json.loads(result)
+        move = result[0]
+        winner = result[1]
         print("Réponse reçu:")
         print("Action :" + str(action))
         print("Move : " + str(move))
         
         self.Position_nao.Faire(Action.Think_End,5)
-
+        
         if action == NetUtils.MSG_DATA:
             Nao_dit.Interface_sortie("Coup a jouer en " + str(int(move) + 1),"")
             self.Position_nao.Faire(Action.Prise_Jeton,10)
@@ -69,13 +73,14 @@ class Client(object):
             
                 self.Position_nao.Faire(Action.Lacher_Jeton,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
-        elif action == NetUtils.MSG_HALT:
-            self.inGame = False
-            Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
-            
+
+            if not result[1] == 0:
+                self.inGame = False
+                Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + str(move), "")
+                
         elif action == NetUtils.MSG_FAILURE:
             self.naoPlays()
-
+            
     def naoFirstPlays(self):
         Nao_dit.Interface_sortie("Je commence a jouer","")
         self.naoPlays()
@@ -127,6 +132,7 @@ class Client(object):
             self.sock.shutdown(socket.SHUT_RDWR)
             self.sock.close()
             Nao_dit.Interface_sortie("Partie terminée","")
+            break
 
     def __exit__(self, type, value, traceback):
         print("exited properly")

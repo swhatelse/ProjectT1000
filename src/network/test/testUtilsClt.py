@@ -3,6 +3,7 @@
 import socket
 import sys
 import os
+import json
 
 from network import NetUtils
 
@@ -29,6 +30,11 @@ class TestUtilsClt(object):
     def testSend2(self):
         NetUtils.send(self.sock, 3, 1, 2)
 
+    def testSendTuple(self):
+        data = json.dumps((2,5))
+        NetUtils.send(self.sock, NetUtils.MSG_DATA, len(data), data)
+    
+
     def stop(self):
         self.sock.shutdown()
         self.sock.close()
@@ -36,6 +42,6 @@ class TestUtilsClt(object):
 if __name__ == "__main__":
     try:
         test = TestUtilsClt()
-        test.testSend2()
+        test.testSendTuple()
     except KeyboardInterrupt:
         test.stop()

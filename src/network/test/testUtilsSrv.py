@@ -2,6 +2,7 @@
 
 import socket
 import sys
+import json
 
 from network import NetUtils
 
@@ -28,6 +29,13 @@ class TestUtilsSrv(object):
         print(msgType)
         print(data)
 
+    def testRecvTuple(self):
+        cnx, addr = self.sock.accept()
+        msgType, data = NetUtils.receive(cnx)
+        data = json.loads(data)
+        print(msgType)
+        print(data[1] + 1)
+        
     def stop(self):
         self.sock.shutdown()
         self.sock.close()
@@ -35,6 +43,6 @@ class TestUtilsSrv(object):
 if __name__ == "__main__":
     try:
         test = TestUtilsSrv()
-        test.testRecv2()
+        test.testRecvTuple()
     except KeyboardInterrupt:
         test.stop()

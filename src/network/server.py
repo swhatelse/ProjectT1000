@@ -6,6 +6,7 @@ import socket
 import sys
 import time
 import pygame
+import json
 
 from P4 import Game
 from network import NetUtils
@@ -34,11 +35,15 @@ class Server(object):
         elif msgType == NetUtils.MSG_IMG:
             nextMove = game.nextMove(Const.ROOT_PATH + "/Images/img.png")
             print("Coup : " + str(nextMove))
-            if nextMove[0] >= 0:
-                NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
+            if nextMove >= 0:
+                tmp = json.dumps(nextMove)
+                print(tmp)
+                # NetUtils.send(cnx, NetUtils.MSG_DATA, 1, nextMove[0])
+                NetUtils.send(cnx, NetUtils.MSG_DATA, len(tmp), tmp)
             else :
                 NetUtils.send(cnx, NetUtils.MSG_FAILURE, 0, None)
                 self.handle(game, cnx)
+                
         elif msgType == NetUtils.MSG_START:
             pass
         
@@ -121,6 +126,9 @@ class Server(object):
                     game.display()
                     self.handle(game, cnx)
                     game.display()
+                    img = cv2.imread(Const.ROOT_PATH + "Images/debug.jpg")
+                    # cv2.imshow("img",img)
+
 
                 print('Partie terminée')
                 winner = game.winner()
