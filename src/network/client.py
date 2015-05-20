@@ -62,17 +62,18 @@ class Client(object):
         self.Position_nao.Faire(Action.Think_End,5)
         
         if action == NetUtils.MSG_DATA:
-            Nao_dit.Interface_sortie("Coup a jouer en " + str(int(move) + 1),"")
-            self.Position_nao.Faire(Action.Prise_Jeton,10)
+            if not move == None:
+                Nao_dit.Interface_sortie("Coup a jouer en " + str(int(move) + 1),"")
+                self.Position_nao.Faire(Action.Prise_Jeton,10)
         
-            ready = 0
-            #on attend que l'on ai presse le pied gauche
-            while(ready == 0):
-                ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-                time.sleep(0.02)
+                ready = 0
+                #on attend que l'on ai presse le pied gauche
+                while(ready == 0):
+                    ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
+                    time.sleep(0.02)
             
-                self.Position_nao.Faire(Action.Lacher_Jeton,5)
-                Nao_dit.Interface_sortie("J'ai fini de jouer", "")
+                    self.Position_nao.Faire(Action.Lacher_Jeton,5)
+                    Nao_dit.Interface_sortie("J'ai fini de jouer", "")
 
             if not result[1] == 0:
                 self.inGame = False

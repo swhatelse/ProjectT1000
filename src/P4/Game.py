@@ -92,15 +92,18 @@ class Game(object):
         except :
             print("Demande d'image")
             return -1,0
-            
-        if self.doubleIA:
-            move = self.ia1.choix_colonne(self.player,self.difficulty),Plateau.J[self.player]
-            self.player = self.player % 2 + 1
+
+        if self.winner() == 0:
+            if self.doubleIA:
+                move = self.ia1.choix_colonne(self.player,self.difficulty),Plateau.J[self.player]
+                self.player = self.player % 2 + 1
+            else:
+                move = self.ia1.choix_colonne(1,self.difficulty),Plateau.J[1]
+                
+            self.p.addColonne(move[0],move[1])
+            return [move[0], self.winner()]
         else:
-            move = self.ia1.choix_colonne(1,self.difficulty),Plateau.J[1]
-            
-        self.p.addColonne(move[0],move[1])
-        return [move[0], self.winner()]
+            return [None, self.winner()]
 
     def winner(self):
         return int(self.p.whois(self.p.winner()))
