@@ -134,5 +134,5 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    client.run(True)
-    # client.run(False)
+    # client.run(True)
+    client.run(False)
