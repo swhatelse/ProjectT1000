@@ -7,13 +7,13 @@ import os
 import random
 import time
 
-# from Interface_nao.Drivers import In_Driver as Reception
-# from Interface_nao.Drivers import Move_Driver as Action
-# from Interface_nao.Drivers import Say_Driver as Nao_dit
+from Interface_nao.Drivers import In_Driver as Reception
+from Interface_nao.Drivers import Move_Driver as Action
+from Interface_nao.Drivers import Say_Driver as Nao_dit
 
-from Interface_nao import Interface_entree as Reception
-from Interface_nao import Interface_mouvement as Action
-from Interface_nao import Interface_sortie as Nao_dit
+# from Interface_nao import Interface_entree as Reception
+# from Interface_nao import Interface_mouvement as Action
+# from Interface_nao import Interface_sortie as Nao_dit
 
 from network import NetUtils
 from Global import Const
@@ -47,7 +47,7 @@ class Client(object):
     def naoPlays(self):
         Nao_dit.Interface_sortie("A moi de jouer!","")
         # DEBUG
-        time.sleep(1)
+        time.sleep(0.1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
@@ -64,7 +64,7 @@ class Client(object):
             #on attend que l'on ai presse le pied gauche
             while(ready == 0):
                 ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-                time.sleep(1)
+                time.sleep(0.1)
             
                 self.Position_nao.Faire(Action.Lacher_Jeton,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
@@ -123,5 +123,5 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    # client.run(True)
-    client.run(False)
+    client.run(True)
+    # client.run(False)

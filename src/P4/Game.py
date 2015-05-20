@@ -85,10 +85,10 @@ class Game(object):
 
         if self.doubleIA:
             # move = self.ia1.choix_colonne(1,6),Plateau.J[self.player]
-            move = self.ia1.choix_colonne(self.player,6),Plateau.J[self.player]
+            move = self.ia1.choix_colonne(self.player,3),Plateau.J[self.player]
             self.player = self.player % 2 + 1
         else:
-            move = self.ia1.choix_colonne(1,6),Plateau.J[1]
+            move = self.ia1.choix_colonne(1,3),Plateau.J[1]
         self.p.addColonne(move[0],move[1])
         return move
 
