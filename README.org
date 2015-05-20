@@ -1,0 +1,42 @@
+* Configuration générale
+** Faire marcher les imports des modules
+   Exécuter le script qui se trouve dans le repertoire src/
+   #+BEGIN_EXAMPLE
+   . ./export.sh
+   #+END_EXAMPLE
+
+** Définir le chemin du projet
+   Pour définir le chemin où se trouve le répertoire source pour le serveur et le 
+   client, modifier le fichier Global/Const.py 
+
+* Configuration du serveur
+** UI
+   Pour la partie de suivi graphique de la partie, le paquet pygame doit être installé.
+   Ce dernier est disponible dans les dépôt
+  
+** Connexion
+   Pour modifier l'IP du serveur où le port, modifier directement dans la classe 
+   network/server.py
+   
+* Configuration du client
+** Connexion
+   Pour paramtrer l'adresse du serveur distant ou le port modifier la classe 
+   network/client.py
+
+** Simulation de Nao
+*** Configuration de base
+   Pour effectuer des simulation sans Nao, remplacer les Interfaces_nao par les drivers 
+   correspondant dans la classe network/client.py et lancer le client dans client.py 
+   l'option doubleIA à True.
+
+*** Capture d'écran
+    Pour simuler la prise de photo, on utilise la capture d'ecran sur le P4 virtuel du
+    serveur. Pour cela il faut installer le logiciel imagemagick disponible dans les 
+    dépôts. 
+
+** Nao VS Nao
+   Il est également possible de faire jouer Nao contre lui même avec l'option DoubleIA à 
+   True
+* Lancer le jeu
+  Simpler lancer le client.py sur Nao et le serveur.py sur le pc, c'est deux fichiers 
+  sont dans network.

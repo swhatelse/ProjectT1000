@@ -5,7 +5,7 @@ import os
 import cv2
 import time
 
-from Global import const
+from Global import Const
 
 class Interface_entree:
 
@@ -13,7 +13,7 @@ class Interface_entree:
         pass
     # Take a screenshot of the game
     def Prendre_Photo(self) :
-        os.system('import -window root ' + const.ROOT_PATH + '/Images/img.jpg')
+        os.system('import -window root ' + Const.ROOT_PATH_CLT + '/Images/img.jpg')
 
     def Attente_Bumper(self,text,Event):
         # key = raw_input(text + ' : ' )

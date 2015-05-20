@@ -4,7 +4,7 @@ import socket
 import sys
 import os
 
-from Global import const
+from Global import Const
 
 # Type de message
 MSG_HALT = 0
@@ -54,7 +54,7 @@ def receive(cnx):
         length = cnx.recv(8)
         length = int(length.decode())
         received = 0
-        with open(const.ROOT_PATH +"/Images/img.jpg", 'wb') as f:
+        with open(Const.ROOT_PATH_SRV +"/Images/img.jpg", 'wb') as f:
             while received < length:
                 data = cnx.recv(1024)
                 f.write(data)

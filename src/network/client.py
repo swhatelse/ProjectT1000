@@ -7,21 +7,24 @@ import os
 import random
 import time
 
-from Interface_nao import *
 from Interface_nao.Drivers import In_Driver as Reception
 from Interface_nao.Drivers import Move_Driver as Action
 from Interface_nao.Drivers import Say_Driver as Nao_dit
+
+# from Interface_nao import Interface_entree as Reception
+# from Interface_nao import Interface_mouvement as Action
+# from Interface_nao import Interface_sortie as Nao_dit
+
 from network import NetUtils
-from Global import const
+from Global import Const
 
 class Client(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
-        self.path = const.ROOT_PATH + "/Images/img.jpg"
+        self.path = Const.ROOT_PATH_CLT + "/Images/img.jpg"
         self.inGame = False
         try:
-            # self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.entry = Reception.Interface_entree()
             self.Position_nao = Action.Interface_mouvement()
         except:
@@ -36,7 +39,6 @@ class Client(object):
         NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
         fd.close()
 
-    def handle(self):
         # récupération du coup à jouer
         msgType, move = NetUtils.receive(self.sock)
         print('img sent')
@@ -53,14 +55,12 @@ class Client(object):
         self.Position_nao.Faire(Action.Think,5)
         
         # Envoi de la demande au serveur
-        self.request()
-        action, move = self.handle()
+        action, move = self.request()
         
         self.Position_nao.Faire(Action.Think_End,5)
 
         if action == NetUtils.MSG_DATA:
-            # Nao_dit.Interface_sortie("Coup a jouer" + str((move + 1)),"")
-            Nao_dit.Interface_sortie("Coup a jouer" + str(int(move) + 1),"")
+            Nao_dit.Interface_sortie("Coup a jouer en " + str(int(move) + 1),"")
             self.Position_nao.Faire(Action.Prise_Jeton,10)
         
             ready = 0
@@ -77,7 +77,7 @@ class Client(object):
 			naoPlays()
         
     def humanPlays(self):
-        Nao_dit.Interface_sortie("A vous de commencer","")
+        Nao_dit.Interface_sortie("A vous de jouer","")
         human_done = False
         while not human_done:
             human_done = self.entry.Attente_Bumper("", "LeftBumperPressed")
@@ -106,8 +106,8 @@ class Client(object):
 
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
+            Nao_dit.Interface_sortie("Let's rock baby!","")
             while self.inGame:
-                print('Début de la partie')
                 if(Joueur_courant == 1):
                     self.naoFirstPlays()
                 else :
@@ -129,3 +129,4 @@ class Client(object):
 if __name__ == "__main__":
     client = Client()
     client.run(True)
+    # client.run(False)

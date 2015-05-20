@@ -2,11 +2,7 @@
 import socket
 import cv2
 import numpy
-<<<<<<< HEAD
-
-=======
 import ResValue
->>>>>>> mehdi
 
 def recvall(sock, count):
     buf = b''
@@ -31,16 +27,10 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((TCP_IP_server, TCP_PORT_server))
 s.listen(True)
 conn, addr = s.accept()
-<<<<<<< HEAD
-
-capture = cv2.VideoCapture(0)
-while(True):
-=======
 capture = cv2.VideoCapture(0)
 colonne=0
 #~ while(colonne!=ResValue.V.Fin):
 while(True  ):
->>>>>>> mehdi
     ret, frame = capture.read()
     
     encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),90]
@@ -50,35 +40,18 @@ while(True  ):
     
     sock.send( str(len(stringData)).ljust(16));
     sock.send( stringData );
-<<<<<<< HEAD
-    
-    decimg=cv2.imdecode(data,1)
-    cv2.imshow('CLIENT',decimg)
-        
-    #~ --
-    
-    
-    
-=======
     #~ 
     decimg=cv2.imdecode(data,1)
     cv2.imshow('CLIENT',decimg)
     
     #~ --
->>>>>>> mehdi
     
     length = recvall(conn,16)
     stringData = recvall(conn, int(length))
     
-<<<<<<< HEAD
-    
-    print int(stringData)
-    cv2.waitKey(0)
-=======
     colonne= int(stringData)
     cv2.waitKey(1) 
     
->>>>>>> mehdi
 cv2.destroyAllWindows() 
 s.close()
 sock.close()
