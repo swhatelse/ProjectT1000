@@ -64,7 +64,7 @@ class Client(object):
             #on attend que l'on ai presse le pied gauche
             while(ready == 0):
                 ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-                time.sleep(0.01)
+                time.sleep(0.02)
             
                 self.Position_nao.Faire(Action.Lacher_Jeton,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
