@@ -33,19 +33,15 @@ class Client(object):
     # Interroge le serveur sur le coup à jouer
     def request(self):
         length = os.path.getsize(self.path)
-        print(length)
         fd = open(self.path, 'rb')
         img = fd.read()
         NetUtils.send(self.sock,NetUtils.MSG_IMG,length,img)
         fd.close()
-
         # récupération du coup à jouer
         msgType, move = NetUtils.receive(self.sock)
-        print('img sent')
         return msgType, move
 
     def naoPlays(self):
-        Nao_dit.Interface_sortie("A moi de jouer!","")
         # DEBUG
         time.sleep(0.1)
         self.entry.Prendre_Photo()
@@ -73,7 +69,13 @@ class Client(object):
             Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
             # Nao_dit.Interface_sortie("Partie terminé ", "")
             
+        elif action == NetUtils.MSG_FAILURE:
+            self.naoPlays()
 
+    def naoFirstPlays(self):
+        Nao_dit.Interface_sortie("Je commence a jouer","")
+        self.naoPlays()
+        
     def humanPlays(self):
         Nao_dit.Interface_sortie("A vous de jouer","")
         human_done = False
@@ -105,7 +107,7 @@ class Client(object):
             Nao_dit.Interface_sortie("Let's rock baby!","")
             while self.inGame:
                 if(Joueur_courant == 1):
-                    self.naoPlays()
+                    self.naoFirstPlays()
                 else :
                     if not doubleIA:
                         self.humanPlays()

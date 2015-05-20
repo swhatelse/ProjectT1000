@@ -204,7 +204,23 @@ class Plateau:
         
     def end(self):
         return self.winner()!=self._J[0]
-    
+        
+    def isNext(self, p):
+        diff=0
+        for colonne in range(0, self.NB_COLONNE):
+            lastIsEmpty=False
+            for ligne in range(self.NB_LIGNE, 0):
+                if(lastIsEmpty and p.plateau[ligne][colonne]!=self._J[0]):
+                    print("Jeton en vol")
+                    return False
+                lastIsEmpty = p.plateau[ligne][colonne] == self._J[0]
+                if(self.plateau[ligne][colonne]!=p.plateau[ligne][colonne]):
+                    diff+=1
+                    if(diff>1):
+                        print("2 coups de differences")
+                        return False
+        return True;
+					
     def coherence(self):
         result=True
         for colonne in range(0,self.NB_COLONNE):
@@ -224,13 +240,14 @@ def erreur(s):
 
 def createTable(reds, yellows, emptys):
 	
+    if(len(emptys)!=42) :
+        print("Positions incompletes")
+        raise Exception("Positions incompletes")
+	
     reds = sorted(reds, key = lambda x:x.pt);
     yellows = sorted(yellows, key = lambda x:x.pt);
     emptys = sorted(emptys, key = lambda x:x.pt);
 
-    print(len(reds))
-    print(len(yellows))
-    print(len(emptys))
     plateau = Plateau(erreur);
     
     #~ si il existe des pions
@@ -243,37 +260,6 @@ def createTable(reds, yellows, emptys):
         if len(yellows) > 0 :
             rYell = yellows[0].size/2
         
-        # while len(emptys)>0 :
-        #     tmp = []
-        #     print(len(emptys))
-        #     #~ Retrait des 6 premiers puis tri sur les Y
-        #     for i in range (0,6):
-        #         tmp.append(emptys.pop());
-        #     tmp = sorted(tmp, key = lambda x:x.pt[1]);
-			
-        #     for e in tmp :
-        #         #~	Range X	and Range Y 
-        #         if (len(reds) > 0
-        #         and e.pt[0]-rRed>=reds[0].pt[0] and e.pt[0]+rRed<=reds[0].pt[0] 
-        #         and e.pt[1]-rRed>=reds[0].pt[1] and e.pt[1]+rRed<=reds[0].pt[1]):
-        #             plateau.plateau[x][y] = Plateau.J[1];
-        #             reds.pop();
-        #             if(len(reds) > 0):
-        #                 rRed = reds[0].size/2
-                        
-        #         elif (len(yellows) > 0
-        #         and e.pt[0]-rYell>=yellows[0].pt[0] and e.pt[0]+rYell<=yellows[0].pt[0] 
-        #         and e.pt[1]-rYell>=yellows[0].pt[1] and e.pt[1]+rYell<=yellows[0].pt[1]):
-        #             plateau.plateau[x][y] = Plateau.J[2];
-        #             yellows.pop();
-        #             if(len(yellows) > 0):
-        #                 rYell = yellows[0].size/2
-        #         x += 1;
-        #     y += 1;
-
-
-        ################################################################
-
         while len(emptys)>0 :
             #~ Retrait des 6 premiers puis tri sur les Y 
             #~ print "---------------------------------"
@@ -283,11 +269,8 @@ def createTable(reds, yellows, emptys):
                     tmp.append(emptys.pop(0));
             tmp = sorted(tmp, key = lambda x:x.pt[1]);
             x=0
+            # Recherche d'un pion correspondant
             for e in tmp :
-                #~ print e
-                #~  Range X and Range Y 
-                #~ print str(e.pt[0])+" "+str(e.pt[1]) +" "+str(reds[len(reds)-1].pt[0])+" "+str(reds[len(reds)-1].pt[1]),
-                #~ print " "+str(len(reds))
                 num=-1
                 red=None
                 for i,r in enumerate(reds):
@@ -315,12 +298,9 @@ def createTable(reds, yellows, emptys):
                 x += 1;
             y += 1;   
             
-    print("~"+str(len(reds)))
-    print("~"+str(len(yellows)))
-    print("~"+str(len(emptys)))
-    
     if(len(reds)>0 or len(yellows)>0):
-		raise Exception("snif2");
+        print("Positions incorrectes")
+        raise Exception("Positions incorrectes");
          
     return plateau;
 
