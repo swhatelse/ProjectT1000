@@ -70,6 +70,8 @@ class Client(object):
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
+            Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
+            
 
     def humanPlays(self):
         Nao_dit.Interface_sortie("A vous de jouer","")
@@ -93,11 +95,9 @@ class Client(object):
 
             # Activation du jeux IA contre IA pour test et débuggage
             if doubleIA:
-                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 2)
+                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 2)
             else:
-                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 1)
-
-            # TODO : choix du niveau de difficulté
+                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 1)
 
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
