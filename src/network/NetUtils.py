@@ -44,9 +44,10 @@ def receive(cnx):
 
     # Puis en le traite en fonction de son type
     if msgType == MSG_HALT:
-        length = cnx.recv(8)
-        length = int(length.decode())
-        data = cnx.recv(length)
+        # length = cnx.recv(8)
+        # length = int(length.decode())
+        # data = cnx.recv(length)
+        data = None
     elif msgType == MSG_DATA:
         length = cnx.recv(8)
         length = int(length.decode())

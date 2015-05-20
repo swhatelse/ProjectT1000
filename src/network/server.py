@@ -35,6 +35,7 @@ class Server(object):
             nextMove = game.nextMove(Const.ROOT_PATH_SRV + "/Images/img.jpg")
             print("Coup : " + str(nextMove))
             NetUtils.send(cnx,NetUtils.MSG_DATA,1,nextMove[0])
+            
         elif msgType == NetUtils.MSG_START:
             pass
         
@@ -99,34 +100,38 @@ class Server(object):
 
                 # defini le mode de jeux
                 msgType, nbAI = NetUtils.receive(cnx)
-                nbAI = int(nbAI.decode())
-                print("Nombre d'IA " + str(nbAI))
-                if nbAI == 2:
-                    game = Game.Game(True)
-                    print("Machine vs machine")
-                else:
-                    game = Game.Game(False)
-                    print("Man vs machine")
+                if msgType == NetUtils.MSG_START:
+                    nbAI = int(nbAI.decode())
+                    print("Nombre d'IA " + str(nbAI))
+                    if nbAI == 2:
+                        game = Game.Game(True)
+                        print("Machine vs machine")
+                    else:
+                        game = Game.Game(False)
+                        print("Man vs machine")
 
-                # début la partie
-                self.gameContinue = True
+                    # début la partie
+                    self.gameContinue = True
+                    # self.gameContinue = False
+                    
                 while not game.isEnd() and self.gameContinue:
                     game.display()
                     self.handle(game, cnx)
                     game.display()
 
                 print('Partie terminée')
-                winner = game.winner()
-                print("winner : " + str(winner))
-                NetUtils.send(cnx,NetUtils.MSG_HALT,1,winner)
-                # NetUtils.send(cnx,NetUtils.MSG_HALT)
+                # winner = game.winner()
+                # winner = 0
+                # print("winner : " + str(winner))
+                # NetUtils.send(cnx,NetUtils.MSG_HALT,1,winner)
+                NetUtils.send(cnx,NetUtils.MSG_HALT)
 
                         
         except KeyboardInterrupt:
             print("connection closed")
-            self.sock.shutdown()
+            self.sock.shutdown(socket.SHUT_RDWR)
             self.sock.close()
-            cnx.shutdown()
+            cnx.shutdown(socket.SHUT_RDWR)
             cnx.close()
 
 

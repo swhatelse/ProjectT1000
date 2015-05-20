@@ -47,7 +47,7 @@ class Client(object):
     def naoPlays(self):
         Nao_dit.Interface_sortie("A moi de jouer!","")
         # DEBUG
-        time.sleep(1)
+        # time.sleep(1)
         self.entry.Prendre_Photo()
         self.Position_nao.Faire(Action.Think,5)
         
@@ -64,13 +64,14 @@ class Client(object):
             #on attend que l'on ai presse le pied gauche
             while(ready == 0):
                 ready = self.entry.Attente_Bumper("", "LeftBumperPressed")
-                time.sleep(1)
+                time.sleep(0.01)
             
                 self.Position_nao.Faire(Action.Lacher_Jeton,5)
                 Nao_dit.Interface_sortie("J'ai fini de jouer", "")
         elif action == NetUtils.MSG_HALT:
             self.inGame = False
-            Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
+            # Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + move, "")
+            Nao_dit.Interface_sortie("Partie terminé ", "")
             
 
     def humanPlays(self):
@@ -95,9 +96,9 @@ class Client(object):
 
             # Activation du jeux IA contre IA pour test et débuggage
             if doubleIA:
-                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 2)
+                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 2)
             else:
-                NetUtils.send(self.sock, NetUtils.MSG_DATA, 1, 1)
+                NetUtils.send(self.sock, NetUtils.MSG_START, 1, 1)
 
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
@@ -114,7 +115,7 @@ class Client(object):
                 Joueur_courant = Joueur_courant % 2 + 1
 
             self.sock.shutdown(socket.SHUT_RDWR)
-            self.sock.close
+            self.sock.close()
             Nao_dit.Interface_sortie("Partie terminée","")
 
     def __exit__(self, type, value, traceback):
