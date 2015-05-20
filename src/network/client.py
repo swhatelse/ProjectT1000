@@ -22,7 +22,7 @@ class Client(object):
     def __init__(self):
         self.IP = "127.0.0.1"
         self.port = 6669
-        self.path = Const.ROOT_PATH + "/Images/img.jpg"
+        self.path = Const.ROOT_PATH + "/Images/img.png"
         self.inGame = False
         try:
             self.entry = Reception.Interface_entree()

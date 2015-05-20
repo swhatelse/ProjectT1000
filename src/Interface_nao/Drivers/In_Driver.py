@@ -13,7 +13,7 @@ class Interface_entree:
         pass
     # Take a screenshot of the game
     def Prendre_Photo(self) :
-        os.system('import -window root ' + Const.ROOT_PATH + '/Images/img.jpg')
+        os.system('import -window root ' + Const.ROOT_PATH + '/Images/img.png')
 
     def Attente_Bumper(self,text,Event):
         # key = raw_input(text + ' : ' )
