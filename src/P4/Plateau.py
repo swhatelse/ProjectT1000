@@ -18,25 +18,30 @@ import random
 """
 J=[0,1,2]
 class Plateau:
-
+""" class contenant le jeu du puissance 4"""
     def __init__(self,erreur) :
+        """constructeur contenant une fonction de callback pour les erreurs """
         self._J=[0,1,2]
         self.NB_LIGNE = 6
         self.NB_COLONNE = 7
         self.plateau = [[self._J[0] for x in range(0, self.NB_COLONNE)] for x in range(0, self.NB_LIGNE)]
         self.erreur=erreur
         self._premier=1
+        
     def _joueur_exist(self,joueur):
+        """ private: true si le joueur demandé existe, false sinon """
         b = False
         for i in self._J:
             b= b or (joueur==i)
         return b;
     
     def colonne_remplie(self,c):
+        """ private: true si la colonne est pleine, false sinon """
         
         return c<0 or c>=self.NB_COLONNE or self.plateau[0][c]!=self._J[0]
     
     def _set_case_plateau(self, colonne, ligne, joueur) :
+        """ private: rajoute le joueur dans le tableau si le joueur exist et si l'emplacement existe """
         if not self._joueur_exist(joueur):
             self.erreur("erreur, mauvaise valeur pour le joueur: "+str(joueur))
             exit
@@ -47,14 +52,14 @@ class Plateau:
         self.plateau[ligne][colonne] = joueur;
     
     def _en_dehors(self,ligne,colonne):
+        """ private: true si les coordonnée sortent du tableau, false sinon """
         b=False
         if ligne >=self.NB_LIGNE or ligne <0 or colonne<0 or colonne>=self.NB_COLONNE:
             b=True
         return b
         
-    def addColonne(self,colonne,joueur): 
-        #~ print "le joueur " + str(self.whois(joueur))+" joue en colonne "+str(colonne)
-        
+    def addColonne(self,colonne,joueur):         
+        """ private: ajoute en colonne ou relève une assertion """
        
         if not self._joueur_exist(joueur):
             self.erreur("erreur, mauvaise valeur pour le joueur :"+ str(joueur))
@@ -71,6 +76,7 @@ class Plateau:
         self.plateau[i][colonne]=joueur
     
     def removeColonne(self,colonne):
+        """ private: supprime en colonne ou relève une assertion """
         
         #~ print "suppression en colonne "+str(colonne)
         i=0
@@ -80,20 +86,24 @@ class Plateau:
             self.plateau[i][colonne]=self._J[0]
     
     def get_case_plateau(self, colonne, ligne) :
+        """ public: retourne la case du tableau ou relève une assertion """
         if self._en_dehors(ligne,colonne):
             self.erreur("en dehors du tableau")
             exit
         return self.plateau[colonne][ligne]
 
     def init_plateau(self) :
+        """ private: initialise le plateau a J[0] """
         for i in range (0, self.NB_LIGNE) :
             for j in range (0, self.NB_COLONNE) :
                 self.plateau[i][j] = self._J[0]
 
     def affichePlateau(self) : 
+        """public: affiche le plateau dans la sortie standard """
         print self.toString()
     
     def toString(self):
+        """ renvoit une chaine de caractère définissant le tableau"""
         res=""
         for i in range(0, self.NB_LIGNE) :
             res+="|"
@@ -112,6 +122,7 @@ class Plateau:
     
     
     def whois(self,joueur):
+        """public: indique l'index du tableau dans lequel est le joueur """
         value=0
         for i,j in enumerate(self._J):
             if(joueur==j):  
@@ -136,6 +147,7 @@ class Plateau:
         self._tour=at
         
     def winner(self):
+        """public: renvoie J[0] si personne n'a gagné J[1] ou 2 si un des deux a gagné """
         b= False
         whithJ0=False
         winner=self._J[0]
@@ -203,6 +215,7 @@ class Plateau:
         return winner
         
     def end(self):
+        """ public : true si la partie est finie, false sinon """
         return self.winner()!=self._J[0]
         
     def isNext(self, p):
@@ -228,11 +241,14 @@ def erreur(s):
     print s    
 
 def createTable(reds, yellows, emptys):
-	
+    """ renvoie un plateau en fonction de trois liste de key-points, 
+    celle des jetons rouge, celle des jaunes et celles de vides.
+    cette fonction sert à partir de l'image de retrouver un plateau concordant pour l'ia """
+    
     if(len(emptys)!=42) :
         print("Positions incompletes")
         raise Exception("Positions incompletes")
-	
+    
     reds = sorted(reds, key = lambda x:x.pt);
     yellows = sorted(yellows, key = lambda x:x.pt);
     emptys = sorted(emptys, key = lambda x:x.pt);

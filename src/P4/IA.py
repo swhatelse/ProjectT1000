@@ -104,7 +104,7 @@ class IA:
             valeur = 101/(self.profondeur-profondeur)
         elif(win!=Plateau.J[0]): 
             #~ print "loose:"+str(win)
-            valeur = -100/(self.profondeur-profondeur)
+            valeur = -100/(self.profondeur)
         return valeur
 
 def erreur(s):
