@@ -72,33 +72,6 @@ class Server(object):
         if data == "stop":
             self.gameContinue = False
     
-    def handleIm_test(self):
-        try:
-            print("Server starts")
-            cnx, addr = self.sock.accept()
-            length = cnx.recv(8)
-            length = int(length.decode())
-            received = 0
-            with open("img.png", 'wb') as f:
-                while received < length:
-                    print(str(received) + ' < ' + str(length)) 
-                    data = cnx.recv(1024)
-                    f.write(data)
-                    received += len(data)
-                    
-            f.close()
-            time.sleep(5)
-
-            cnx.send("Done")
-            
-            self.sock.close()
-            cnx.close()
-
-        except KeyboardInterrupt:
-            print("connection closed")
-            self.sock.close()
-            cnx.close()
-
     def run(self):
         try:
             print('Démarrage du serveur')
@@ -127,22 +100,16 @@ class Server(object):
                     self.handle(game, cnx)
                     game.display()
                     img = cv2.imread(Const.ROOT_PATH + "Images/debug.jpg")
-                    # cv2.imshow("img",img)
 
 
                 print('Partie terminée')
-                winner = game.winner()
-                print("winner : " + str(winner))
-                NetUtils.send(cnx,NetUtils.MSG_HALT,1,winner)
-                # NetUtils.send(cnx,NetUtils.MSG_HALT)
-
                         
         except KeyboardInterrupt:
             print("connection closed")
-            self.sock.shutdown(socket.SHUT_RDWR)
-            self.sock.close()
             cnx.shutdown(socket.SHUT_RDWR)
             cnx.close()
+            self.sock.shutdown(socket.SHUT_RDWR)
+            self.sock.close()
 
 
     def shutdown(self):
@@ -155,4 +122,3 @@ class Server(object):
 if __name__ == "__main__":
     server = Server()
     server.run()
-    # serveur.handleIm_test()
