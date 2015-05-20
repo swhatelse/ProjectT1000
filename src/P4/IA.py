@@ -4,15 +4,22 @@ import Plateau
 import random
 
 class IA:
+    """ Class contenant l'algo de résolution de type minmax """
     def __init__(self,plateau):
+        """public: constructeur prenant un plateau en paramètre, qui lui permettra de faire sa résolution """
+        #public
         self.plateau=plateau
+        
+        #private
         self.ia=Plateau.J[0]
         self.profondeur=0
         
     def inverserJoueur(self,joueur):
+        """private: définit le joueur suivant"""
         return Plateau.J[3-self.plateau.whois(joueur)]
 
     def choix_colonne(self, joueur, profondeur):
+        """public: minmax de profondeur:"profondeur" et commençant par le joueur:"joueur" """
         self.ia=joueur
         self.profondeur=profondeur
         valeurMax = -10000
@@ -37,7 +44,7 @@ class IA:
                     elif(valeurtmp == valeurMax):
                         liste.append(c)
                     self.plateau.removeColonne(c)
-        if(len(liste)!=1):
+        if(len(liste)!=1):"""choix au hasard parmis les possiblités d'égales valeurs """
             print "alea"
             f=True
             colonneHasard=0
@@ -51,6 +58,7 @@ class IA:
         return colonneOptimal
 
     def IAmin(self, profondeur, joueur):
+        """private: fonction min du minmax"""
         #~ print "iamin"+str(profondeur)
         valeurMin = 10000
         valeurtmp = 0
@@ -69,6 +77,8 @@ class IA:
         return valeurMin
                            
     def IAmax( self, profondeur, joueur):
+        """private: fonction max du minmax"""
+        
         #~ print "iamax:"+str(profondeur)
         valeurMax = -10000
         valeurtmp=0
@@ -86,20 +96,23 @@ class IA:
         return valeurMax
 
     def evaluationHeuristique(self, joueur, profondeur):
+        """private: fonction heuristique du minmax"""
+        
         valeur = 0
         win=self.plateau.winner()
         if(win==self.ia): 
             #~ print "win:"+str(win)
-            valeur = 200+10*profondeur
+            valeur = 202+10*profondeur
         elif(win!=Plateau.J[0]): 
             #~ print "loose:"+str(win)
-            valeur = -(100+10*profondeur)
+            valeur = -(200+10*profondeur)
         return valeur
 
 def erreur(s):
     print s    
 
 if __name__ == '__main__':
+    """fonction main de test de l'ia"""
     plateau=Plateau.Plateau(erreur)
     ia=IA(plateau)
     choix=ia.choix_colonne(1,1000)
