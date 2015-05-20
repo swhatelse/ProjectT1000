@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 import pygame
 import sys
@@ -19,7 +20,7 @@ from Global import Const
 def erreur(s):
     print s
 
-# Classe d'encapsulation du jeu. 
+""" Gère le jeu """ 
 class Game(object):
     def __init__(self, doubleIA = False, difficulty = 3):
         self.player = 1
@@ -41,6 +42,7 @@ class Game(object):
         self.tracker = Tr.Tracker()
         self.detector = Dr.Detector()
 
+    """ Affiche le suivi du jeu par un P4 virtuel """
     def display(self):
         matrice = self.p.plateau
         self.screen.fill((0,0,0))
@@ -52,7 +54,8 @@ class Game(object):
                 if matrice[i][j]==Plateau.J[2]:
                     self.screen.blit(self.pionjaune,(16+97*j,13+97.5*i))
         pygame.display.flip()
-            
+
+    """ Prend en param une image et retourne la colonne a jouer et le numéro du gagnant sinon 0"""
     def nextMove(self,path):
         frame = cv2.imread(path)
         tracker = Tr.Tracker()
