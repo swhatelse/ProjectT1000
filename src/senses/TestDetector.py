@@ -93,7 +93,7 @@ class TestDetector(object):
             # blKp = detector.getAll(img2,color)
             blKp = detector.getAll(img2)
 
-            img2 = cv2.drawKeypoints(img2, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            img2 = cv2.drawKeypoints(img2, blKp, np.array([]), (255,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             cv2.imshow("noise",img2)
             cv2.imshow("detect",img2)
 
@@ -203,7 +203,7 @@ if __name__ == '__main__':
     frame1 = cv2.imread('../Images/P4_Biais_Gauche.jpg',1)
     frame2 = cv2.imread('../Images/P4_Biais_Droit.jpg',1)
     frame3 = cv2.imread('../Images/p4virt.jpg',1)
-    # app.testGetAll(frame3)
+    # app.testGetAll(frame0)
     # app.testDetectColor(frame1)
     # app.testGetYellows(frame3)
     # app.testGetReds(frame3)

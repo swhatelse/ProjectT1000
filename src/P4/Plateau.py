@@ -1,3 +1,6 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 """classe gerant le plateau de jeu
 
 *   Classe representant le plateau de jeu d'un puissance 4
@@ -7,7 +10,6 @@
 *       J[1] pour les cases prises par le joueur 1
 *       j[2] pour les cases prises par le joueur 2
 *"""
-# -*- encoding: UTF-8 -*-
 
 import random
 
@@ -18,7 +20,7 @@ import random
 """
 J=[0,1,2]
 class Plateau:
-""" class contenant le jeu du puissance 4"""
+    """ class contenant le jeu du puissance 4"""
     def __init__(self,erreur) :
         """constructeur contenant une fonction de callback pour les erreurs """
         self._J=[0,1,2]

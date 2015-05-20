@@ -1,4 +1,4 @@
-# -*- encoding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 import Plateau
 import random
@@ -43,7 +43,8 @@ class IA:
                     elif(valeurtmp == valeurMax):
                         liste.append(c)
                     self.plateau.removeColonne(c)
-        if(len(liste)!=1):"""choix au hasard parmis les possiblités d'égales valeurs """
+        """choix au hasard parmis les possiblités d'égales valeurs """
+        if(len(liste)!=1):
             print "alea"
             f=True
             colonneHasard=0
