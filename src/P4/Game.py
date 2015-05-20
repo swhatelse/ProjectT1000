@@ -66,15 +66,19 @@ class Game(object):
         ylKp = detector.getYellows(img)
         rdKp = detector.getReds(img)
 
+        grey = cv2.cvtColor(img, cv2.CV_HSV2BGR);
+        
         img = cv2.drawKeypoints(img, blKp, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
         img = cv2.drawKeypoints(img, ylKp, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
         img = cv2.drawKeypoints(img, rdKp, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
+        
+        
 		#DEBUG
-		#cv2.imshow("img",img)
-		#while True:
-		#    if cv2.waitKey(30) ==  ord('q'):
-		#        break
+        cv2.imshow("img",grey)
+        while True:
+            if cv2.waitKey(30) ==  ord('q'):
+                break
 
         try :
             tmp = Plateau.createTable(rdKp, ylKp, blKp)
