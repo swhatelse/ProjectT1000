@@ -77,7 +77,10 @@ class Client(object):
 
             if not result[1] == 0:
                 self.inGame = False
-                Nao_dit.Interface_sortie("Je crois que nous avons un champion! " + str(move), "")
+                if(result[1] == 1):#victoire de nao
+                    self.Position_nao.Victoire("J'ai gagner!")
+                elif(result[1] == 2):#victoire du joueur humain            
+                    self.Position_nao.Defaite("Oh non! Je crois que nous avons un champion!")
                 
         elif action == NetUtils.MSG_FAILURE:
             self.naoPlays()
@@ -87,23 +90,27 @@ class Client(object):
         self.naoPlays()
         
     def humanPlays(self):
-        Nao_dit.Interface_sortie("A vous de jouer","")
-        human_done = False
-        while not human_done:
-            human_done = self.entry.Attente_Bumper("", "LeftBumperPressed")
+        Nao_dit.Interface_sortie("A votre tour","")
+        while(not self.entry.Attente_Bumper("", "LeftBumperPressed") == 1):
             time.sleep(1)
+ 
     
     def run(self, doubleIA = False):
         # Debut de la partie
         while True:
-            self.inGame = self.entry.Attente_Bumper("", "LeftBumperPressed")
+            while(not self.entry.Attente_Bumper("", "LeftBumperPressed") == 1):
+                pass 
+            self.inGame = True
+            
             try:
                 self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             except:
+                self.Position_nao.Faire(6,20)
                 sys.exit("Echec lors de l'ouverture du socket")
             try:
                 self.sock.connect((self.IP, self.port))
             except:
+                self.Position_nao.Faire(6,20)
                 sys.exit("Echec lors de la connexion au serveur")
 
             # Activation du jeux IA contre IA pour test et débuggage
@@ -116,8 +123,14 @@ class Client(object):
 
             # Choix du premier joueur
             Joueur_courant = random.randint(1,2)
-            print("Le joueur " + str(Joueur_courant) + " commence")
-            Nao_dit.Interface_sortie("Let's rock baby!","")
+            #print("Le joueur " + str(Joueur_courant) + " commence")
+            if(Joueur_courant == 1):
+                Nao_dit.Interface_sortie("Je commence la partie", "")
+            else:
+                Nao_dit.Interface_sortie("Vous commencez", "")
+            #time.sleep(10)
+            #Nao_dit.Interface_sortie("Let's rock baby!","")
+
             
             while self.inGame:
                 if(Joueur_courant == 1):

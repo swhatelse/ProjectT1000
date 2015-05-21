@@ -58,12 +58,6 @@ class Interface_entree:
         
     """
     def Attente_Bumper(self, Texte, Bumper):
-        """
-        if(Bumper != "LeftBumperPressed" or "RightBumperPressed"):
-            print Bumper
-            Nao_dit.Interface_sortie("Erreur d'argument du Bumper", "")            
-            sys.exit(0)
-        """
         if(Texte != ""):#si on a du texte on le dis
             Nao_dit.Interface_sortie(Texte, "")#on dis notre texte 
             #print Texte #on affiche notre texte dans la console

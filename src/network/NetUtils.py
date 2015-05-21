@@ -5,6 +5,8 @@ import sys
 import os
 
 from Global import Const
+## NAO
+# import Const
 
 # Type de message
 MSG_HALT = 0

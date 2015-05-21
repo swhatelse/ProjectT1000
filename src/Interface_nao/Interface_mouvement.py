@@ -1,7 +1,7 @@
 from naoqi import ALProxy
 import sys
 import time
-import Interface_sortie
+import Interface_sortie as Nao_dit
 """ Cette classe permet de realiser les mouvements que nous avons enregistrer dans choregraphe
 """
 
@@ -20,7 +20,8 @@ class Interface_mouvement :
 
     def __init__(self) :
 		#on defini la liste des mouvements possibles
-        self.Liste_mouvement= ["P4_Position_Debut_Jeu", "P4_Position_Think", "P4_Position_Think_End", "P4_Position_Prise_Jeton", "P4_Position_Lacher_Jeton", "SitDown", "P4_Position_Fin_Jeu", "StandUp"]
+        self.Liste_mouvement= ["P4_Position_Debut_Jeu", "P4_Position_Think", "P4_Position_Think_End", "P4_Position_Prise_Jeton", "P4_Position_Lacher_Jeton", "SitDown", "P4_Position_Fin_Jeu", "StandUp", "P4_Position_Victoire", "P4_Position_Defaite"]
+
 
     """
     @Choix_Mouvement est un numero de la liste initialiser a la creation de notre classe ci-dessus
@@ -48,3 +49,23 @@ class Interface_mouvement :
        
         
 	
+    """Ici c'est la fonction en cas de victoire de nao
+        @text le texte que l'on desire faire dire a nao
+        On ne definie pas en option le mouvement, car on le defini en dur dans la methode    
+    """
+    def Victoire(self, text) :
+        if text != "" :
+            Nao_dit.Interface_sortie(text, "")
+
+        self.Faire(8,30) #ici on utilise le Behaviors enregistrer pour la victoire de nao
+        
+        
+
+    """Ici c'est la fonction en cas de defaite de nao
+        @text le texte que l'on desire faire dire a nao
+    """
+    def Defaite(self, text) :
+        if text != "" :
+            Nao_dit.Interface_sortie(text,"")
+
+        self.Faire(9,30)#ici on utlise le Behaviors enregister pour la defaite de nao	
