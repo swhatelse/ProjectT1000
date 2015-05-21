@@ -42,8 +42,7 @@ class Interface_entree:
         #on force en dur les options pour les photos de notre projet.
         resolution = self.resolutionMap['1280 x 960']
         cameraID = self.cameraMap['Top']
-        fileName = 'nao_pic_test'
-        
+        fileName = 'img'
         
         self.photoCapture.setResolution(resolution)
         self.photoCapture.setCameraID(cameraID)
